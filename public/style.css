@@ -8,6 +8,13 @@
 }
 
 :root {
+  --orange-color: lightsalmon;
+  --green-color: #00afaa;
+  --main-padding: 1rem;
+  --small-font: 0.8rem;
+  --normal-font: 1rem;
+  --large-font: 1rem;
+  --extra-large-font: 1.8rem;
 }
 
 body {
@@ -17,16 +24,16 @@ body {
 }
 
 .shadow {
-  background: #00afaa;
+  background: var(--green-color);
   border: 1px solid #000;
   box-shadow: 3px 4px 0px #000;
-  padding: 1rem;
+  padding: var(--main-padding);
   color: white;
 }
 
 #heading {
   text-align: center;
-  font-size: 1.8rem;
+  font-size: var(--extra-large-font);
   font-weight: 600;
   margin: 5% 0;
 }
@@ -41,7 +48,7 @@ a:visited {
 }
 
 .nhs {
-  padding: 1rem;
+  padding: var(--main-padding);
   background-color: #e5e5e5;
   color: black;
   display: grid;
@@ -54,11 +61,11 @@ a:visited {
 
 .nhs-text p {
   margin-bottom: 0.5rem;
-  font-size: 0.8rem;
+  font-size: var(--small-font);
 }
 
 .nhs h3 {
-  font-size: 1rem;
+  font-size: var(--normal-font);
   margin: 0.5rem 0;
 }
 
@@ -73,16 +80,16 @@ a:visited {
 
 .form input[type='text'] {
   flex-basis: 100%;
-  padding: 1rem;
-  border: 1px solid #00afaa;
-  font-size: 1rem;
+  padding: var(--main-padding);
+  border: 1px solid var(--green-color);
+  font-size: var(--normal-font);
 }
 
 .form input[type='submit'] {
-  font-size: 1rem;
+  font-size: var(--normal-font);
   font-weight: bold;
-  background: #00afaa;
-  padding: 1rem;
+  background: var(--green-color);
+  padding: var(--main-padding);
   outline: none;
   outline-color: none;
   color: white;
@@ -96,6 +103,7 @@ input:focus {
 .select {
   margin-top: 5%;
 }
+
 .container {
   width: 80vw;
   margin: auto;
@@ -116,7 +124,7 @@ main {
 
 .box-heading {
   font-weight: bold;
-  font-size: 1.6rem;
+  font-size: var(--extra-large-font);
   grid-row: 1;
 }
 
@@ -125,10 +133,10 @@ main {
 }
 
 .box-text {
-  font-size: 1.2rem;
+  font-size: var(--normal-font);
   margin: 1rem 0;
 
-  border-bottom: 2px solid #00afaa;
+  border-bottom: 2px solid var(--green-color);
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
@@ -138,12 +146,20 @@ main {
 .box-text span {
   font-weight: bold;
   font-weight: 700;
-  color: rgb(236, 97, 14);
+  color: var(--orange-color);
   letter-spacing: 0.3rem;
 }
 
-.country-search-heading {
+.country-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-bottom: 1rem;
+}
+
+.country-info-header img {
+  height: 50px;
+  width: 100px;
 }
 
 .search-cases-box {
@@ -152,11 +168,10 @@ main {
 }
 
 .country-case-text {
-  font-size: 1rem;
+  font-size: var(--normal-font);
   margin: 1rem 0;
-  padding: 0.5rem 0;
-  padding: 1rem;
-  background-color: #00afaa;
+  padding: var(--main-padding);
+  background-color: var(--green-color);
 }
 
 .country-case-text span {
@@ -164,21 +179,18 @@ main {
   font-weight: 700;
   color: white;
   letter-spacing: 0.3rem;
-
-  letter-spacing: 0.3rem;
   background-color: black;
   padding: 0.5rem;
 }
 
 .history-wrapper {
-  /* background: #e5e5e5; */
-  padding: 1rem;
+  padding: var(--main-padding);
   position: relative;
   transition: max-height 0.6s ease-in;
   max-height: 50px;
   overflow: hidden;
-  border: 1px dashed rgb(236, 97, 14);
-  font-size: 1.2em;
+  border: 1px solid var(--orange-color);
+  font-size: var(--normal-font);
   font-weight: bold;
 }
 
@@ -186,13 +198,14 @@ main {
   position: absolute;
   right: 1rem;
   cursor: pointer;
+  font-size: 1.2em !important;
 }
 
 .history-date {
   margin: 1.5rem 0;
-  background: rgb(236, 97, 14);
-  padding: 1rem;
-  font-size: 1rem;
+  background: var(--orange-color);
+  padding: var(--main-padding);
+  font-size: var(--normal-font);
 }
 
 @media (max-width: 600px) {
