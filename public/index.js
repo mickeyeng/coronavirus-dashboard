@@ -37,15 +37,12 @@ async function searchCountries(country = 'uk') {
   try {
     const response = await fetch(`${API_URL}/countries/${country}`);
     const data = await response.json();
-    console.log('search couuntry data', data);
     updateDomSearchCountries(data, country);
     searchHistory(country);
 
     search.addEventListener('submit', e => {
       e.preventDefault();
       const term = e.target.children[0].value;
-      console.log(data);
-
       term === '' ? alert('error') : searchCountries(term);
     });
   } catch (error) {
