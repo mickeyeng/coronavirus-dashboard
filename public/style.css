@@ -95,6 +95,7 @@ a:visited {
   outline-color: none;
   color: white;
   border: none;
+  -webkit-appearance: none;
 }
 
 input:focus {
