@@ -11,6 +11,7 @@
   --orange-color: lightsalmon;
   --green-color: #00afaa;
   --main-padding: 1rem;
+  --x-small-font: 0.5rem;
   --small-font: 0.8rem;
   --normal-font: 1rem;
   --large-font: 1rem;
@@ -221,6 +222,14 @@ main {
     grid-column: auto;
   }
 
+  .nhs a {
+    align-self: center;
+  }
+
+  .nhs h3 {
+    font-size: var(--small-font);
+  }
+
   .search-cases-box {
     grid-column: auto;
     grid-row: 2;
@@ -232,5 +241,9 @@ main {
 
   #worldwide-heading {
     grid-row: 3;
+  }
+
+  .country-search-heading {
+    font-size: 1rem;
   }
 }
