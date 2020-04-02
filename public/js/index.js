@@ -1,3 +1,5 @@
+import { displayMap } from './map.js';
+
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases');
 const searchCases = document.querySelector('[data-search-cases');
@@ -17,6 +19,7 @@ async function fetchAllData() {
   }
 }
 
+// list countries in the select
 async function listCountries() {
   try {
     const response = await fetch(`${API_URL}/countries`);
@@ -39,6 +42,9 @@ async function searchCountries(country = 'uk') {
     const data = await response.json();
     updateDomSearchCountries(data, country);
     searchHistory(country);
+    displayMap(data.countryInfo);
+
+    console.log(data.countryInfo);
 
     search.addEventListener('submit', e => {
       e.preventDefault();
@@ -150,5 +156,5 @@ function updateDomSearchCountries(data, country) {
 select.addEventListener('change', e => searchCountries(e.target.value));
 
 fetchAllData();
-searchCountries((country = 'uk'));
+searchCountries();
 listCountries();

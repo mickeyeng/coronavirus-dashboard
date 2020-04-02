@@ -106,6 +106,10 @@ input:focus {
   margin-top: 5%;
 }
 
+#mapid {
+  height: 300px;
+}
+
 .container {
   width: 80vw;
   margin: auto;
