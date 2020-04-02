@@ -156,6 +156,15 @@ main {
   letter-spacing: 0.3rem;
 }
 
+/* # map popup */
+.leaflet-popup-content-wrapper {
+  background-color: var(--orange-color) !important ;
+}
+
+.leaflet-popup-content-wrapper h4 {
+  text-align: center;
+}
+
 .country-info-header {
   display: flex;
   justify-content: space-between;

@@ -2,10 +2,15 @@ const map = document.querySelector('.map');
 const KEY =
   'pk.eyJ1IjoibWlja2V5ZW5nIiwiYSI6ImNqdHQ5dHlqMjB3dm80ZGw4MW93bXJ3bDEifQ.XygC53CVuF2M4onZPwvwmg';
 
-export function displayMap({ lat, long }) {
+export function displayMap(data) {
   // const mapDiv = document.createElement('div');
   // mapDiv.id = 'mapid';
   // map.appendChild(mapDiv);
+
+  console.log('map', data.countryInfo);
+
+  const { lat, long } = data.countryInfo;
+  const { active, cases, country, deaths, todayDeaths } = data;
 
   map.innerHTML = `<div id="mapid"></div>`;
 
@@ -25,5 +30,17 @@ export function displayMap({ lat, long }) {
       accessToken: KEY
     }
   ).addTo(mymap);
-  var marker = L.marker([lat, long]).addTo(mymap);
+  const marker = L.marker([lat, long]).addTo(mymap);
+  const countryDetails = `
+  <h4>${country}</h4>
+  <br />
+  <ul>
+    <li>Active cases: <strong>${active}</strong></li>
+    <li>Total Cases:<strong>${cases}</strong></li>
+    <li>Deaths: <strong>${deaths}</strong></li>
+    <li>Today's Deaths: <strong>${todayDeaths}</strong></li>
+  </ul>
+  `;
+
+  marker.bindPopup(countryDetails).openPopup();
 }
