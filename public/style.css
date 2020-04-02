@@ -165,6 +165,10 @@ main {
   text-align: center;
 }
 
+.map {
+  padding-top: var(--main-padding);
+}
+
 .country-info-header {
   display: flex;
   justify-content: space-between;
