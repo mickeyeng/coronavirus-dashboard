@@ -8,14 +8,15 @@
 }
 
 :root {
+  font-size: 10px;
   --orange-color: lightsalmon;
   --green-color: #00afaa;
-  --main-padding: 1rem;
-  --x-small-font: 0.5rem;
-  --small-font: 0.8rem;
-  --normal-font: 1rem;
-  --large-font: 1rem;
-  --extra-large-font: 1.8rem;
+  --main-padding: 2rem;
+  --x-small-font: 0.8rem;
+  --small-font: 1.2rem;
+  --normal-font: 1.6rem;
+  --large-font: 1.8rem;
+  --extra-large-font: 2.2rem;
 }
 
 body {
@@ -118,7 +119,7 @@ input:focus {
 main {
   margin: 5% 0;
   display: grid;
-  grid-gap: 1rem;
+  grid-gap: var(--main-padding);
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -215,7 +216,7 @@ main {
 
 .dropdown-icon {
   position: absolute;
-  right: 1rem;
+  right: 2rem;
   cursor: pointer;
   font-size: 1.2em !important;
 }

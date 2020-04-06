@@ -90,12 +90,9 @@ async function searchHistoryAndCases() {
 
 async function searchAllHistory() {
   try {
-    const allResponse = await fetch(`${API_URL}/all`);
-    const allData = await allResponse.json();
-
     const historyResponse = await fetch(`${API_URL}/v2/historical/all`);
     const historyData = await historyResponse.json();
-    showChart(historyData, allData);
+    showChart(historyData);
   } catch (error) {
     throw ('Error fetching history data', error);
   }

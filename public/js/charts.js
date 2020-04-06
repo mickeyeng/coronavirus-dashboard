@@ -1,9 +1,8 @@
 // import Chart from '../../node_modules/chart.js/dist/Chart.min.js';
 import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js';
 
-export function showChart(all, history) {
+export function showChart(history) {
   var ctx = document.getElementById('myChart').getContext('2d');
-  console.log('all', all);
   console.log('history', history);
   // console.log('cases', cases);
 
@@ -13,14 +12,14 @@ export function showChart(all, history) {
 
     // The data for our dataset
     data: {
-      labels: Object.keys(all.cases),
+      labels: Object.keys(history.cases),
       datasets: [
         {
           label: 'Number of cases worldwide',
           backgroundColor: '#FF4136',
           borderColor: '#FF4136',
           // data: Object.values(all.cases),
-          data: Object.values(all.cases),
+          data: Object.values(history.cases),
           fill: false,
         },
         {
@@ -28,7 +27,7 @@ export function showChart(all, history) {
           backgroundColor: '#0074D9',
           borderColor: '#0074D9',
           // data: Object.values(all.cases),
-          data: Object.values(all.deaths),
+          data: Object.values(history.deaths),
           fill: false,
         },
         {
@@ -36,7 +35,7 @@ export function showChart(all, history) {
           backgroundColor: '#3D9970',
           borderColor: '#3D9970',
           // data: Object.values(all.cases),
-          data: Object.values(all.recovered),
+          data: Object.values(history.recovered),
           fill: false,
         },
 
