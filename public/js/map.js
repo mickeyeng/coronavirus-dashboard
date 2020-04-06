@@ -1,26 +1,20 @@
 export function displayMap(data) {
-  // const mapDiv = document.createElement('div');
-  // mapDiv.id = 'mapid';
-  // map.appendChild(mapDiv);
   const map = document.querySelector('.map');
-
-  console.log('map', data.countryInfo);
-
   const { lat, long } = data.countryInfo;
   const { active, cases, country, deaths, todayDeaths } = data;
 
   map.innerHTML = `<div id="mapid"></div>`;
 
-  console.log('display-map working');
   console.log(lat, long);
-  const mymap = L.map('mapid').setView([lat, long], 3);
+  const mymap = L.map('mapid').setView([lat, long], 5);
 
   var OpenStreetMap_Mapnik = L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     {
       maxZoom: 19,
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxBoundsViscosity: 1.0,
     }
   ).addTo(mymap);
 
@@ -37,4 +31,7 @@ export function displayMap(data) {
   `;
 
   marker.bindPopup(countryDetails).openPopup();
+  mymap.dragging.disable();
+  mymap.touchZoom.disable();
+  mymap.scrollWheelZoom.disable();
 }

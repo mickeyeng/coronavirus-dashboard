@@ -1,4 +1,5 @@
 import { displayMap } from './map.js';
+import { showChart } from './charts.js';
 
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases');
@@ -13,7 +14,9 @@ async function fetchAllData() {
   try {
     const response = await fetch(`${API_URL}/all`);
     const data = await response.json();
+    console.log(data);
     updateDomCases(data);
+    // showChart(data);
   } catch (error) {
     throw ('Error fetching all data', error);
   }
@@ -40,14 +43,13 @@ async function searchCountries(country = 'uk') {
   try {
     const response = await fetch(`${API_URL}/countries/${country}`);
     const data = await response.json();
-    console.log(data);
     updateDomSearchCountries(data, country);
     searchHistory(country);
     displayMap(data);
 
     // console.log(data.countryInfo);
 
-    search.addEventListener('submit', e => {
+    search.addEventListener('submit', (e) => {
       e.preventDefault();
       const term = e.target.children[0].value;
       term === '' ? alert('error') : searchCountries(term);
@@ -65,6 +67,38 @@ function updateDomCases(data) {
     <div class="box-text">Number Of Deaths: <span>${deaths}</span></div>
     <div class="box-text">Number Of Recoveries: <span>${recovered}</span></div>
   `;
+}
+
+async function searchHistoryAndCases() {
+  // const history = fetch(`${API_URL}/v2/historical/all`);
+  // const allCases = fetch(`${API_URL}/all`);
+  // // will return an array of the 2 values
+  // Promise.all([allCases, history]).then((values) => {
+  //   // convert both of the responses to json
+  //   return Promise.all(values.map((value) => value.json())).then((data) => {
+  //     // console.log(data)
+  //     showChart(data);
+  //   });
+  // });
+  // try {
+  //   const response = await fetch(`${API_URL}/v2/historical/all`);
+  //   const data =
+  // } catch(error) {
+  //   console.log(error)
+  // }
+}
+
+async function searchAllHistory() {
+  try {
+    const allResponse = await fetch(`${API_URL}/all`);
+    const allData = await allResponse.json();
+
+    const historyResponse = await fetch(`${API_URL}/v2/historical/all`);
+    const historyData = await historyResponse.json();
+    showChart(historyData, allData);
+  } catch (error) {
+    throw ('Error fetching history data', error);
+  }
 }
 
 async function searchHistory(country) {
@@ -86,7 +120,7 @@ function updateDomSearchHistory(deaths, data) {
   const historyWrapper = document.querySelector('.history-wrapper');
   const entries = Object.entries(deaths);
 
-  entries.map(ent => {
+  entries.map((ent) => {
     const historyDivDate = document.createElement('div');
     if (!data.open) {
       historyWrapper.appendChild(historyDivDate).classList.add('history-date');
@@ -101,7 +135,9 @@ function updateDomSearchHistory(deaths, data) {
     const children = [...historyWrapper.children];
 
     // remove the active class on toggle icon
-    children.forEach(child => child.classList.toggle('history-date_expanded'));
+    children.forEach((child) =>
+      child.classList.toggle('history-date_expanded')
+    );
 
     // set the transition with max-height
     if (historyDate.classList.contains('history-date_expanded')) {
@@ -123,13 +159,13 @@ function updateDomSearchCountries(data, country) {
   if (data !== undefined) {
     searchCases.innerHTML = `
       <div class="country-info-header">
-        <h1 class="country-search-heading">Coronavirus in ${country
-          .charAt(0)
-          .toUpperCase() + country.slice(1)}</h1>
+        <h1 class="country-search-heading">Coronavirus in ${
+          country.charAt(0).toUpperCase() + country.slice(1)
+        }</h1>
           <img class="flag" src=${data.countryInfo.flag} />
       </div>
       <div class="history-wrapper">
-      
+
         <i class="fas fa-2x fa-angle-double-down dropdown-icon" data-dropdown></i>
           View History      
       </div>
@@ -154,8 +190,10 @@ function updateDomSearchCountries(data, country) {
   }
 }
 
-select.addEventListener('change', e => searchCountries(e.target.value));
+select.addEventListener('change', (e) => searchCountries(e.target.value));
 
 fetchAllData();
 searchCountries();
 listCountries();
+searchAllHistory();
+searchHistoryAndCases();
