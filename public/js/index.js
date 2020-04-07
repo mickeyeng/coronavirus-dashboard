@@ -146,7 +146,7 @@ function updateDomSearchCountries(data, country) {
         <div id="toggle-chart">Show Chart</div>
         <div id="show-visual-wrapper"></div>
 
-      <div class="map"></div>
+      <div class="map active"></div>
       <div class="history-wrapper">
       
 

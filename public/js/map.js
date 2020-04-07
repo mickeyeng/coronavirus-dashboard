@@ -3,7 +3,7 @@ export function displayMap(data) {
   const { lat, long } = data.countryInfo;
   const { active, cases, country, deaths, todayDeaths } = data;
 
-  // map.innerHTML = `<div id="mapid"></div>`;
+  map.innerHTML = `<div id="mapid"></div>`;
 
   console.log(lat, long);
   const mymap = L.map('mapid').setView([lat, long], 5);

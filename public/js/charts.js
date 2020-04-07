@@ -1,7 +1,9 @@
 import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js';
+import { displayMap } from '../js/map.js';
+const worldwideChart = document.querySelector('.myChart-worldwide');
 
 export function showChartHistory(history) {
-  const ctx = document.getElementById('myChart').getContext('2d');
+  const ctx = worldwideChart.getContext('2d');
   const chart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -38,18 +40,17 @@ export function showChartHistory(history) {
 
 export function showChartHistoryByCountry(data) {
   const showVisualDiv = document.querySelector('#show-visual-wrapper');
-  console.log(data);
+
   const dates = Object.keys(data.timeline.cases);
   const cases = Object.values(data.timeline.cases);
   const deaths = Object.values(data.timeline.deaths);
   const recovered = Object.values(data.timeline.recovered);
 
   const chartDiv = document.createElement('canvas');
-  chartDiv.id = 'myChart';
+  chartDiv.classList.add('myChart-country');
   showVisualDiv.appendChild(chartDiv);
 
   const ctx = chartDiv.getContext('2d');
-  console.log(ctx);
   const chart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -83,15 +84,23 @@ export function showChartHistoryByCountry(data) {
     options: {},
   });
 
-  toggleChartAndMap();
+  toggleChartAndMap(data);
 }
 
 function toggleChartAndMap() {
   const toggleDiv = document.querySelector('#toggle-chart');
   const map = document.querySelector('.map');
+  const countryChart = document.querySelector('.myChart-country');
+
+  console.log(map);
 
   toggleDiv.addEventListener('click', () => {
     console.log('clicked');
-    // map.children[0].remove();
+    console.log(countryChart);
+    // map.style.display = 'none';
+    if (countryChart) {
+      countryChart.classList.toggle('active');
+      map.classList.toggle('active');
+    }
   });
 }

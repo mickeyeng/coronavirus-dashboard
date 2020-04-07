@@ -113,6 +113,10 @@ input:focus {
   height: 400px;
 }
 
+.active {
+  display: none !important;
+}
+
 .map {
   padding: var(--main-padding) 0;
 }
