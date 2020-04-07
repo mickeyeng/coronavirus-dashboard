@@ -16,7 +16,6 @@ async function fetchAllData() {
     const data = await response.json();
     console.log(data);
     updateDomCases(data);
-    // showChart(data);
   } catch (error) {
     throw ('Error fetching all data', error);
   }
@@ -67,25 +66,6 @@ function updateDomCases(data) {
     <div class="box-text">Number Of Deaths: <span>${deaths}</span></div>
     <div class="box-text">Number Of Recoveries: <span>${recovered}</span></div>
   `;
-}
-
-async function searchHistoryAndCases() {
-  // const history = fetch(`${API_URL}/v2/historical/all`);
-  // const allCases = fetch(`${API_URL}/all`);
-  // // will return an array of the 2 values
-  // Promise.all([allCases, history]).then((values) => {
-  //   // convert both of the responses to json
-  //   return Promise.all(values.map((value) => value.json())).then((data) => {
-  //     // console.log(data)
-  //     showChart(data);
-  //   });
-  // });
-  // try {
-  //   const response = await fetch(`${API_URL}/v2/historical/all`);
-  //   const data =
-  // } catch(error) {
-  //   console.log(error)
-  // }
 }
 
 async function searchAllHistory() {
@@ -161,7 +141,9 @@ function updateDomSearchCountries(data, country) {
         }</h1>
           <img class="flag" src=${data.countryInfo.flag} />
       </div>
+      <div class="map"></div>
       <div class="history-wrapper">
+      
 
         <i class="fas fa-2x fa-angle-double-down dropdown-icon" data-dropdown></i>
           View History      

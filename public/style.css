@@ -12,6 +12,7 @@
   --orange-color: lightsalmon;
   --green-color: #00afaa;
   --main-padding: 2rem;
+  --main-margin: 5rem;
   --x-small-font: 0.8rem;
   --small-font: 1.2rem;
   --normal-font: 1.6rem;
@@ -104,11 +105,21 @@ input:focus {
 }
 
 .select {
-  margin-top: 5%;
+  margin: var(--main-margin) 0;
 }
 
 #mapid {
-  height: 300px;
+  height: 400px;
+}
+
+.map {
+  padding: var(--main-padding) 0;
+}
+
+#chart-heading {
+  text-align: center;
+  padding: var(--main-padding) 0;
+  font-size: var(--large-font);
 }
 
 .container {
@@ -141,16 +152,17 @@ main {
 
 .box-text {
   font-size: var(--normal-font);
-  margin: 1rem 0;
+  margin: var(--main-padding) 0;
 
   border-bottom: 2px solid var(--green-color);
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+  padding: var(--main-padding) 0;
   line-height: 2rem;
 }
 
 .box-text span {
+  margin: var(--main-padding) 0;
   font-weight: bold;
   font-weight: 700;
   color: var(--orange-color);
@@ -164,10 +176,6 @@ main {
 
 .leaflet-popup-content-wrapper h4 {
   text-align: center;
-}
-
-.map {
-  padding-top: var(--main-padding);
 }
 
 .country-info-header {
