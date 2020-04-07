@@ -1,5 +1,5 @@
 import { displayMap } from './map.js';
-import { showChart } from './charts.js';
+import { showChartHistory, showChartHistoryByCountry } from './charts.js';
 
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases');
@@ -72,7 +72,7 @@ async function searchAllHistory() {
   try {
     const historyResponse = await fetch(`${API_URL}/v2/historical/all`);
     const historyData = await historyResponse.json();
-    showChart(historyData);
+    showChartHistory(historyData);
   } catch (error) {
     throw ('Error fetching history data', error);
   }
@@ -87,6 +87,7 @@ async function searchHistory(country) {
     const { deaths } = data.timeline;
     data.open = false;
     updateDomSearchHistory(deaths, data);
+    showChartHistoryByCountry(data);
   } catch (error) {
     throw ('Error fetching history data', error);
   }
@@ -141,6 +142,10 @@ function updateDomSearchCountries(data, country) {
         }</h1>
           <img class="flag" src=${data.countryInfo.flag} />
       </div>
+      
+        <div id="toggle-chart">Show Chart</div>
+        <div id="show-visual-wrapper"></div>
+
       <div class="map"></div>
       <div class="history-wrapper">
       
@@ -175,4 +180,3 @@ fetchAllData();
 searchCountries();
 listCountries();
 searchAllHistory();
-searchHistoryAndCases();
