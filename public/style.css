@@ -110,15 +110,16 @@ input:focus {
 }
 
 #mapid {
-  height: 400px;
+  min-height: 300px;
 }
 
-.active {
+.active-map {
+  opacity: 0;
+  height: 0;
+}
+
+.active-chart {
   display: none !important;
-}
-
-.map {
-  padding: var(--main-padding) 0;
 }
 
 #chart-heading {
@@ -132,6 +133,11 @@ input:focus {
   display: inline-block;
   border: 1px solid var(--green-color);
   cursor: pointer;
+  font-weight: bold;
+}
+
+#show-visual-wrapper {
+  padding: var(--main-padding) 0;
 }
 
 .container {

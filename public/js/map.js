@@ -34,4 +34,8 @@ export function displayMap(data) {
   mymap.dragging.disable();
   mymap.touchZoom.disable();
   mymap.scrollWheelZoom.disable();
+  if (map.classList.contains('active')) {
+    mymap.invalidateSize();
+    console.log('true');
+  }
 }

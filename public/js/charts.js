@@ -45,12 +45,13 @@ export function showChartHistoryByCountry(data) {
   const cases = Object.values(data.timeline.cases);
   const deaths = Object.values(data.timeline.deaths);
   const recovered = Object.values(data.timeline.recovered);
+  console.log(recovered);
 
-  const chartDiv = document.createElement('canvas');
-  chartDiv.classList.add('myChart-country');
-  showVisualDiv.appendChild(chartDiv);
+  const chartCanvas = document.createElement('canvas');
+  chartCanvas.classList.add('myChart-country');
+  showVisualDiv.appendChild(chartCanvas);
 
-  const ctx = chartDiv.getContext('2d');
+  const ctx = chartCanvas.getContext('2d');
   const chart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -95,12 +96,11 @@ function toggleChartAndMap() {
   console.log(map);
 
   toggleDiv.addEventListener('click', () => {
-    console.log('clicked');
-    console.log(countryChart);
-    // map.style.display = 'none';
-    if (countryChart) {
-      countryChart.classList.toggle('active');
-      map.classList.toggle('active');
-    }
+    countryChart.classList.toggle('active-chart');
+    map.classList.toggle('active-map');
+
+    countryChart.classList.contains('active-chart')
+      ? (toggleDiv.textContent = 'Show Chart')
+      : (toggleDiv.textContent = 'Show Map');
   });
 }

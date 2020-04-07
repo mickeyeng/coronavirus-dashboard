@@ -142,14 +142,14 @@ function updateDomSearchCountries(data, country) {
         }</h1>
           <img class="flag" src=${data.countryInfo.flag} />
       </div>
-      
-        <div id="toggle-chart">Show Chart</div>
-        <div id="show-visual-wrapper"></div>
+       
+        <div id="toggle-chart">Show Map</div>
+        <div id="show-visual-wrapper">
+          <div class="map active active-map"></div>  
+        </div>
 
-      <div class="map active"></div>
+      
       <div class="history-wrapper">
-      
-
         <i class="fas fa-2x fa-angle-double-down dropdown-icon" data-dropdown></i>
           View History      
       </div>
