@@ -31,11 +31,7 @@ export function displayMap(data) {
   `;
 
   marker.bindPopup(countryDetails).openPopup();
-  mymap.dragging.disable();
+  // mymap.dragging.disable();
   mymap.touchZoom.disable();
   mymap.scrollWheelZoom.disable();
-  if (map.classList.contains('active')) {
-    mymap.invalidateSize();
-    console.log('true');
-  }
 }

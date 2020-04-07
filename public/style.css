@@ -13,7 +13,8 @@
   --green-color: #00afaa;
   --small-padding: 1rem;
   --main-padding: 2rem;
-  --main-margin: 5rem;
+  --main-padding-large: 4rem;
+  --main-margin: 2rem;
   --x-small-font: 0.8rem;
   --small-font: 1.2rem;
   --normal-font: 1.6rem;
@@ -39,7 +40,7 @@ body {
   text-align: center;
   font-size: var(--extra-large-font);
   font-weight: 600;
-  margin: 5% 0;
+  margin: var(--main-margin) 0;
 }
 
 a {
@@ -79,7 +80,7 @@ a:visited {
 
 .form {
   display: flex;
-  padding-top: 5%;
+  padding: var(--main-padding) 0;
 }
 
 .form input[type='text'] {
@@ -106,7 +107,7 @@ input:focus {
 }
 
 .select {
-  margin: var(--main-margin) 0;
+  /* margin: var(--main-margin) 0; */
 }
 
 #mapid {
@@ -120,6 +121,10 @@ input:focus {
 
 .active-chart {
   display: none !important;
+}
+
+.myChart-country {
+  min-height: 300px !important;
 }
 
 #chart-heading {
@@ -136,6 +141,10 @@ input:focus {
   font-weight: bold;
 }
 
+#toggle-chart:hover {
+  background: var(--green-color);
+}
+
 #show-visual-wrapper {
   padding: var(--main-padding) 0;
 }
@@ -146,7 +155,7 @@ input:focus {
 }
 
 main {
-  margin: 5% 0;
+  margin: var(--main-margin) 0;
   display: grid;
   grid-gap: var(--main-padding);
   grid-template-columns: repeat(3, 1fr);
@@ -170,8 +179,7 @@ main {
 
 .box-text {
   font-size: var(--normal-font);
-  margin: var(--main-padding) 0;
-
+  font-weight: bold;
   border-bottom: 2px solid var(--green-color);
   display: flex;
   flex-direction: column;
@@ -181,8 +189,6 @@ main {
 
 .box-text span {
   margin: var(--main-padding) 0;
-  font-weight: bold;
-  font-weight: 700;
   color: var(--orange-color);
   letter-spacing: 0.3rem;
 }
@@ -211,6 +217,7 @@ main {
 .search-cases-box {
   grid-column: 2 /-1;
   grid-row: 2;
+  overflow: hidden;
 }
 
 .country-case-text {
@@ -233,7 +240,7 @@ main {
   padding: var(--main-padding);
   position: relative;
   transition: max-height 0.6s ease-in;
-  max-height: 50px;
+  max-height: 56px;
   overflow: hidden;
   border: 1px solid var(--orange-color);
   font-size: var(--normal-font);
