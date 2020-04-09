@@ -15,6 +15,7 @@
   --main-padding: 2rem;
   --main-padding-large: 4rem;
   --main-margin: 2rem;
+  --large-margin: 5rem;
   --x-small-font: 0.8rem;
   --small-font: 1.2rem;
   --normal-font: 1.6rem;
@@ -133,12 +134,16 @@ input:focus {
   font-size: var(--large-font);
 }
 
-#toggle-chart {
+.toggle-chart {
   padding: var(--small-padding);
   display: inline-block;
-  border: 1px solid var(--green-color);
+  border-bottom: 1px solid var(--green-color);
   cursor: pointer;
   font-weight: bold;
+}
+
+.toggle-chart:nth-child(2) {
+  border-bottom: grey;
 }
 
 #toggle-chart:hover {
@@ -175,6 +180,18 @@ main {
 
 .all-cases-box {
   grid-column: 1;
+  border: 1px solid black;
+  padding: var(--main-padding);
+  margin: var(--large-font) 0;
+}
+
+.all-cases-box {
+}
+
+.all-cases-box-text {
+}
+
+.all-cases-box__image {
 }
 
 .box-text {

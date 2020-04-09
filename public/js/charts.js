@@ -1,6 +1,8 @@
 import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js';
 import { displayMap } from '../js/map.js';
 const worldwideChart = document.querySelector('.myChart-worldwide');
+let newCountryChart;
+let ctx;
 
 export function showChartHistory(history) {
   const ctx = worldwideChart.getContext('2d');
@@ -34,7 +36,9 @@ export function showChartHistory(history) {
     },
 
     // Configuration options go here
-    options: {},
+    options: {
+      responsive: true,
+    },
   });
 }
 
@@ -52,7 +56,7 @@ export function showChartHistoryByCountry(data) {
   showVisualDiv.appendChild(chartCanvas);
 
   const ctx = chartCanvas.getContext('2d');
-  const chart = new Chart(ctx, {
+  newCountryChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: dates,
@@ -82,14 +86,18 @@ export function showChartHistoryByCountry(data) {
     },
 
     // Configuration options go here
-    options: {},
+    options: {
+      responsive: true,
+    },
   });
 
   toggleChartAndMap(data);
 }
 
 function toggleChartAndMap() {
-  const toggleDiv = document.querySelector('#toggle-chart');
+  const toggleDiv = document.querySelector('[data-toggle-map]');
+  const updateChart = document.querySelector('[data-update-chart]');
+
   const map = document.querySelector('.map');
   const countryChart = document.querySelector('.myChart-country');
 
@@ -102,5 +110,15 @@ function toggleChartAndMap() {
     countryChart.classList.contains('active-chart')
       ? (toggleDiv.textContent = 'Show Chart')
       : (toggleDiv.textContent = 'Show Map');
+  });
+
+  updateChart.addEventListener('click', () => {
+    newCountryChart.type = 'line';
+    newCountryChart.destroy();
+    newCountryChart = new Chart(ctx, {
+      type: 'line',
+      data: ['mickey'],
+    });
+    // newCountryChart.update();
   });
 }

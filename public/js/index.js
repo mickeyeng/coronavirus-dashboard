@@ -2,7 +2,7 @@ import { displayMap } from './map.js';
 import { showChartHistory, showChartHistoryByCountry } from './charts.js';
 
 const search = document.querySelector('[data-form]');
-const allCases = document.querySelector('[data-all-cases');
+const allCases = document.querySelector('[data-all-cases]');
 const searchCases = document.querySelector('[data-search-cases');
 const select = document.querySelector('select');
 
@@ -60,12 +60,23 @@ async function searchCountries(country = 'uk') {
 }
 
 function updateDomCases(data) {
-  const { deaths, recovered, cases } = data;
-  allCases.innerHTML = `
-    <div class="box-text">Number Of Cases: <span>${cases}</span></div>
-    <div class="box-text">Number Of Deaths: <span>${deaths}</span></div>
-    <div class="box-text">Number Of Recoveries: <span>${recovered}</span></div>
-  `;
+  const objectArray = Object.entries(data);
+  const filteredArray = objectArray.filter(
+    (el, index) => index !== 0 && index !== 8 && index !== 9 && index !== 11
+  );
+
+  filteredArray.forEach(([key, value], index) => {
+    const allCasesBox = document.createElement('div');
+    allCasesBox.classList.add('all-cases-box');
+    const allCasesBoxImage = document.createElement('img');
+    const allCasesBoxText = document.createElement('h2');
+
+    console.log(index);
+
+    allCases.appendChild(allCasesBox);
+    allCasesBox.appendChild(allCasesBoxImage);
+    allCasesBox.appendChild(allCasesBoxText).innerText = `${key} - ${value}`;
+  });
 }
 
 async function searchAllHistory() {
@@ -143,7 +154,8 @@ function updateDomSearchCountries(data, country) {
           <img class="flag" src=${data.countryInfo.flag} />
       </div>
        
-        <div id="toggle-chart">Show Map</div>
+        <div class="toggle-chart" data-toggle-map>Show Map</div>
+        <div class="toggle-chart" data-update-chart>Bar Chart</div>
         <div id="show-visual-wrapper">
           <div class="map active active-map"></div>  
         </div>
