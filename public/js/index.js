@@ -60,22 +60,62 @@ async function searchCountries(country = 'uk') {
 }
 
 function updateDomCases(data) {
+  const iconsArr = [
+    ['fa-users'],
+    ['fa-head-side-cough'],
+    ['fa-procedures'],
+    ['fa-ambulance'],
+    ['fa-heart'],
+    ['fa-heartbeat'],
+    ['fa-notes-medical'],
+    ['fa-vial'],
+    ['fa-globe-europe'],
+  ];
+
+  const icons = [
+    {
+      0: 'fa-users',
+      1: 'fa-head-side-cough',
+      2: 'fa-procedures',
+      3: 'fa-ambulance',
+      4: 'fa-heart',
+      5: 'fa-heartbeat',
+      6: 'fa-notes-medical',
+      7: 'fa-vial',
+      8: 'fa-globe-europe',
+    },
+  ];
+
+  const colors = [['red'], ['green'], ['blue']];
+
   const objectArray = Object.entries(data);
+  console.log('obj', objectArray);
   const filteredArray = objectArray.filter(
-    (el, index) => index !== 0 && index !== 8 && index !== 9 && index !== 11
+    (el, index) =>
+      index !== 0 &&
+      index !== 8 &&
+      index !== 7 &&
+      index !== 8 &&
+      index !== 9 &&
+      // index !== 10 &&
+      index !== 11 &&
+      index !== 12
   );
 
-  filteredArray.forEach(([key, value], index) => {
+  filteredArray.map(([key, value], index) => {
+    console.log(key, value);
     const allCasesBox = document.createElement('div');
     allCasesBox.classList.add('all-cases-box');
-    const allCasesBoxImage = document.createElement('img');
-    const allCasesBoxText = document.createElement('h2');
-
-    console.log(index);
-
+    // const allCasesBoxTag = document.createElement('i');
+    // allCasesBoxTag.classList.add('fas');
+    const allCasesBoxHeading = document.createElement('h2');
+    allCasesBoxHeading.classList.add('all-cases-box-heading');
+    const allCasesBoxNumber = document.createElement('h1');
+    allCasesBoxNumber.classList.add('all-cases-box-number');
     allCases.appendChild(allCasesBox);
-    allCasesBox.appendChild(allCasesBoxImage);
-    allCasesBox.appendChild(allCasesBoxText).innerText = `${key} - ${value}`;
+    // allCasesBox.appendChild(allCasesBoxTag);
+    allCasesBox.appendChild(allCasesBoxHeading).innerText = key;
+    allCasesBox.appendChild(allCasesBoxNumber).innerText = value;
   });
 }
 
