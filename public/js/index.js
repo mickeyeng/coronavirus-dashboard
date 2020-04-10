@@ -9,6 +9,9 @@ const select = document.querySelector('select');
 const API_URL = `https://corona.lmao.ninja`;
 const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
 
+// format numbers to friendly format
+const formatter = new Intl.NumberFormat('en');
+
 // Fetch all country data
 async function fetchAllData() {
   try {
@@ -114,8 +117,11 @@ function updateDomCases(data) {
     allCasesBoxNumber.classList.add('all-cases-box-number');
     allCases.appendChild(allCasesBox);
     // allCasesBox.appendChild(allCasesBoxTag);
-    allCasesBox.appendChild(allCasesBoxHeading).innerText = key;
-    allCasesBox.appendChild(allCasesBoxNumber).innerText = value;
+    allCasesBox.appendChild(allCasesBoxHeading).innerText =
+      key.charAt(0).toUpperCase() + key.slice(1);
+    allCasesBox.appendChild(allCasesBoxNumber).innerText = formatter.format(
+      value
+    );
   });
 }
 
@@ -205,21 +211,27 @@ function updateDomSearchCountries(data, country) {
         <i class="fas fa-2x fa-angle-double-down dropdown-icon" data-dropdown></i>
           View History      
       </div>
-      <div class="country-case-text">Active - <span>${data.active}</span></div>
-      <div class="country-case-text">Cases - <span>${data.cases}</span></div>
+      <div class="country-case-text">Active - <span>${formatter.format(
+        data.active
+      )}</span></div>
+      <div class="country-case-text">Cases - <span>${formatter.format(
+        data.cases
+      )}</span></div>
       <div class="country-case-text">Critical - <span>${
         data.critical
       }</span></div>
-      <div class="country-case-text">Deaths <span>${data.deaths}</span></div>
-      <div class="country-case-text">Recovered - <span>${
+      <div class="country-case-text">Deaths <span>${formatter.format(
+        data.deaths
+      )}</span></div>
+      <div class="country-case-text">Recovered - <span>${formatter.format(
         data.recovered
-      }</span></div>
-      <div class="country-case-text">Today Cases - <span>${
+      )}</span></div>
+      <div class="country-case-text">Today Cases - <span>${formatter.format(
         data.todayCases
-      }</span></div>
-      <div class="country-case-text">Today Deaths - <span>${
+      )}</span></div>
+      <div class="country-case-text">Today Deaths - <span>${formatter.format(
         data.todayDeaths
-      }</span></div>
+      )}</span></div>
     `;
   } else {
     console.log('error, country not found');
