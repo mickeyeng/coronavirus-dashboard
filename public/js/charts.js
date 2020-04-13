@@ -57,7 +57,7 @@ export function showChartHistoryByCountry(data) {
 
   const ctx = chartCanvas.getContext('2d');
   newCountryChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
       labels: dates,
       datasets: [

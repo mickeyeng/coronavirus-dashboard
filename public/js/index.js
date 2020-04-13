@@ -208,8 +208,10 @@ function updateDomSearchCountries(data, country) {
 
       
       <div class="history-wrapper">
-        <i class="fas fa-2x fa-angle-double-down dropdown-icon" data-dropdown></i>
-          View History      
+        <div class="history-wrapper__dropdown-text">
+          <i class="fas fa-2x fa-angle-double-down dropdown-icon" data-dropdown></i>
+            View History      
+        </div>
       </div>
       <div class="country-case-text">Active - <span>${formatter.format(
         data.active
