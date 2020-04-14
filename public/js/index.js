@@ -92,7 +92,6 @@ function updateDomCases(data) {
   const colors = [['red'], ['green'], ['blue']];
 
   const objectArray = Object.entries(data);
-  console.log('obj', objectArray);
   const filteredArray = objectArray.filter(
     (el, index) =>
       index !== 0 &&
@@ -106,7 +105,6 @@ function updateDomCases(data) {
   );
 
   filteredArray.map(([key, value], index) => {
-    console.log(key, value);
     const allCasesBox = document.createElement('div');
     allCasesBox.classList.add('all-cases-box');
     // const allCasesBoxTag = document.createElement('i');
@@ -191,6 +189,7 @@ function updateDomSearchHistory(deaths, data) {
 }
 
 function updateDomSearchCountries(data, country) {
+  console.log(data);
   if (data !== undefined) {
     searchCases.innerHTML = `
       <div class="country-info-header">
@@ -213,31 +212,75 @@ function updateDomSearchCountries(data, country) {
             View History      
         </div>
       </div>
-      <div class="country-case-text">Active - <span>${formatter.format(
+      <div class="country-case-text">
+      <div class="country-case-text__box">Active - <span>${formatter.format(
         data.active
-      )}</span></div>
-      <div class="country-case-text">Cases - <span>${formatter.format(
+      )}</span>
+      <span class="country-case-box-text__box-style"></span>
+      </div>
+      <div class="country-case-text__box">Cases - <span>${formatter.format(
         data.cases
-      )}</span></div>
-      <div class="country-case-text">Critical - <span>${
+      )}</span>
+      <span class="country-case-box-text__box-style"></span>
+      </div>
+      <div class="country-case-text__box">Critical - <span>${
         data.critical
-      }</span></div>
-      <div class="country-case-text">Deaths <span>${formatter.format(
+      }</span>
+      <span class="country-case-box-text__box-style"></span>
+      </div>
+      <div class="country-case-text__box">Deaths <span>${formatter.format(
         data.deaths
-      )}</span></div>
-      <div class="country-case-text">Recovered - <span>${formatter.format(
+      )}</span>
+      <span class="country-case-box-text__box-style"></span>
+      </div>
+      <div class="country-case-text__box">Recovered - <span>${formatter.format(
         data.recovered
-      )}</span></div>
-      <div class="country-case-text">Today Cases - <span>${formatter.format(
+      )}</span>
+      <span class="country-case-box-text__box-style"></span>
+      </div>
+      <div class="country-case-text__box">Today Cases - <span>${formatter.format(
         data.todayCases
-      )}</span></div>
-      <div class="country-case-text">Today Deaths - <span>${formatter.format(
+      )}</span>
+      <span class="country-case-box-text__box-style"></span>
+      </div>
+      <div class="country-case-text__box">Today Deaths - <span>${formatter.format(
         data.todayDeaths
-      )}</span></div>
+      )}</span>
+      <span class="country-case-box-text__box-style"></span>
+      </div>
+      </div>
     `;
   } else {
     console.log('error, country not found');
   }
+
+  const divs = document.querySelector('.country-case-text');
+  console.log('divs', divs);
+
+  const colorsArr = {
+    lightGreen: '#80b796',
+    orange: 'lightsalmon',
+    lightBlue: '#9bbce3',
+    darkGreen: '#00afaa',
+    darkRed: '#d72525',
+    lightRed: '#ea8c8c',
+    darkPurple: '#390066',
+  };
+
+  const newArr = [...divs.children];
+
+  const arrWithColors = newArr.map((child, index) => {
+    const colors = Object.values(colorsArr);
+    const color = colors[index];
+    child.style.borderBottom = `5px solid ${color}`;
+    child.lastElementChild.style.background = color;
+  });
+
+  console.log(arrWithColors);
+
+  // Array.from(divs.children).forEach((child, index) => {
+  //   console.log('child', child, index);
+  // });
 }
 
 select.addEventListener('change', (e) => searchCountries(e.target.value));

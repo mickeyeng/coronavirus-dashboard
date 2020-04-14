@@ -304,16 +304,9 @@ main {
 }
 
 .country-case-text {
-  font-size: var(--normal-font);
-  margin: 1rem 0;
-  padding: var(--main-padding);
-  background-color: white;
-  box-shadow: 0 8px 6px -6px black;
-  border-bottom: 5px solid red;
-  position: relative;
 }
 
-.country-case-text::after {
+.border::after {
   content: '';
   position: absolute;
   background: red;
@@ -323,7 +316,36 @@ main {
   width: 50px;
 }
 
-.country-case-text span {
+.country-case-text__box {
+  font-size: var(--normal-font);
+  margin: 1rem 0;
+  padding: var(--main-padding);
+  background-color: white;
+  box-shadow: 0 8px 6px -6px black;
+  border-bottom: 5px solid red;
+  position: relative;
+}
+
+/* .country-case-text__box::after {
+  content: '';
+  position: absolute;
+  background: red;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 50px;
+} */
+
+.country-case-box-text__box-style {
+  background: #80b796;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  bottom: 0;
+}
+
+.country-case-text__box span {
   font-weight: bold;
   font-weight: 700;
   color: white;
