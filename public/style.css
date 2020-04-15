@@ -29,6 +29,7 @@
   --normal-font: 1.6rem;
   --large-font: 1.8rem;
   --extra-large-font: 2.2rem;
+  --box-shadow: 3px 8px 10px -6px black;
 }
 
 body {
@@ -40,7 +41,7 @@ body {
 .shadow {
   background: var(--green-color);
   border: 1px solid #000;
-  box-shadow: 3px 4px 0px #000;
+  box-shadow: var(--box-shadow);
   padding: var(--main-padding);
   color: white;
 }
@@ -142,7 +143,7 @@ input:focus {
   font-size: var(--large-font);
 }
 
-.toggle-chart {
+.toggle {
   padding: var(--small-padding);
   display: inline-block;
   border-bottom: 1px solid var(--green-color);
@@ -171,13 +172,13 @@ main {
   margin: var(--main-margin) 0;
   display: grid;
   grid-gap: var(--main-padding);
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 15vw auto;
 }
 
 .box {
   padding: 1.2rem;
   border: 2px solid black;
-  box-shadow: 3px 4px 0px #000;
+  box-shadow: var(--box-shadow);
 }
 
 .box-heading {
@@ -198,11 +199,16 @@ main {
   /* padding: var(--main-padding); */
   margin-bottom: var(--main-margin);
   text-align: center;
-  box-shadow: 0 8px 6px -6px black;
+  box-shadow: var(--box-shadow);
   position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.all-cases-box::before {
+/* .all-cases-box::before {
   content: '';
   position: absolute;
   top: 0;
@@ -210,7 +216,7 @@ main {
   right: 0;
   height: 50px;
   z-index: -1;
-}
+} */
 
 .all-cases-box:nth-child(1)::before {
   background: var(--green-color);
@@ -248,16 +254,39 @@ main {
   background: var(--light-green);
 }
 
+.icon-wrapper {
+  background: red;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.icon {
+  /* padding: 10px;
+  background: tomato;
+  border-radius: 50%;
+  margin-top: 1em; */
+  align-self: center;
+}
+
+.all-cases-box__bottom-div {
+  width: 100%;
+  height: 3em;
+}
+
 .all-cases-box-heading {
   /* background: var(--green-color); */
   text-align: center;
   font-size: 22px;
   padding: 1rem 0;
-  color: white;
+  /* color: white; */
+  color: black;
 }
 
 .all-cases-box-number {
-  padding: 3rem;
+  padding: 1rem;
 }
 
 .box-text {
@@ -321,7 +350,7 @@ main {
   margin: 1rem 0;
   padding: var(--main-padding);
   background-color: white;
-  box-shadow: 0 8px 6px -6px black;
+  box-shadow: var(--box-shadow);
   border-bottom: 5px solid red;
   position: relative;
 }
@@ -363,7 +392,7 @@ main {
   border-bottom: 1px solid black;
   font-size: var(--normal-font);
   font-weight: bold;
-  box-shadow: 0 8px 6px -6px black;
+  box-shadow: var(--box-shadow);
   z-index: 2;
 
   /* display: flex;

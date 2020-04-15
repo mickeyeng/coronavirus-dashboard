@@ -1,5 +1,6 @@
 import { displayMap } from './map.js';
 import { showChartHistory, showChartHistoryByCountry } from './charts.js';
+import { capitaliseFirstLetter } from './util.js';
 
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases]');
@@ -8,6 +9,16 @@ const select = document.querySelector('select');
 
 const API_URL = `https://corona.lmao.ninja`;
 const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
+
+const mainColors = {
+  lightGreen: '#80b796',
+  orange: 'lightsalmon',
+  lightBlue: '#9bbce3',
+  darkGreen: '#00afaa',
+  darkRed: '#d72525',
+  lightRed: '#ea8c8c',
+  darkPurple: '#390066',
+};
 
 // format numbers to friendly format
 const formatter = new Intl.NumberFormat('en');
@@ -63,33 +74,17 @@ async function searchCountries(country = 'uk') {
 }
 
 function updateDomCases(data) {
-  const iconsArr = [
-    ['fa-users'],
-    ['fa-head-side-cough'],
-    ['fa-procedures'],
-    ['fa-ambulance'],
-    ['fa-heart'],
-    ['fa-heartbeat'],
-    ['fa-notes-medical'],
-    ['fa-vial'],
-    ['fa-globe-europe'],
-  ];
-
-  const icons = [
-    {
-      0: 'fa-users',
-      1: 'fa-head-side-cough',
-      2: 'fa-procedures',
-      3: 'fa-ambulance',
-      4: 'fa-heart',
-      5: 'fa-heartbeat',
-      6: 'fa-notes-medical',
-      7: 'fa-vial',
-      8: 'fa-globe-europe',
-    },
-  ];
-
-  const colors = [['red'], ['green'], ['blue']];
+  const icons = {
+    0: 'fa-users',
+    1: 'fa-user-friends',
+    2: 'fa-procedures',
+    3: 'fa-ambulance',
+    4: 'fa-heart',
+    5: 'fa-heartbeat',
+    6: 'fa-notes-medical',
+    7: 'fa-vial',
+    8: 'fa-globe-europe',
+  };
 
   const objectArray = Object.entries(data);
   const filteredArray = objectArray.filter(
@@ -104,22 +99,40 @@ function updateDomCases(data) {
       index !== 12
   );
 
+  console.log('filteredArray new', filteredArray);
+
   filteredArray.map(([key, value], index) => {
+    const iconValues = Object.values(icons);
+    const colors = Object.values(mainColors);
+    const icon = iconValues[index];
+    const color = colors[index];
+    console.log('icon', color);
+
+    console.log('icon-values', icon);
     const allCasesBox = document.createElement('div');
     allCasesBox.classList.add('all-cases-box');
-    // const allCasesBoxTag = document.createElement('i');
-    // allCasesBoxTag.classList.add('fas');
+    const allCasesBoxTagWrapper = document.createElement('div');
+    allCasesBoxTagWrapper.classList.add('icon-wrapper');
+    const allCasesBoxTag = document.createElement('i');
+    allCasesBoxTag.classList.add('fas', `${icon}`, 'fa-2x', 'icon');
+    allCasesBoxTagWrapper.style.background = color;
     const allCasesBoxHeading = document.createElement('h2');
     allCasesBoxHeading.classList.add('all-cases-box-heading');
     const allCasesBoxNumber = document.createElement('h1');
+    const allCasesBottomDiv = document.createElement('div');
+    allCasesBottomDiv.classList.add('all-cases-box__bottom-div');
     allCasesBoxNumber.classList.add('all-cases-box-number');
     allCases.appendChild(allCasesBox);
-    // allCasesBox.appendChild(allCasesBoxTag);
-    allCasesBox.appendChild(allCasesBoxHeading).innerText =
-      key.charAt(0).toUpperCase() + key.slice(1);
+    allCasesBox.appendChild(allCasesBoxTagWrapper);
+    allCasesBoxTagWrapper.appendChild(allCasesBoxTag);
+    allCasesBox.appendChild(
+      allCasesBoxHeading
+    ).innerText = capitaliseFirstLetter(key);
     allCasesBox.appendChild(allCasesBoxNumber).innerText = formatter.format(
       value
     );
+    allCasesBox.appendChild(allCasesBottomDiv);
+    allCasesBottomDiv.style.background = color;
   });
 }
 
@@ -189,88 +202,87 @@ function updateDomSearchHistory(deaths, data) {
 }
 
 function updateDomSearchCountries(data, country) {
-  console.log(data);
+  console.log('data', data);
   if (data !== undefined) {
-    searchCases.innerHTML = `
-      <div class="country-info-header">
-        <h1 class="country-search-heading">Coronavirus in ${
-          country.charAt(0).toUpperCase() + country.slice(1)
-        }</h1>
-          <img class="flag" src=${data.countryInfo.flag} />
-      </div>
-       
-        <div class="toggle-chart" data-toggle-map>Show Map</div>
-        <div class="toggle-chart" data-update-chart>Bar Chart</div>
-        <div id="show-visual-wrapper">
-          <div class="map active active-map"></div>  
-        </div>
+    const countryInfoHeader = document.createElement('div');
+    searchCases.appendChild(countryInfoHeader);
+    countryInfoHeader.classList.add('country-info-header');
 
-      
-      <div class="history-wrapper">
-        <div class="history-wrapper__dropdown-text">
-          <i class="fas fa-2x fa-angle-double-down dropdown-icon" data-dropdown></i>
-            View History      
-        </div>
-      </div>
-      <div class="country-case-text">
-      <div class="country-case-text__box">Active - <span>${formatter.format(
-        data.active
-      )}</span>
-      <span class="country-case-box-text__box-style"></span>
-      </div>
-      <div class="country-case-text__box">Cases - <span>${formatter.format(
-        data.cases
-      )}</span>
-      <span class="country-case-box-text__box-style"></span>
-      </div>
-      <div class="country-case-text__box">Critical - <span>${
-        data.critical
-      }</span>
-      <span class="country-case-box-text__box-style"></span>
-      </div>
-      <div class="country-case-text__box">Deaths <span>${formatter.format(
-        data.deaths
-      )}</span>
-      <span class="country-case-box-text__box-style"></span>
-      </div>
-      <div class="country-case-text__box">Recovered - <span>${formatter.format(
-        data.recovered
-      )}</span>
-      <span class="country-case-box-text__box-style"></span>
-      </div>
-      <div class="country-case-text__box">Today Cases - <span>${formatter.format(
-        data.todayCases
-      )}</span>
-      <span class="country-case-box-text__box-style"></span>
-      </div>
-      <div class="country-case-text__box">Today Deaths - <span>${formatter.format(
-        data.todayDeaths
-      )}</span>
-      <span class="country-case-box-text__box-style"></span>
-      </div>
-      </div>
-    `;
+    const countryInfoSearchHeading = document.createElement('h1');
+    countryInfoSearchHeading.classList.add('country-search-heading');
+    countryInfoSearchHeading.innerText = `Coronavirus in ${capitaliseFirstLetter(
+      country
+    )}`;
+    countryInfoHeader.appendChild(countryInfoSearchHeading);
+
+    const countryImage = document.createElement('img');
+    countryImage.classList.add('flag');
+    countryImage.src = data.countryInfo.flag;
+    countryInfoHeader.appendChild(countryImage);
+
+    const toggleChart = document.createElement('div');
+    toggleChart.textContent = 'Show Map';
+    toggleChart.id = 'toggle-chart';
+    toggleChart.classList.add('toggle');
+    console.log(toggleChart);
+    const toggleMap = toggleChart.cloneNode();
+    toggleMap.classList.add('toggle');
+    toggleMap.textContent = 'Show Chart';
+    searchCases.appendChild(toggleChart);
+    searchCases.appendChild(toggleMap);
+
+    const historyWrapper = document.createElement('div');
+    historyWrapper.classList.add('history-wrapper');
+    searchCases.appendChild(historyWrapper);
+
+    const historyWrapperDropdown = historyWrapper.cloneNode();
+    historyWrapperDropdown.classList.add('history-wrapper__dropdown-text');
+    historyWrapperDropdown.classList.remove('history-wrapper');
+    historyWrapper.appendChild(historyWrapperDropdown);
+
+    const dropdownIcon = document.createElement('i');
+    dropdownIcon.classList.add(
+      'fas',
+      'fa-2x',
+      'fa-angle-double-down',
+      'dropdown-icon'
+    );
+    dropdownIcon.id = 'dropdown';
+    historyWrapperDropdown.textContent = 'View History';
+    historyWrapperDropdown.appendChild(dropdownIcon);
+
+    const countryCaseText = document.createElement('div');
+    countryCaseText.classList.add('country-case-text');
+    searchCases.appendChild(countryCaseText);
+
+    const filteredArrayCountry = Object.entries(data).filter((data, index) => {
+      return index !== 0 && index !== 1 && index !== 2;
+    });
+
+    filteredArrayCountry.map((info) => {
+      const countryCaseTextBox = document.createElement('div');
+      countryCaseTextBox.classList.add('country-case-text__box');
+      countryCaseText.appendChild(countryCaseTextBox);
+
+      const countrySpan = document.createElement('span');
+      countrySpan.textContent = formatter.format(info[1]);
+      countryCaseTextBox.textContent = `${capitaliseFirstLetter(info[0])} - `;
+      countryCaseTextBox.appendChild(countrySpan);
+
+      const spanStyle = document.createElement('span');
+      spanStyle.classList.add('country-case-box-text__box-style');
+      countryCaseTextBox.appendChild(spanStyle);
+    });
   } else {
     console.log('error, country not found');
   }
 
+  // change this!!!!
   const divs = document.querySelector('.country-case-text');
-  console.log('divs', divs);
-
-  const colorsArr = {
-    lightGreen: '#80b796',
-    orange: 'lightsalmon',
-    lightBlue: '#9bbce3',
-    darkGreen: '#00afaa',
-    darkRed: '#d72525',
-    lightRed: '#ea8c8c',
-    darkPurple: '#390066',
-  };
-
   const newArr = [...divs.children];
 
   const arrWithColors = newArr.map((child, index) => {
-    const colors = Object.values(colorsArr);
+    const colors = Object.values(mainColors);
     const color = colors[index];
     child.style.borderBottom = `5px solid ${color}`;
     child.lastElementChild.style.background = color;
