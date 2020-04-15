@@ -261,19 +261,17 @@ main {
   height: 50px;
   display: flex;
   justify-content: center;
+  margin-top: 2em;
 }
 
 .icon {
-  /* padding: 10px;
-  background: tomato;
-  border-radius: 50%;
-  margin-top: 1em; */
   align-self: center;
 }
 
 .all-cases-box__bottom-div {
   width: 100%;
   height: 3em;
+  padding-top: 2em;
 }
 
 .all-cases-box-heading {
@@ -286,7 +284,7 @@ main {
 }
 
 .all-cases-box-number {
-  padding: 1rem;
+  padding-bottom: 2em;
 }
 
 .box-text {
@@ -370,8 +368,18 @@ main {
   position: absolute;
   top: 0;
   right: 0;
-  width: 50px;
+  width: 75px;
   bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#box-style__tag {
+  color: white;
+  padding: 0.5em;
+  background: black;
+  border-radius: 50%;
 }
 
 .country-case-text__box span {

@@ -1,6 +1,6 @@
 import { displayMap } from './map.js';
 import { showChartHistory, showChartHistoryByCountry } from './charts.js';
-import { capitaliseFirstLetter } from './util.js';
+import { capitaliseFirstLetter, icons } from './util.js';
 
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases]');
@@ -74,18 +74,6 @@ async function searchCountries(country = 'uk') {
 }
 
 function updateDomCases(data) {
-  const icons = {
-    0: 'fa-users',
-    1: 'fa-user-friends',
-    2: 'fa-procedures',
-    3: 'fa-ambulance',
-    4: 'fa-heart',
-    5: 'fa-heartbeat',
-    6: 'fa-notes-medical',
-    7: 'fa-vial',
-    8: 'fa-globe-europe',
-  };
-
   const objectArray = Object.entries(data);
   const filteredArray = objectArray.filter(
     (el, index) =>
@@ -259,7 +247,9 @@ function updateDomSearchCountries(data, country) {
       return index !== 0 && index !== 1 && index !== 2;
     });
 
-    filteredArrayCountry.map((info) => {
+    filteredArrayCountry.map((info, index) => {
+      const iconValues = Object.values(icons);
+      const icon = iconValues[index];
       const countryCaseTextBox = document.createElement('div');
       countryCaseTextBox.classList.add('country-case-text__box');
       countryCaseText.appendChild(countryCaseTextBox);
@@ -269,9 +259,13 @@ function updateDomSearchCountries(data, country) {
       countryCaseTextBox.textContent = `${capitaliseFirstLetter(info[0])} - `;
       countryCaseTextBox.appendChild(countrySpan);
 
-      const spanStyle = document.createElement('span');
-      spanStyle.classList.add('country-case-box-text__box-style');
-      countryCaseTextBox.appendChild(spanStyle);
+      const divStyle = document.createElement('div');
+      divStyle.classList.add('country-case-box-text__box-style');
+      countryCaseTextBox.appendChild(divStyle);
+      const iconTag = document.createElement('i');
+      iconTag.classList.add('fas', icon);
+      iconTag.id = 'box-style__tag';
+      divStyle.appendChild(iconTag);
     });
   } else {
     console.log('error, country not found');
@@ -289,10 +283,6 @@ function updateDomSearchCountries(data, country) {
   });
 
   console.log(arrWithColors);
-
-  // Array.from(divs.children).forEach((child, index) => {
-  //   console.log('child', child, index);
-  // });
 }
 
 select.addEventListener('change', (e) => searchCountries(e.target.value));
