@@ -4,7 +4,7 @@ import { capitaliseFirstLetter, icons, mainColors, formatter } from './util.js';
 
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases]');
-const searchCases = document.querySelector('[data-search-cases');
+const searchCases = document.querySelector('[data-search-cases]');
 const select = document.querySelector('select');
 
 const API_URL = `https://corona.lmao.ninja`;
@@ -31,7 +31,7 @@ async function listCountries() {
     for (let value of data) {
       const option = document.createElement('option');
       option.text = value.country;
-      option.value = value.country;
+      // option.value = value.country;
       select.add(option);
     }
   } catch (error) {
@@ -47,12 +47,6 @@ async function searchCountries(country = 'uk') {
     updateDomSearchCountries(data, country);
     searchHistory(country);
     displayMap(data);
-
-    search.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const term = e.target.children[0].value;
-      term === '' ? alert('error') : searchCountries(term);
-    });
   } catch (error) {
     throw ('Error fetching specific country data', error);
     // searchCases.innerHtml = `<div>Error: ${error}</div>`;
@@ -182,6 +176,7 @@ function updateDomSearchHistory(deaths, data) {
 function updateDomSearchCountries(data, country) {
   console.log('data', data);
   if (data !== undefined) {
+    searchCases.innerHTML = ``;
     const countryInfoHeader = document.createElement('div');
     searchCases.appendChild(countryInfoHeader);
     countryInfoHeader.classList.add('country-info-header');
@@ -199,9 +194,9 @@ function updateDomSearchCountries(data, country) {
     countryInfoHeader.appendChild(countryImage);
 
     const toggleChart = document.createElement('div');
-    toggleChart.textContent = 'Bar Chart';
-    toggleChart.id = 'toggle-chart';
-    toggleChart.classList.add('toggle');
+    // toggleChart.textContent = 'Bar Chart';
+    // toggleChart.id = 'toggle-chart';
+    // toggleChart.classList.add('toggle');
 
     const toggleMap = toggleChart.cloneNode();
     toggleMap.classList.add('toggle');
@@ -289,6 +284,13 @@ function updateDomSearchCountries(data, country) {
     child.lastElementChild.style.background = color;
   });
 }
+
+// search countries based on search term
+search.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const term = e.target.children[0].value;
+  term === '' ? alert('error') : searchCountries(term);
+});
 
 // invoke the search countries function in the country select with what the user selects
 select.addEventListener('change', (e) => searchCountries(e.target.value));

@@ -116,8 +116,36 @@ input:focus {
   outline: none;
 }
 
-.select {
-  /* margin: var(--main-margin) 0; */
+.country-select {
+  position: relative;
+  display: inline-block;
+}
+
+.country-select::after {
+  content: '';
+  position: absolute;
+  display: inline-block;
+  right: 0px;
+  top: 0;
+  bottom: 0;
+  background: var(--green-color);
+  z-index: 1;
+  width: 5em;
+  pointer-events: none;
+}
+
+.country-select select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid var(--green-color);
+  position: relative;
+  padding: 1rem;
+}
+
+.country-select select option {
+  background: red;
+  margin: 2rem 0;
 }
 
 #mapid {
@@ -209,16 +237,6 @@ main {
   align-items: center;
 }
 
-/* .all-cases-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  z-index: -1;
-} */
-
 .all-cases-box:nth-child(1)::before {
   background: var(--green-color);
 }
@@ -277,7 +295,7 @@ main {
 
 .all-cases-box-heading {
   text-align: center;
-  font-size: 22px;
+  font-size: var(--large-font);
   padding: 1rem 0;
   color: black;
 }
@@ -344,7 +362,7 @@ main {
 
 .country-case-text__box {
   font-size: var(--normal-font);
-  margin: 1rem 0;
+  margin: var(--main-margin) 0;
   padding: var(--main-padding);
   background-color: white;
   box-shadow: var(--box-shadow);
@@ -477,5 +495,13 @@ main {
 
   .country-search-heading {
     font-size: 1rem;
+  }
+
+  .all-cases-box-heading {
+    font-size: var(--small-font);
+  }
+
+  .all-cases-box-number {
+    font-size: var(--small-font);
   }
 }

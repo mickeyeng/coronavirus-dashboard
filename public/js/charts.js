@@ -1,5 +1,4 @@
 import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js';
-import { displayMap } from '../js/map.js';
 const worldwideChart = document.querySelector('.myChart-worldwide');
 let newCountryChart;
 let ctx;
@@ -96,7 +95,7 @@ export function showChartHistoryByCountry(data) {
 
 function toggleChartAndMap() {
   const toggleDiv = document.getElementById('toggle-map');
-  const updateChart = document.getElementById('toggle-chart]');
+  const updateChart = document.getElementById('toggle-chart');
 
   const map = document.querySelector('.map');
   const countryChart = document.querySelector('.myChart-country');
@@ -112,13 +111,13 @@ function toggleChartAndMap() {
       : (toggleDiv.textContent = 'Map');
   });
 
-  updateChart.addEventListener('click', () => {
-    newCountryChart.type = 'line';
-    newCountryChart.destroy();
-    newCountryChart = new Chart(ctx, {
-      type: 'line',
-      data: ['mickey'],
-    });
-    // newCountryChart.update();
-  });
+  // updateChart.addEventListener('click', () => {
+  //   newCountryChart.type = 'line';
+  //   newCountryChart.destroy();
+  //   newCountryChart = new Chart(ctx, {
+  //     type: 'line',
+  //     data: ['mickey'],
+  //   });
+  //   // newCountryChart.update();
+  // });
 }
