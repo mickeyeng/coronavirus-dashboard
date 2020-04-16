@@ -151,8 +151,9 @@ input:focus {
   font-weight: bold;
 }
 
-.toggle-chart:nth-child(2) {
-  border-bottom: grey;
+.toggle:nth-child(2) {
+  /* border-bottom: grey; */
+  margin-right: 1em;
 }
 
 #toggle-chart:hover {
@@ -275,11 +276,9 @@ main {
 }
 
 .all-cases-box-heading {
-  /* background: var(--green-color); */
   text-align: center;
   font-size: 22px;
   padding: 1rem 0;
-  /* color: white; */
   color: black;
 }
 

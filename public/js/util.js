@@ -13,3 +13,16 @@ export const icons = {
   7: 'fa-vial',
   8: 'fa-globe-europe',
 };
+
+export const mainColors = {
+  lightGreen: '#80b796',
+  orange: 'lightsalmon',
+  lightBlue: '#9bbce3',
+  darkGreen: '#00afaa',
+  darkRed: '#d72525',
+  lightRed: '#ea8c8c',
+  darkPurple: '#390066',
+};
+
+// format numbers to friendly format
+export const formatter = new Intl.NumberFormat('en');

@@ -95,8 +95,8 @@ export function showChartHistoryByCountry(data) {
 }
 
 function toggleChartAndMap() {
-  const toggleDiv = document.querySelector('[data-toggle-map]');
-  const updateChart = document.querySelector('[data-update-chart]');
+  const toggleDiv = document.getElementById('toggle-map');
+  const updateChart = document.getElementById('toggle-chart]');
 
   const map = document.querySelector('.map');
   const countryChart = document.querySelector('.myChart-country');
@@ -108,8 +108,8 @@ function toggleChartAndMap() {
     map.classList.toggle('active-map');
 
     countryChart.classList.contains('active-chart')
-      ? (toggleDiv.textContent = 'Show Chart')
-      : (toggleDiv.textContent = 'Show Map');
+      ? (toggleDiv.textContent = 'Chart')
+      : (toggleDiv.textContent = 'Map');
   });
 
   updateChart.addEventListener('click', () => {

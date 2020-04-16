@@ -1,6 +1,6 @@
 import { displayMap } from './map.js';
 import { showChartHistory, showChartHistoryByCountry } from './charts.js';
-import { capitaliseFirstLetter, icons } from './util.js';
+import { capitaliseFirstLetter, icons, mainColors, formatter } from './util.js';
 
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases]');
@@ -9,19 +9,6 @@ const select = document.querySelector('select');
 
 const API_URL = `https://corona.lmao.ninja`;
 const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
-
-const mainColors = {
-  lightGreen: '#80b796',
-  orange: 'lightsalmon',
-  lightBlue: '#9bbce3',
-  darkGreen: '#00afaa',
-  darkRed: '#d72525',
-  lightRed: '#ea8c8c',
-  darkPurple: '#390066',
-};
-
-// format numbers to friendly format
-const formatter = new Intl.NumberFormat('en');
 
 // Fetch all country data
 async function fetchAllData() {
@@ -52,6 +39,7 @@ async function listCountries() {
   }
 }
 
+// search for countries in the search box
 async function searchCountries(country = 'uk') {
   try {
     const response = await fetch(`${API_URL}/countries/${country}`);
@@ -59,8 +47,6 @@ async function searchCountries(country = 'uk') {
     updateDomSearchCountries(data, country);
     searchHistory(country);
     displayMap(data);
-
-    // console.log(data.countryInfo);
 
     search.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -124,6 +110,7 @@ function updateDomCases(data) {
   });
 }
 
+// Search history in the chart for worldwide data
 async function searchAllHistory() {
   try {
     const historyResponse = await fetch(`${API_URL}/v2/historical/all`);
@@ -134,6 +121,7 @@ async function searchAllHistory() {
   }
 }
 
+// Search history by country and output to chart
 async function searchHistory(country) {
   try {
     const response = await fetch(
@@ -149,8 +137,9 @@ async function searchHistory(country) {
   }
 }
 
+// show data for country in the cases boxes
 function updateDomSearchHistory(deaths, data) {
-  const dropdownIcon = document.querySelector('[data-dropdown]');
+  const dropdownIcon = document.getElementById('dropdown');
   const historyWrapper = document.querySelector('.history-wrapper');
   const entries = Object.entries(deaths);
 
@@ -164,6 +153,7 @@ function updateDomSearchHistory(deaths, data) {
     }
   });
 
+  // show country history info on dropdown click
   dropdownIcon.addEventListener('click', () => {
     const historyDate = document.querySelector('.history-date');
     const children = [...historyWrapper.children];
@@ -209,15 +199,23 @@ function updateDomSearchCountries(data, country) {
     countryInfoHeader.appendChild(countryImage);
 
     const toggleChart = document.createElement('div');
-    toggleChart.textContent = 'Show Map';
+    toggleChart.textContent = 'Bar Chart';
     toggleChart.id = 'toggle-chart';
     toggleChart.classList.add('toggle');
-    console.log(toggleChart);
+
     const toggleMap = toggleChart.cloneNode();
     toggleMap.classList.add('toggle');
-    toggleMap.textContent = 'Show Chart';
-    searchCases.appendChild(toggleChart);
+    toggleMap.id = 'toggle-map';
+    toggleMap.textContent = 'Map';
     searchCases.appendChild(toggleMap);
+    searchCases.appendChild(toggleChart);
+
+    const showGraphAndMapWrapper = document.createElement('div');
+    showGraphAndMapWrapper.id = 'show-visual-wrapper';
+    const mapDiv = document.createElement('div');
+    mapDiv.classList.add('map', 'active', 'active-map');
+    showGraphAndMapWrapper.appendChild(mapDiv);
+    searchCases.appendChild(showGraphAndMapWrapper);
 
     const historyWrapper = document.createElement('div');
     historyWrapper.classList.add('history-wrapper');
@@ -242,9 +240,18 @@ function updateDomSearchCountries(data, country) {
     const countryCaseText = document.createElement('div');
     countryCaseText.classList.add('country-case-text');
     searchCases.appendChild(countryCaseText);
+    console.log('object ent', Object.entries(data));
 
     const filteredArrayCountry = Object.entries(data).filter((data, index) => {
-      return index !== 0 && index !== 1 && index !== 2;
+      return (
+        index !== 0 &&
+        index !== 1 &&
+        index !== 2 &&
+        index !== 9 &&
+        index !== 10 &&
+        index !== 11 &&
+        index !== 13
+      );
     });
 
     filteredArrayCountry.map((info, index) => {
@@ -281,10 +288,9 @@ function updateDomSearchCountries(data, country) {
     child.style.borderBottom = `5px solid ${color}`;
     child.lastElementChild.style.background = color;
   });
-
-  console.log(arrWithColors);
 }
 
+// invoke the search countries function in the country select with what the user selects
 select.addEventListener('change', (e) => searchCountries(e.target.value));
 
 fetchAllData();
