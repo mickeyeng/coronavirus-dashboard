@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,900&display=swap');
+@import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
+
 *,
 *::after,
 *::before {
@@ -119,9 +121,16 @@ input:focus {
 .country-select {
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
 
-.country-select::after {
+/* #remove border for firefox */
+.country-select select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
+.country-select::before {
   content: '';
   position: absolute;
   display: inline-block;
@@ -134,6 +143,18 @@ input:focus {
   pointer-events: none;
 }
 
+.country-select::after {
+  content: url(./img/down2.svg);
+  position: absolute;
+  display: inline-block;
+  right: 18px;
+  top: 8px;
+  bottom: 0;
+  z-index: 1;
+  width: 1.2em;
+  pointer-events: none;
+}
+
 .country-select select {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -141,11 +162,9 @@ input:focus {
   border: 1px solid var(--green-color);
   position: relative;
   padding: 1rem;
-}
-
-.country-select select option {
-  background: red;
-  margin: 2rem 0;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: var(--normal-font);
 }
 
 #mapid {
