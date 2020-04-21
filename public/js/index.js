@@ -6,17 +6,26 @@ const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases]');
 const searchCases = document.querySelector('[data-search-cases]');
 const select = document.querySelector('select');
+const loading = document.querySelector('[data-loader]');
+// const loadingGraph = document.querySelector('[data-loader-all]');
+const mainChartLoader = document.querySelector('[data-main-chart]');
 
-const API_URL = `https://corona.lmao.ninja`;
+const API_URL = `https://corona.lmao.ninja/v2`;
 const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
 
 // Fetch all country data
 async function fetchAllData() {
   try {
-    const response = await fetch(`${API_URL}/all`);
-    const data = await response.json();
-    console.log(data);
-    updateDomCases(data);
+    const response = await fetch(`${API_URL}/alll`);
+
+    if (response.status === 200) {
+      const data = await response.json();
+      console.log('fetch all data', response.status);
+      updateDomCases(data);
+    } else {
+      loading.classList.add('loading');
+      loading.textContent = 'Loading...';
+    }
   } catch (error) {
     throw ('Error fetching all data', error);
   }
@@ -31,7 +40,6 @@ async function listCountries() {
     for (let value of data) {
       const option = document.createElement('option');
       option.text = value.country;
-      // option.value = value.country;
       select.add(option);
     }
   } catch (error) {
@@ -42,11 +50,18 @@ async function listCountries() {
 // search for countries in the search box
 async function searchCountries(country = 'uk') {
   try {
-    const response = await fetch(`${API_URL}/countries/${country}`);
-    const data = await response.json();
-    updateDomSearchCountries(data, country);
-    searchHistory(country);
-    displayMap(data);
+    const response = await fetch(`${API_URL}/countriesss/${country}`);
+    if (response.status === 200) {
+      const data = await response.json();
+      updateDomSearchCountries(data, country);
+      searchHistory(country);
+      displayMap(data);
+    } else {
+      const loaderDiv = document.createElement('div');
+      loaderDiv.classList.add('loader');
+      loaderDiv.textContent = 'loading...';
+      searchCases.appendChild(loaderDiv);
+    }
   } catch (error) {
     throw ('Error fetching specific country data', error);
     // searchCases.innerHtml = `<div>Error: ${error}</div>`;
@@ -67,16 +82,12 @@ function updateDomCases(data) {
       index !== 12
   );
 
-  console.log('filteredArray new', filteredArray);
-
   filteredArray.map(([key, value], index) => {
     const iconValues = Object.values(icons);
     const colors = Object.values(mainColors);
     const icon = iconValues[index];
     const color = colors[index];
-    console.log('icon', color);
 
-    console.log('icon-values', icon);
     const allCasesBox = document.createElement('div');
     allCasesBox.classList.add('all-cases-box');
     const allCasesBoxTagWrapper = document.createElement('div');
@@ -107,9 +118,16 @@ function updateDomCases(data) {
 // Search history in the chart for worldwide data
 async function searchAllHistory() {
   try {
-    const historyResponse = await fetch(`${API_URL}/v2/historical/all`);
-    const historyData = await historyResponse.json();
-    showChartHistory(historyData);
+    const response = await fetch(`${API_URL}/historicassl/all`);
+    console.log('search al history', response.status);
+
+    if (response.status === 200) {
+      const data = await response.json();
+      showChartHistory(data);
+    } else {
+      mainChartLoader.classList.add('loader');
+      mainChartLoader.textContent = 'loading...';
+    }
   } catch (error) {
     throw ('Error fetching history data', error);
   }
@@ -118,14 +136,18 @@ async function searchAllHistory() {
 // Search history by country and output to chart
 async function searchHistory(country) {
   try {
-    const response = await fetch(
-      `https://corona.lmao.ninja/v2/historical/${country}`
-    );
-    const data = await response.json();
-    const { deaths } = data.timeline;
-    data.open = false;
-    updateDomSearchHistory(deaths, data);
-    showChartHistoryByCountry(data);
+    const response = await fetch(`${API_URL}/historicalll/${country}`);
+    if (response.status === 200) {
+      const data = await response.json();
+      const { deaths } = data.timeline;
+      data.open = false;
+      updateDomSearchHistory(deaths, data);
+      showChartHistoryByCountry(data);
+    } else {
+      const loadingDiv = document.createElement('div');
+      loadingDiv.innerText = 'Loading...';
+      searchCases.appendChild(loadingDiv);
+    }
   } catch (error) {
     throw ('Error fetching history data', error);
   }
@@ -139,11 +161,12 @@ function updateDomSearchHistory(deaths, data) {
 
   entries.map((ent) => {
     const historyDivDate = document.createElement('div');
+    const historyInfoDiv = document.createElement('div');
+    historyInfoDiv.classList.add('history-date-info-text');
+    historyInfoDiv.textContent = `Date: ${ent[0]} - Deaths: ${ent[1]}`;
     if (!data.open) {
       historyWrapper.appendChild(historyDivDate).classList.add('history-date');
-      historyDivDate.innerHTML = `
-        <div>Date: ${ent[0]} - Deaths: ${ent[1]}</div>
-      `;
+      historyDivDate.appendChild(historyInfoDiv);
     }
   });
 
@@ -166,15 +189,15 @@ function updateDomSearchHistory(deaths, data) {
       console.log('open');
     } else {
       dropdownIcon.style.transform = 'rotate(0)';
-      historyWrapper.style.maxHeight = '50px';
+      historyWrapper.style.maxHeight = '60px';
       historyWrapper.style.overflow = 'hidden';
       console.log('closed');
     }
   });
 }
 
+// update DOM with data for specific country
 function updateDomSearchCountries(data, country) {
-  console.log('data', data);
   if (data !== undefined) {
     searchCases.innerHTML = ``;
     const countryInfoHeader = document.createElement('div');
@@ -235,7 +258,6 @@ function updateDomSearchCountries(data, country) {
     const countryCaseText = document.createElement('div');
     countryCaseText.classList.add('country-case-text');
     searchCases.appendChild(countryCaseText);
-    console.log('object ent', Object.entries(data));
 
     const filteredArrayCountry = Object.entries(data).filter((data, index) => {
       return (

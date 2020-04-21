@@ -21,7 +21,7 @@ export const mainColors = {
   darkGreen: '#00afaa',
   darkRed: '#d72525',
   lightRed: '#ea8c8c',
-  darkPurple: '#390066',
+  lightPurple: 'rgba(57, 0, 102, 0.43)',
 };
 
 // format numbers to friendly format

@@ -48,8 +48,6 @@ export function showChartHistoryByCountry(data) {
   const cases = Object.values(data.timeline.cases);
   const deaths = Object.values(data.timeline.deaths);
   const recovered = Object.values(data.timeline.recovered);
-  console.log(recovered);
-
   const chartCanvas = document.createElement('canvas');
   chartCanvas.classList.add('myChart-country');
   showVisualDiv.appendChild(chartCanvas);
@@ -99,9 +97,6 @@ function toggleChartAndMap() {
 
   const map = document.querySelector('.map');
   const countryChart = document.querySelector('.myChart-country');
-
-  console.log(map);
-
   toggleDiv.addEventListener('click', () => {
     countryChart.classList.toggle('active-chart');
     map.classList.toggle('active-map');
