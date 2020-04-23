@@ -1,6 +1,12 @@
 import { displayMap } from './map.js';
 import { showChartHistory, showChartHistoryByCountry } from './charts.js';
-import { capitaliseFirstLetter, icons, mainColors, formatter } from './util.js';
+import {
+  capitaliseFirstLetter,
+  icons,
+  mainColors,
+  formatter,
+  loader,
+} from './util.js';
 
 const search = document.querySelector('[data-form]');
 const allCases = document.querySelector('[data-all-cases]');
@@ -23,8 +29,7 @@ async function fetchAllData() {
       console.log('fetch all data', response.status);
       updateDomCases(data);
     } else {
-      loading.classList.add('loading');
-      loading.textContent = 'Loading...';
+      loader(loading);
     }
   } catch (error) {
     throw ('Error fetching all data', error);
@@ -57,10 +62,11 @@ async function searchCountries(country = 'uk') {
       searchHistory(country);
       displayMap(data);
     } else {
-      const loaderDiv = document.createElement('div');
-      loaderDiv.classList.add('loader');
-      loaderDiv.textContent = 'loading...';
-      searchCases.appendChild(loaderDiv);
+      setTimeout(() => {
+        loader(searchCases);
+      }, 1000);
+      searchCases.style.border = 'none';
+      searchCases.style.boxShadow = 'none';
     }
   } catch (error) {
     throw ('Error fetching specific country data', error);
@@ -125,8 +131,7 @@ async function searchAllHistory() {
       const data = await response.json();
       showChartHistory(data);
     } else {
-      mainChartLoader.classList.add('loader');
-      mainChartLoader.textContent = 'loading...';
+      loader(mainChartLoader);
     }
   } catch (error) {
     throw ('Error fetching history data', error);
@@ -144,9 +149,7 @@ async function searchHistory(country) {
       updateDomSearchHistory(deaths, data);
       showChartHistoryByCountry(data);
     } else {
-      const loadingDiv = document.createElement('div');
-      loadingDiv.innerText = 'Loading...';
-      searchCases.appendChild(loadingDiv);
+      loader(searchCases);
     }
   } catch (error) {
     throw ('Error fetching history data', error);

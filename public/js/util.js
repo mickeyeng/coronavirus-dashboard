@@ -2,6 +2,12 @@ export function capitaliseFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+export function loader(parent) {
+  const childDiv = document.createElement('div');
+  childDiv.classList.add('loader');
+  parent.appendChild(childDiv);
+}
+
 export const icons = {
   0: 'fa-users',
   1: 'fa-user-friends',

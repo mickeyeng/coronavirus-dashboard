@@ -59,10 +59,30 @@ body {
   margin: var(--main-margin) 0;
 }
 
-.loading {
-  /* height: 200px;
-  width: 200px;
-  background: red; */
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid var(--green-color);
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  animation: spin 2s linear infinite;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.loader::before {
+  content: '';
+  position: absolute;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 a {
