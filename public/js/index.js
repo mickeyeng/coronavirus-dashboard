@@ -13,7 +13,6 @@ const allCases = document.querySelector('[data-all-cases]');
 const searchCases = document.querySelector('[data-search-cases]');
 const select = document.querySelector('select');
 const loading = document.querySelector('[data-loader]');
-// const loadingGraph = document.querySelector('[data-loader-all]');
 const mainChartLoader = document.querySelector('[data-main-chart]');
 
 const API_URL = `https://corona.lmao.ninja/v2`;
@@ -22,8 +21,7 @@ const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
 // Fetch all country data
 async function fetchAllData() {
   try {
-    const response = await fetch(`${API_URL}/alll`);
-
+    const response = await fetch(`${API_URL}/all`);
     if (response.status === 200) {
       const data = await response.json();
       console.log('fetch all data', response.status);
@@ -55,7 +53,7 @@ async function listCountries() {
 // search for countries in the search box
 async function searchCountries(country = 'uk') {
   try {
-    const response = await fetch(`${API_URL}/countriesss/${country}`);
+    const response = await fetch(`${API_URL}/countries/${country}`);
     if (response.status === 200) {
       const data = await response.json();
       updateDomSearchCountries(data, country);
@@ -70,7 +68,6 @@ async function searchCountries(country = 'uk') {
     }
   } catch (error) {
     throw ('Error fetching specific country data', error);
-    // searchCases.innerHtml = `<div>Error: ${error}</div>`;
   }
 }
 
@@ -124,9 +121,8 @@ function updateDomCases(data) {
 // Search history in the chart for worldwide data
 async function searchAllHistory() {
   try {
-    const response = await fetch(`${API_URL}/historicassl/all`);
+    const response = await fetch(`${API_URL}/historical/all`);
     console.log('search al history', response.status);
-
     if (response.status === 200) {
       const data = await response.json();
       showChartHistory(data);
@@ -141,7 +137,7 @@ async function searchAllHistory() {
 // Search history by country and output to chart
 async function searchHistory(country) {
   try {
-    const response = await fetch(`${API_URL}/historicalll/${country}`);
+    const response = await fetch(`${API_URL}/historical/${country}`);
     if (response.status === 200) {
       const data = await response.json();
       const { deaths } = data.timeline;

@@ -1,3 +1,10 @@
+const darkModeBtn = document.getElementById('dark-mode-btn');
+
+darkModeBtn.addEventListener('click', () => {
+  console.log('clicked');
+  document.body.classList.toggle('dark-mode');
+});
+
 export function capitaliseFirstLetter(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
