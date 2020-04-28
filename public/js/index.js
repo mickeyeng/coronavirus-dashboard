@@ -14,18 +14,18 @@ const searchCases = document.querySelector('[data-search-cases]');
 const select = document.querySelector('select');
 const loading = document.querySelector('[data-loader]');
 const mainChartLoader = document.querySelector('[data-main-chart]');
+const darkModeBtn = document.querySelector('#dark-mode-btn');
 
 const API_URL = `https://corona.lmao.ninja/v2`;
 const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
 
-// Fetch all country data
-async function fetchAllData() {
+async function fetchData(url, callback) {
   try {
-    const response = await fetch(`${API_URL}/all`);
+    const response = await fetch(`${API_URL}/${url}`);
     if (response.status === 200) {
       const data = await response.json();
-      console.log('fetch all data', response.status);
-      updateDomCases(data);
+      console.log('fetch data function', response.status);
+      callback(data);
     } else {
       loader(loading);
     }
@@ -119,20 +119,22 @@ function updateDomCases(data) {
 }
 
 // Search history in the chart for worldwide data
-async function searchAllHistory() {
-  try {
-    const response = await fetch(`${API_URL}/historical/all`);
-    console.log('search al history', response.status);
-    if (response.status === 200) {
-      const data = await response.json();
-      showChartHistory(data);
-    } else {
-      loader(mainChartLoader);
-    }
-  } catch (error) {
-    throw ('Error fetching history data', error);
-  }
-}
+// async function searchAllHistory() {
+//   try {
+//     const response = await fetch(`${API_URL}/historical/all`);
+//     console.log('search al history', response.status);
+//     if (response.status === 200) {
+//       const data = await response.json();
+//       showChartHistory(data);
+//     } else {
+//       loader(mainChartLoader);
+//     }
+//   } catch (error) {
+//     throw ('Error fetching history data', error);
+//   }
+// }
+
+fetchData('historical/all', showChartHistory);
 
 // Search history by country and output to chart
 async function searchHistory(country) {
@@ -259,6 +261,7 @@ function updateDomSearchCountries(data, country) {
     searchCases.appendChild(countryCaseText);
 
     const filteredArrayCountry = Object.entries(data).filter((data, index) => {
+      console.log(data, index);
       return (
         index !== 0 &&
         index !== 1 &&
@@ -266,7 +269,8 @@ function updateDomSearchCountries(data, country) {
         index !== 9 &&
         index !== 10 &&
         index !== 11 &&
-        index !== 13
+        index !== 13 &&
+        index !== 14
       );
     });
 
@@ -316,7 +320,12 @@ search.addEventListener('submit', (e) => {
 // invoke the search countries function in the country select with what the user selects
 select.addEventListener('change', (e) => searchCountries(e.target.value));
 
-fetchAllData();
+fetchData('all', updateDomCases);
+
+// Search history in the chart for worldwide data
+
 searchCountries();
+
 listCountries();
+
 searchAllHistory();
