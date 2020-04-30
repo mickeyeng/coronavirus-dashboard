@@ -13,29 +13,27 @@ const allCases = document.querySelector('[data-all-cases]');
 const searchCases = document.querySelector('[data-search-cases]');
 const select = document.querySelector('select');
 const loading = document.querySelector('[data-loader]');
-const mainChartLoader = document.querySelector('[data-main-chart]');
-const darkModeBtn = document.querySelector('#dark-mode-btn');
+const main = document.querySelector('#main');
+const API_URL = `https://disease.sh/v2`;
+// const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
 
-const API_URL = `https://corona.lmao.ninja/v2`;
-const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
-
-async function fetchData(url, callback) {
+async function fetchData(url, callback, parentDiv) {
   try {
     const response = await fetch(`${API_URL}/${url}`);
     if (response.status === 200) {
       const data = await response.json();
-      console.log('fetch data function', response.status);
       callback(data);
     } else {
-      loader(loading);
+      setTimeout(() => {
+        loader(loading);
+      }, 1000);
     }
   } catch (error) {
     throw ('Error fetching all data', error);
   }
 }
 
-// list countries in the select
-async function listCountries() {
+async function listCountriesInSelect() {
   try {
     const response = await fetch(`${API_URL}/countries`);
     const data = await response.json();
@@ -50,37 +48,33 @@ async function listCountries() {
   }
 }
 
-// search for countries in the search box
 async function searchCountries(country = 'uk') {
   try {
     const response = await fetch(`${API_URL}/countries/${country}`);
     if (response.status === 200) {
       const data = await response.json();
       updateDomSearchCountries(data, country);
-      searchHistory(country);
+      searchHistoryChart(country);
       displayMap(data);
     } else {
+      alert(`The country ${country} doesn't exist. Please try again`);
       setTimeout(() => {
         loader(searchCases);
       }, 1000);
-      searchCases.style.border = 'none';
-      searchCases.style.boxShadow = 'none';
     }
   } catch (error) {
     throw ('Error fetching specific country data', error);
   }
 }
 
-function updateDomCases(data) {
-  const objectArray = Object.entries(data);
-  const filteredArray = objectArray.filter(
+function updateDomWorldwideCases(data) {
+  const filteredArray = Object.entries(data).filter(
     (el, index) =>
       index !== 0 &&
       index !== 8 &&
       index !== 7 &&
       index !== 8 &&
       index !== 9 &&
-      // index !== 10 &&
       index !== 11 &&
       index !== 12
   );
@@ -118,26 +112,8 @@ function updateDomCases(data) {
   });
 }
 
-// Search history in the chart for worldwide data
-// async function searchAllHistory() {
-//   try {
-//     const response = await fetch(`${API_URL}/historical/all`);
-//     console.log('search al history', response.status);
-//     if (response.status === 200) {
-//       const data = await response.json();
-//       showChartHistory(data);
-//     } else {
-//       loader(mainChartLoader);
-//     }
-//   } catch (error) {
-//     throw ('Error fetching history data', error);
-//   }
-// }
-
-fetchData('historical/all', showChartHistory);
-
 // Search history by country and output to chart
-async function searchHistory(country) {
+async function searchHistoryChart(country) {
   try {
     const response = await fetch(`${API_URL}/historical/${country}`);
     if (response.status === 200) {
@@ -158,9 +134,9 @@ async function searchHistory(country) {
 function updateDomSearchHistory(deaths, data) {
   const dropdownIcon = document.getElementById('dropdown');
   const historyWrapper = document.querySelector('.history-wrapper');
-  const entries = Object.entries(deaths);
+  const deathsArr = Object.entries(deaths);
 
-  entries.map((ent) => {
+  deathsArr.map((ent) => {
     const historyDivDate = document.createElement('div');
     const historyInfoDiv = document.createElement('div');
     historyInfoDiv.classList.add('history-date-info-text');
@@ -186,13 +162,10 @@ function updateDomSearchHistory(deaths, data) {
       historyWrapper.style.maxHeight = '300px';
       historyWrapper.style.overflowY = 'scroll';
       dropdownIcon.style.transform = 'rotate(180deg)';
-      // historyWrapper.scrollHeight + 'px';
-      console.log('open');
     } else {
       dropdownIcon.style.transform = 'rotate(0)';
       historyWrapper.style.maxHeight = '60px';
       historyWrapper.style.overflow = 'hidden';
-      console.log('closed');
     }
   });
 }
@@ -218,11 +191,8 @@ function updateDomSearchCountries(data, country) {
     countryInfoHeader.appendChild(countryImage);
 
     const toggleChart = document.createElement('div');
-    // toggleChart.textContent = 'Bar Chart';
-    // toggleChart.id = 'toggle-chart';
-    // toggleChart.classList.add('toggle');
 
-    const toggleMap = toggleChart.cloneNode();
+    const toggleMap = document.createElement('div');
     toggleMap.classList.add('toggle');
     toggleMap.id = 'toggle-map';
     toggleMap.textContent = 'Map';
@@ -257,11 +227,10 @@ function updateDomSearchCountries(data, country) {
     historyWrapperDropdown.appendChild(dropdownIcon);
 
     const countryCaseText = document.createElement('div');
-    countryCaseText.classList.add('country-case-text');
+    countryCaseText.classList.add('country-case-wrapper');
     searchCases.appendChild(countryCaseText);
 
     const filteredArrayCountry = Object.entries(data).filter((data, index) => {
-      console.log(data, index);
       return (
         index !== 0 &&
         index !== 1 &&
@@ -298,11 +267,10 @@ function updateDomSearchCountries(data, country) {
     console.log('error, country not found');
   }
 
-  // change this!!!!
-  const divs = document.querySelector('.country-case-text');
-  const newArr = [...divs.children];
+  const countryCasesDivs = document.querySelector('.country-case-wrapper');
+  const countryCasesDivsArr = [...countryCasesDivs.children];
 
-  const arrWithColors = newArr.map((child, index) => {
+  countryCasesDivsArr.map((child, index) => {
     const colors = Object.values(mainColors);
     const color = colors[index];
     child.style.borderBottom = `5px solid ${color}`;
@@ -313,19 +281,28 @@ function updateDomSearchCountries(data, country) {
 // search countries based on search term
 search.addEventListener('submit', (e) => {
   e.preventDefault();
-  const term = e.target.children[0].value;
+  let term = e.target.children[0].value;
   term === '' ? alert('error') : searchCountries(term);
+  search.reset();
+  main.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end',
+  });
 });
 
 // invoke the search countries function in the country select with what the user selects
-select.addEventListener('change', (e) => searchCountries(e.target.value));
+select.addEventListener('change', (e) => {
+  searchCountries(e.target.value);
+  main.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end',
+  });
+  // select.selectedIndex = 0;
+});
 
-fetchData('all', updateDomCases);
-
-// Search history in the chart for worldwide data
+fetchData('historical/all', showChartHistory);
+fetchData('all', updateDomWorldwideCases);
 
 searchCountries();
 
-listCountries();
-
-searchAllHistory();
+listCountriesInSelect();

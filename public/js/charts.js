@@ -50,6 +50,7 @@ export function showChartHistoryByCountry(data) {
   const recovered = Object.values(data.timeline.recovered);
   const chartCanvas = document.createElement('canvas');
   chartCanvas.classList.add('myChart-country');
+  // showVisualDiv.innerHTML = ``;
   showVisualDiv.appendChild(chartCanvas);
 
   const ctx = chartCanvas.getContext('2d');
@@ -93,8 +94,6 @@ export function showChartHistoryByCountry(data) {
 
 function toggleChartAndMap() {
   const toggleDiv = document.getElementById('toggle-map');
-  const updateChart = document.getElementById('toggle-chart');
-
   const map = document.querySelector('.map');
   const countryChart = document.querySelector('.myChart-country');
   toggleDiv.addEventListener('click', () => {
@@ -105,14 +104,4 @@ function toggleChartAndMap() {
       ? (toggleDiv.textContent = 'Chart')
       : (toggleDiv.textContent = 'Map');
   });
-
-  // updateChart.addEventListener('click', () => {
-  //   newCountryChart.type = 'line';
-  //   newCountryChart.destroy();
-  //   newCountryChart = new Chart(ctx, {
-  //     type: 'line',
-  //     data: ['mickey'],
-  //   });
-  //   // newCountryChart.update();
-  // });
 }

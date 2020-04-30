@@ -102,6 +102,7 @@ body {
   display: flex;
   justify-content: center;
   position: relative;
+  justify-content: center;
 }
 
 .loader::before {
@@ -187,6 +188,7 @@ a:visited {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 6px;
   border-top-right-radius: 6px;
+  cursor: pointer;
 }
 
 input:focus {
@@ -460,6 +462,8 @@ main {
   overflow: hidden;
   color: var(--text-color-dark);
   background: var(--box-color-light);
+  border: none;
+  box-shadow: none;
 }
 
 .border::after {
