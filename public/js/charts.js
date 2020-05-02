@@ -50,7 +50,6 @@ export function showChartHistoryByCountry(data) {
   const recovered = Object.values(data.timeline.recovered);
   const chartCanvas = document.createElement('canvas');
   chartCanvas.classList.add('myChart-country');
-  // showVisualDiv.innerHTML = ``;
   showVisualDiv.appendChild(chartCanvas);
 
   const ctx = chartCanvas.getContext('2d');

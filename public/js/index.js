@@ -53,7 +53,7 @@ async function searchCountries(country = 'uk') {
     const response = await fetch(`${API_URL}/countries/${country}`);
     if (response.status === 200) {
       const data = await response.json();
-      updateDomSearchCountries(data, country);
+      updateUISearchCountries(data, country);
       searchHistoryChart(country);
       displayMap(data);
     } else {
@@ -67,7 +67,7 @@ async function searchCountries(country = 'uk') {
   }
 }
 
-function updateDomWorldwideCases(data) {
+function updateUIWorldwideCases(data) {
   const filteredArray = Object.entries(data).filter(
     (el, index) =>
       index !== 0 &&
@@ -120,7 +120,7 @@ async function searchHistoryChart(country) {
       const data = await response.json();
       const { deaths } = data.timeline;
       data.open = false;
-      updateDomSearchHistory(deaths, data);
+      updateUISearchHistory(deaths, data);
       showChartHistoryByCountry(data);
     } else {
       loader(searchCases);
@@ -131,7 +131,7 @@ async function searchHistoryChart(country) {
 }
 
 // show data for country in the cases boxes
-function updateDomSearchHistory(deaths, data) {
+function updateUISearchHistory(deaths, data) {
   const dropdownIcon = document.getElementById('dropdown');
   const historyWrapper = document.querySelector('.history-wrapper');
   const deathsArr = Object.entries(deaths);
@@ -170,8 +170,8 @@ function updateDomSearchHistory(deaths, data) {
   });
 }
 
-// update DOM with data for specific country
-function updateDomSearchCountries(data, country) {
+// update UI with data for specific country
+function updateUISearchCountries(data, country) {
   if (data !== undefined) {
     searchCases.innerHTML = ``;
     const countryInfoHeader = document.createElement('div');
@@ -301,7 +301,7 @@ select.addEventListener('change', (e) => {
 });
 
 fetchData('historical/all', showChartHistory);
-fetchData('all', updateDomWorldwideCases);
+fetchData('all', updateUIWorldwideCases);
 
 searchCountries();
 
