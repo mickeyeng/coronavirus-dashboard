@@ -37,20 +37,23 @@ export function showChartHistory(history) {
     // Configuration options go here
     options: {
       responsive: true,
+      maintainAspectRatio: false,
     },
   });
 }
 
 export function showChartHistoryByCountry(data) {
-  const showVisualDiv = document.querySelector('#show-visual-wrapper');
-
+  const chartContainerCountry = document.getElementById(
+    'chart-container-country'
+  );
+  console.log(chartContainerCountry);
   const dates = Object.keys(data.timeline.cases);
   const cases = Object.values(data.timeline.cases);
   const deaths = Object.values(data.timeline.deaths);
   const recovered = Object.values(data.timeline.recovered);
   const chartCanvas = document.createElement('canvas');
   chartCanvas.classList.add('myChart-country');
-  showVisualDiv.appendChild(chartCanvas);
+  chartContainerCountry.appendChild(chartCanvas);
 
   const ctx = chartCanvas.getContext('2d');
   newCountryChart = new Chart(ctx, {
@@ -85,6 +88,7 @@ export function showChartHistoryByCountry(data) {
     // Configuration options go here
     options: {
       responsive: true,
+      maintainAspectRatio: false,
     },
   });
 

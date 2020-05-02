@@ -199,11 +199,16 @@ function updateUISearchCountries(data, country) {
     searchCases.appendChild(toggleMap);
     searchCases.appendChild(toggleChart);
 
+    const chartContainer = document.createElement('div');
+    chartContainer.classList.add('chart-container');
+    chartContainer.id = 'chart-container-country';
+
     const showGraphAndMapWrapper = document.createElement('div');
     showGraphAndMapWrapper.id = 'show-visual-wrapper';
     const mapDiv = document.createElement('div');
     mapDiv.classList.add('map', 'active', 'active-map');
     showGraphAndMapWrapper.appendChild(mapDiv);
+    showGraphAndMapWrapper.appendChild(chartContainer);
     searchCases.appendChild(showGraphAndMapWrapper);
 
     const historyWrapper = document.createElement('div');
