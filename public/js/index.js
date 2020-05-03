@@ -14,12 +14,11 @@ const searchCases = document.querySelector('[data-search-cases]');
 const select = document.querySelector('select');
 const loading = document.querySelector('[data-loader]');
 const main = document.querySelector('#main');
-const API_URL = `https://disease.sh/v2`;
-// const API_BACKUP_URL = `https://coronavirus-19-api.herokuapp.com/all`;
+const API_BASE_URL = `https://disease.sh/v2`;
 
-async function fetchData(url, callback, parentDiv) {
+async function fetchData(url_path, callback, parentDiv) {
   try {
-    const response = await fetch(`${API_URL}/${url}`);
+    const response = await fetch(`${API_BASE_URL}/${url_path}`);
     if (response.status === 200) {
       const data = await response.json();
       callback(data);
@@ -35,7 +34,7 @@ async function fetchData(url, callback, parentDiv) {
 
 async function listCountriesInSelect() {
   try {
-    const response = await fetch(`${API_URL}/countries`);
+    const response = await fetch(`${API_BASE_URL}/countries`);
     const data = await response.json();
 
     for (let value of data) {
@@ -50,7 +49,7 @@ async function listCountriesInSelect() {
 
 async function searchCountries(country = 'uk') {
   try {
-    const response = await fetch(`${API_URL}/countries/${country}`);
+    const response = await fetch(`${API_BASE_URL}/countries/${country}`);
     if (response.status === 200) {
       const data = await response.json();
       updateUISearchCountries(data, country);
@@ -115,7 +114,7 @@ function updateUIWorldwideCases(data) {
 // Search history by country and output to chart
 async function searchHistoryChart(country) {
   try {
-    const response = await fetch(`${API_URL}/historical/${country}`);
+    const response = await fetch(`${APPI_BASE_URL}/historical/${country}`);
     if (response.status === 200) {
       const data = await response.json();
       const { deaths } = data.timeline;
