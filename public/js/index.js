@@ -114,7 +114,7 @@ function updateUIWorldwideCases(data) {
 // Search history by country and output to chart
 async function searchHistoryChart(country) {
   try {
-    const response = await fetch(`${APPI_BASE_URL}/historical/${country}`);
+    const response = await fetch(`${API_BASE_URL}/historical/${country}`);
     if (response.status === 200) {
       const data = await response.json();
       const { deaths } = data.timeline;
