@@ -16,7 +16,7 @@ const loading = document.querySelector('[data-loader]');
 const main = document.querySelector('#main');
 const API_BASE_URL = `https://disease.sh/v2`;
 
-async function fetchData(url_path, callback, parentDiv) {
+async function fetchData(url_path, callback) {
   try {
     const response = await fetch(`${API_BASE_URL}/${url_path}`);
     if (response.status === 200) {
@@ -66,18 +66,64 @@ async function searchCountries(country = 'uk') {
   }
 }
 
-function updateUIWorldwideCases(data) {
-  const filteredArray = Object.entries(data).filter(
-    (el, index) =>
-      index !== 0 &&
-      index !== 8 &&
-      index !== 7 &&
-      index !== 8 &&
-      index !== 9 &&
-      index !== 11 &&
-      index !== 12
-  );
+const testData = {
+  updated: 1588729215153,
+  cases: 3726701,
+  todayCases: 2184,
+  deaths: 258295,
+  todayDeaths: 268,
+  recovered: 1241908,
+  active: 2226498,
+  critical: 49248,
+  casesPerOneMillion: 478,
+  deathsPerOneMillion: 33,
+  tests: 40360974,
+  testsPerOneMillion: 5176.8,
+  affectedCountries: 214,
+};
 
+function isReleventWorldwideStatNew([stat]) {
+  return (
+    stat !== 'updated' &&
+    stat !== 'critical' &&
+    stat !== 'casesPerOneMillion' &&
+    stat !== 'deathsPerOneMillion' &&
+    stat !== 'testsPerOneMillion' &&
+    stat !== 'affectedCountries'
+  );
+}
+
+function isReleventWorldwideStat(el, index) {
+  return (
+    index !== 0 &&
+    index !== 7 &&
+    index !== 8 &&
+    index !== 9 &&
+    index !== 11 &&
+    index !== 12
+  );
+}
+
+const newResult = JSON.stringify(
+  Object.entries(testData).filter(isReleventWorldwideStatNew)
+);
+const oldResult = JSON.stringify(
+  Object.entries(testData).filter(isReleventWorldwideStat)
+);
+
+console.log(
+  'test result: ' +
+    (newResult === oldResult
+      ? 'PASSED!'
+      : 'FAILED! ' +
+        '\n isReleventWorldwideStatNew: ' +
+        newResult +
+        '\n \n  isReleventWorldwideStat: ' +
+        oldResult)
+);
+
+function updateUIWorldwideCases(data) {
+  const filteredArray = Object.entries(data).filter(isReleventWorldwideStat);
   filteredArray.map(([key, value], index) => {
     const iconValues = Object.values(icons);
     const colors = Object.values(mainColors);
