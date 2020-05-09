@@ -82,48 +82,54 @@ const testData = {
   affectedCountries: 214,
 };
 
-function isReleventWorldwideStatNew([stat]) {
-  return (
-    stat !== 'updated' &&
-    stat !== 'critical' &&
-    stat !== 'casesPerOneMillion' &&
-    stat !== 'deathsPerOneMillion' &&
-    stat !== 'testsPerOneMillion' &&
-    stat !== 'affectedCountries'
-  );
-}
+// function isReleventWorldwideStat([stat]) {
+//   return (
+//     stat !== 'updated' &&
+//     stat !== 'critical' &&
+//     stat !== 'casesPerOneMillion' &&
+//     stat !== 'deathsPerOneMillion' &&
+//     stat !== 'testsPerOneMillion' &&
+//     stat !== 'affectedCountries'
+//   );
+// }
 
-function isReleventWorldwideStat(el, index) {
-  return (
-    index !== 0 &&
-    index !== 7 &&
-    index !== 8 &&
-    index !== 9 &&
-    index !== 11 &&
-    index !== 12
-  );
-}
+const filterWorldwideStats = ({
+  cases,
+  todayCases,
+  deaths,
+  todayDeaths,
+  recovered,
+  active,
+  tests,
+}) => {
+  const filtered = {
+    cases,
+    todayCases,
+    deaths,
+    todayDeaths,
+    recovered,
+    active,
+    tests,
+  };
+  return Object.entries(filtered);
+};
 
-const newResult = JSON.stringify(
-  Object.entries(testData).filter(isReleventWorldwideStatNew)
-);
-const oldResult = JSON.stringify(
-  Object.entries(testData).filter(isReleventWorldwideStat)
-);
+// function filterWorldwideStats(data) {
+//   return Object.entries(data).filter(isReleventWorldwideStat);
+// }
 
-console.log(
-  'test result: ' +
-    (newResult === oldResult
-      ? 'PASSED!'
-      : 'FAILED! ' +
-        '\n isReleventWorldwideStatNew: ' +
-        newResult +
-        '\n \n  isReleventWorldwideStat: ' +
-        oldResult)
-);
+// const newResult = JSON.stringify(filterWorldwideStats(testData));
+// const oldResult = JSON.stringify(filterWorldwideStatsNew(testData));
+
+// console.log(
+//   'test result: ' +
+//     (newResult === oldResult
+//       ? 'PASSED!'
+//       : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
+// );
 
 function updateUIWorldwideCases(data) {
-  const filteredArray = Object.entries(data).filter(isReleventWorldwideStat);
+  const filteredArray = filterWorldwideStats(data);
   filteredArray.map(([key, value], index) => {
     const iconValues = Object.values(icons);
     const colors = Object.values(mainColors);
