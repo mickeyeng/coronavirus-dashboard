@@ -28,17 +28,7 @@ export const icons = [
   'fa-globe-europe',
 ];
 
-export const mainColors = {
-  lightGreen: '#80b796',
-  orange: 'lightsalmon',
-  lightBlue: '#9bbce3',
-  darkGreen: '#00afaa',
-  darkRed: '#d72525',
-  lightRed: '#ea8c8c',
-  lightPurple: 'rgba(57, 0, 102, 0.43)',
-};
-
-export const mainColorsNew = [
+export const mainColors = [
   '#80b796',
   'lightsalmon',
   '#9bbce3',

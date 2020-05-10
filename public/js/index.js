@@ -4,7 +4,6 @@ import {
   capitaliseFirstLetter,
   icons,
   mainColors,
-  mainColorsNew,
   formatter,
   loader,
   selectObjKeys,
@@ -94,8 +93,8 @@ const WORLDWIDE_STATS = [
   'tests',
 ];
 
-const oldResult = JSON.stringify(Object.values(mainColors));
-const newResult = JSON.stringify(mainColorsNew);
+const oldResult = JSON.stringify();
+const newResult = JSON.stringify();
 
 console.log(
   'test result: ' +
@@ -104,41 +103,72 @@ console.log(
       : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
 );
 
-const filterWorldwideStats = (worldwideData) =>
-  selectObjKeys(worldwideData, WORLDWIDE_STATS);
+const filterWorldwideStats = (worldwideData) => {
+  return selectObjKeys(worldwideData, WORLDWIDE_STATS);
+};
+
+function createStatBox(className, parentDiv) {
+  const div = document.createElement('div');
+  div.classList.add(className);
+  parentDiv.appendChild(div);
+}
+
+function createStatBoxIcon(className, color, parentDiv) {
+  parentDiv = document.querySelector('.all-cases-box');
+  console.log('parent div', parentDiv);
+
+  const iconWrapper = document.createElement('div');
+  iconWrapper.classList.add('icon-wrapper');
+  const icon = document.createElement('i');
+  icon.classList.add('fas', className, 'fa-2x', 'icon');
+  iconWrapper.style.background = color;
+  iconWrapper.appendChild(icon);
+  parentDiv.appendChild(iconWrapper);
+}
 
 function updateUIWorldwideCases(data) {
-  const filteredArray = filterWorldwideStats(data);
+  const worldwideStats = filterWorldwideStats(data);
 
-  filteredArray.forEach(([key, value], index) => {
+  worldwideStats.forEach(([key, value], index) => {
     const icon = icons[index];
-    const color = mainColorsNew[index];
+    const color = mainColors[index];
+
+    // createStatBox('all-cases-box', allCases);
+    // console.log(allCases.children[1]);
+    // createStatBoxIcon(icon, color);
     // debugger;
 
+    // ****** MAIN BOX ******
     const allCasesBox = document.createElement('div');
     allCasesBox.classList.add('all-cases-box');
+    allCases.appendChild(allCasesBox);
+
+    // ****** ICON ******
     const allCasesBoxTagWrapper = document.createElement('div');
     allCasesBoxTagWrapper.classList.add('icon-wrapper');
     const allCasesBoxTag = document.createElement('i');
     allCasesBoxTag.classList.add('fas', `${icon}`, 'fa-2x', 'icon');
     allCasesBoxTagWrapper.style.background = color;
+    allCasesBox.appendChild(allCasesBoxTagWrapper);
+    allCasesBoxTagWrapper.appendChild(allCasesBoxTag);
+
+    // ****** BOX TEXT ******
     const allCasesBoxHeading = document.createElement('h2');
     allCasesBoxHeading.classList.add('all-cases-box-heading');
     const allCasesBoxNumber = document.createElement('h1');
-    const allCasesBottomDiv = document.createElement('div');
-    allCasesBottomDiv.classList.add('all-cases-box__bottom-div');
     allCasesBoxNumber.classList.add('all-cases-box-number');
-    allCases.appendChild(allCasesBox);
-    allCasesBox.appendChild(allCasesBoxTagWrapper);
-    allCasesBoxTagWrapper.appendChild(allCasesBoxTag);
     allCasesBox.appendChild(
       allCasesBoxHeading
     ).innerText = capitaliseFirstLetter(key);
     allCasesBox.appendChild(allCasesBoxNumber).innerText = formatter.format(
       value
     );
-    allCasesBox.appendChild(allCasesBottomDiv);
+
+    // ****** BOX bottom border div  ******
+    const allCasesBottomDiv = document.createElement('div');
+    allCasesBottomDiv.classList.add('all-cases-box__bottom-div');
     allCasesBottomDiv.style.background = color;
+    allCasesBox.appendChild(allCasesBottomDiv);
   });
 }
 
