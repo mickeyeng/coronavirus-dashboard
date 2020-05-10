@@ -6,6 +6,7 @@ import {
   mainColors,
   formatter,
   loader,
+  selectObjKeys,
 } from './util.js';
 
 const search = document.querySelector('[data-form]');
@@ -93,9 +94,7 @@ const WORLDWIDE_STATS = [
 ];
 
 const filterWorldwideStats = (worldwideData) =>
-  Object.entries(worldwideData).filter(([key]) =>
-    WORLDWIDE_STATS.includes(key)
-  );
+  selectObjKeys(worldwideData, WORLDWIDE_STATS);
 
 function updateUIWorldwideCases(data) {
   const filteredArray = filterWorldwideStats(data);

@@ -38,5 +38,8 @@ export const mainColors = {
   lightPurple: 'rgba(57, 0, 102, 0.43)',
 };
 
+export const selectObjKeys = (obj, keys) =>
+  Object.entries(obj).filter(([key]) => keys.includes(key));
+
 // format numbers to friendly format
 export const formatter = new Intl.NumberFormat('en');
