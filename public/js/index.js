@@ -82,51 +82,20 @@ const testData = {
   affectedCountries: 214,
 };
 
-// function isReleventWorldwideStat([stat]) {
-//   return (
-//     stat !== 'updated' &&
-//     stat !== 'critical' &&
-//     stat !== 'casesPerOneMillion' &&
-//     stat !== 'deathsPerOneMillion' &&
-//     stat !== 'testsPerOneMillion' &&
-//     stat !== 'affectedCountries'
-//   );
-// }
+const WORLDWIDE_STATS = [
+  'cases',
+  'todayCases',
+  'deaths',
+  'todayDeaths',
+  'recovered',
+  'active',
+  'tests',
+];
 
-const filterWorldwideStats = ({
-  cases,
-  todayCases,
-  deaths,
-  todayDeaths,
-  recovered,
-  active,
-  tests,
-}) => {
-  const filtered = {
-    cases,
-    todayCases,
-    deaths,
-    todayDeaths,
-    recovered,
-    active,
-    tests,
-  };
-  return Object.entries(filtered);
-};
-
-// function filterWorldwideStats(data) {
-//   return Object.entries(data).filter(isReleventWorldwideStat);
-// }
-
-// const newResult = JSON.stringify(filterWorldwideStats(testData));
-// const oldResult = JSON.stringify(filterWorldwideStatsNew(testData));
-
-// console.log(
-//   'test result: ' +
-//     (newResult === oldResult
-//       ? 'PASSED!'
-//       : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
-// );
+const filterWorldwideStats = (worldwideData) =>
+  Object.entries(worldwideData).filter(([key]) =>
+    WORLDWIDE_STATS.includes(key)
+  );
 
 function updateUIWorldwideCases(data) {
   const filteredArray = filterWorldwideStats(data);
