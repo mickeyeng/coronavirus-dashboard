@@ -16,17 +16,17 @@ export function loader(parent) {
   parent.appendChild(childDiv);
 }
 
-export const icons = {
-  0: 'fa-users',
-  1: 'fa-user-friends',
-  2: 'fa-procedures',
-  3: 'fa-ambulance',
-  4: 'fa-heart',
-  5: 'fa-heartbeat',
-  6: 'fa-notes-medical',
-  7: 'fa-vial',
-  8: 'fa-globe-europe',
-};
+export const icons = [
+  'fa-users',
+  'fa-user-friends',
+  'fa-procedures',
+  'fa-ambulance',
+  'fa-heart',
+  'fa-heartbeat',
+  'fa-notes-medical',
+  'fa-vial',
+  'fa-globe-europe',
+];
 
 export const mainColors = {
   lightGreen: '#80b796',
@@ -38,8 +38,20 @@ export const mainColors = {
   lightPurple: 'rgba(57, 0, 102, 0.43)',
 };
 
+export const mainColorsNew = [
+  '#80b796',
+  'lightsalmon',
+  '#9bbce3',
+  '#00afaa',
+  '#d72525',
+  '#ea8c8c',
+  'rgba(57, 0, 102, 0.43)',
+];
+
 export const selectObjKeys = (obj, keys) =>
   Object.entries(obj).filter(([key]) => keys.includes(key));
+
+export const getObjValues = (obj) => Object.values(obj);
 
 // format numbers to friendly format
 export const formatter = new Intl.NumberFormat('en');

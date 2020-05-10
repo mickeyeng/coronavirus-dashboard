@@ -4,6 +4,7 @@ import {
   capitaliseFirstLetter,
   icons,
   mainColors,
+  mainColorsNew,
   formatter,
   loader,
   selectObjKeys,
@@ -93,16 +94,26 @@ const WORLDWIDE_STATS = [
   'tests',
 ];
 
+const oldResult = JSON.stringify(Object.values(mainColors));
+const newResult = JSON.stringify(mainColorsNew);
+
+console.log(
+  'test result: ' +
+    (newResult === oldResult
+      ? 'PASSED!'
+      : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
+);
+
 const filterWorldwideStats = (worldwideData) =>
   selectObjKeys(worldwideData, WORLDWIDE_STATS);
 
 function updateUIWorldwideCases(data) {
   const filteredArray = filterWorldwideStats(data);
-  filteredArray.map(([key, value], index) => {
-    const iconValues = Object.values(icons);
-    const colors = Object.values(mainColors);
-    const icon = iconValues[index];
-    const color = colors[index];
+
+  filteredArray.forEach(([key, value], index) => {
+    const icon = icons[index];
+    const color = mainColorsNew[index];
+    // debugger;
 
     const allCasesBox = document.createElement('div');
     allCasesBox.classList.add('all-cases-box');
