@@ -10,7 +10,8 @@ import {
 } from './util.js';
 
 const search = document.querySelector('[data-form]');
-const allCases = document.querySelector('[data-all-cases]');
+const worldwideCases = document.querySelector('[data-worldwide-cases]');
+
 const searchCases = document.querySelector('[data-search-cases]');
 const select = document.querySelector('select');
 const loading = document.querySelector('[data-loader]');
@@ -107,68 +108,59 @@ const filterWorldwideStats = (worldwideData) => {
   return selectObjKeys(worldwideData, WORLDWIDE_STATS);
 };
 
-function createStatBox(className, parentDiv) {
-  const div = document.createElement('div');
-  div.classList.add(className);
-  parentDiv.appendChild(div);
+function createWorldwideStatBox() {
+  const worldwideCasesBox = document.createElement('div');
+  worldwideCasesBox.classList.add('worldwide-cases-box');
+  worldwideCases.insertAdjacentElement('afterbegin', worldwideCasesBox);
 }
 
-function createStatBoxIcon(className, color, parentDiv) {
-  parentDiv = document.querySelector('.all-cases-box');
-  console.log('parent div', parentDiv);
-
+function createWorldwideStatBoxIcon(className, color) {
+  const worldwideCasesBox = document.querySelector('.worldwide-cases-box');
   const iconWrapper = document.createElement('div');
   iconWrapper.classList.add('icon-wrapper');
   const icon = document.createElement('i');
   icon.classList.add('fas', className, 'fa-2x', 'icon');
   iconWrapper.style.background = color;
   iconWrapper.appendChild(icon);
-  parentDiv.appendChild(iconWrapper);
+  worldwideCasesBox.appendChild(iconWrapper);
+}
+
+function createWorldwideStatBoxText(caseText, caseNumberValue) {
+  const worldwideCasesBox = document.querySelector('.worldwide-cases-box');
+  const caseHeading = document.createElement('h2');
+  caseHeading.classList.add('worldwide-cases-box-heading');
+  const caseNumber = document.createElement('h1');
+  caseNumber.classList.add('worldwide-cases-box-number');
+  worldwideCasesBox.appendChild(caseHeading).innerText = capitaliseFirstLetter(
+    caseText
+  );
+  worldwideCasesBox.appendChild(caseNumber).innerText = formatter.format(
+    caseNumberValue
+  );
+}
+
+function createWorldwideStatBoxBottomBorder(color) {
+  const worldwideCasesBox = document.querySelector('.worldwide-cases-box');
+  const bottomDiv = document.createElement('div');
+  bottomDiv.classList.add('worldwide-cases-box__bottom-div');
+  bottomDiv.style.background = color;
+  worldwideCasesBox.appendChild(bottomDiv);
 }
 
 function updateUIWorldwideCases(data) {
-  const worldwideStats = filterWorldwideStats(data);
-
+  // css afterbegin reverses the array
+  const worldwideStats = filterWorldwideStats(data).reverse();
   worldwideStats.forEach(([key, value], index) => {
     const icon = icons[index];
     const color = mainColors[index];
-
-    // createStatBox('all-cases-box', allCases);
-    // console.log(allCases.children[1]);
-    // createStatBoxIcon(icon, color);
-    // debugger;
-
     // ****** MAIN BOX ******
-    const allCasesBox = document.createElement('div');
-    allCasesBox.classList.add('all-cases-box');
-    allCases.appendChild(allCasesBox);
-
+    createWorldwideStatBox();
     // ****** ICON ******
-    const allCasesBoxTagWrapper = document.createElement('div');
-    allCasesBoxTagWrapper.classList.add('icon-wrapper');
-    const allCasesBoxTag = document.createElement('i');
-    allCasesBoxTag.classList.add('fas', `${icon}`, 'fa-2x', 'icon');
-    allCasesBoxTagWrapper.style.background = color;
-    allCasesBox.appendChild(allCasesBoxTagWrapper);
-    allCasesBoxTagWrapper.appendChild(allCasesBoxTag);
-
+    createWorldwideStatBoxIcon(icon, color);
     // ****** BOX TEXT ******
-    const allCasesBoxHeading = document.createElement('h2');
-    allCasesBoxHeading.classList.add('all-cases-box-heading');
-    const allCasesBoxNumber = document.createElement('h1');
-    allCasesBoxNumber.classList.add('all-cases-box-number');
-    allCasesBox.appendChild(
-      allCasesBoxHeading
-    ).innerText = capitaliseFirstLetter(key);
-    allCasesBox.appendChild(allCasesBoxNumber).innerText = formatter.format(
-      value
-    );
-
+    createWorldwideStatBoxText(key, value);
     // ****** BOX bottom border div  ******
-    const allCasesBottomDiv = document.createElement('div');
-    allCasesBottomDiv.classList.add('all-cases-box__bottom-div');
-    allCasesBottomDiv.style.background = color;
-    allCasesBox.appendChild(allCasesBottomDiv);
+    createWorldwideStatBoxBottomBorder(color);
   });
 }
 

@@ -328,11 +328,11 @@ main {
   color: white;
 }
 
-.all-cases-box-wrapper {
+.worldwide-cases-box-wrapper {
   grid-column: 1;
 }
 
-.all-cases-box {
+.worldwide-cases-box {
   grid-column: 1;
   margin-bottom: var(--main-margin);
   text-align: center;
@@ -349,39 +349,39 @@ main {
   background: var(--box-color-light);
 }
 
-.all-cases-box:nth-child(1)::before {
+.worldwide-cases-box:nth-child(1)::before {
   background: var(--green-color);
 }
 
-.all-cases-box:nth-child(2)::before {
+.worldwide-cases-box:nth-child(2)::before {
   background: var(--dark-green);
 }
 
-.all-cases-box:nth-child(3)::before {
+.worldwide-cases-box:nth-child(3)::before {
   background: var(--light-red);
 }
 
-.all-cases-box:nth-child(4)::before {
+.worldwide-cases-box:nth-child(4)::before {
   background: var(--light-blue);
 }
 
-.all-cases-box:nth-child(5)::before {
+.worldwide-cases-box:nth-child(5)::before {
   background: var(--light-green);
 }
 
-.all-cases-box:nth-child(6)::before {
+.worldwide-cases-box:nth-child(6)::before {
   background: var(--dark-red);
 }
 
-.all-cases-box:nth-child(7)::before {
+.worldwide-cases-box:nth-child(7)::before {
   background: var(--orange-color);
 }
 
-.all-cases-box:nth-child(8)::before {
+.worldwide-cases-box:nth-child(8)::before {
   background: var(--dark-red);
 }
 
-.all-cases-box:nth-child(9)::before {
+.worldwide-cases-box:nth-child(9)::before {
   background: var(--light-green);
 }
 
@@ -399,7 +399,7 @@ main {
   align-self: center;
 }
 
-.all-cases-box__bottom-div {
+.worldwide-cases-box__bottom-div {
   width: 100%;
   height: 3em;
   padding-top: 2em;
@@ -408,7 +408,7 @@ main {
   /* border-top-right-radius: 0px; */
 }
 
-.all-cases-box-heading {
+.worldwide-cases-box-heading {
   text-align: center;
   font-size: var(--large-font);
   padding: 1rem 0;
@@ -416,7 +416,7 @@ main {
   font-weight: normal;
 }
 
-.all-cases-box-number {
+.worldwide-cases-box-number {
   padding-bottom: 1em;
 }
 
@@ -575,7 +575,7 @@ main {
     grid-row: auto;
   }
 
-  .all-cases-box {
+  .worldwide-cases-box {
     grid-column: auto;
   }
 
@@ -610,11 +610,11 @@ main {
     font-size: 1rem;
   }
 
-  .all-cases-box-heading {
+  .worldwide-cases-box-heading {
     font-size: var(--small-font);
   }
 
-  .all-cases-box-number {
+  .worldwide-cases-box-number {
     font-size: var(--small-font);
   }
 }
