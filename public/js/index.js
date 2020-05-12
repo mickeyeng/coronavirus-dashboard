@@ -10,9 +10,9 @@ import {
 } from './util.js';
 
 const search = document.querySelector('[data-form]');
-const worldwideCases = document.querySelector('[data-worldwide-cases]');
+const worldwideStats = document.querySelector('[data-worldwide-stats]');
 
-const searchCases = document.querySelector('[data-search-cases]');
+const searchCountryStats = document.querySelector('[data-search-stats]');
 const select = document.querySelector('select');
 const loading = document.querySelector('[data-loader]');
 const main = document.querySelector('#main');
@@ -60,12 +60,130 @@ async function searchCountries(country = 'uk') {
     } else {
       alert(`The country ${country} doesn't exist. Please try again`);
       setTimeout(() => {
-        loader(searchCases);
+        loader(searchCountryStats);
       }, 1000);
     }
   } catch (error) {
     throw ('Error fetching specific country data', error);
   }
+}
+
+const filterWorldwideStats = (worldwideData) => {
+  return selectObjKeys(worldwideData, WORLDWIDE_STATS);
+};
+
+function createWorldwideStatBox() {
+  const worldwideStatsBox = document.createElement('div');
+  worldwideStatsBox.classList.add('worldwide-stats-box');
+  worldwideStats.insertAdjacentElement('afterbegin', worldwideStatsBox);
+}
+
+function createWorldwideStatBoxIcon(className, color) {
+  const worldwideStatsBox = document.querySelector('.worldwide-stats-box');
+  const iconWrapper = document.createElement('div');
+  iconWrapper.classList.add('icon-wrapper');
+  const icon = document.createElement('i');
+  icon.classList.add('fas', className, 'fa-2x', 'icon');
+  iconWrapper.style.background = color;
+  iconWrapper.appendChild(icon);
+  worldwideStatsBox.appendChild(iconWrapper);
+}
+
+function createWorldwideStatBoxText(caseText, caseNumberValue) {
+  const worldwideStatsBox = document.querySelector('.worldwide-stats-box');
+  const caseHeading = document.createElement('h2');
+  caseHeading.classList.add('worldwide-stats-box-heading');
+  const caseNumber = document.createElement('h1');
+  caseNumber.classList.add('worldwide-stats-box-number');
+  worldwideStatsBox.appendChild(caseHeading).innerText = capitaliseFirstLetter(
+    caseText
+  );
+  worldwideStatsBox.appendChild(caseNumber).innerText = formatter.format(
+    caseNumberValue
+  );
+}
+
+function createWorldwideStatBoxBottomBorder(color) {
+  const worldwideStatsBox = document.querySelector('.worldwide-stats-box');
+  const bottomDiv = document.createElement('div');
+  bottomDiv.classList.add('worldwide-stats-box__bottom-div');
+  bottomDiv.style.background = color;
+  worldwideStatsBox.appendChild(bottomDiv);
+}
+
+function updateUIWorldwideStats(data) {
+  // css afterbegin reverses the array
+  const worldwideStats = filterWorldwideStats(data).reverse();
+  worldwideStats.forEach(([key, value], index) => {
+    const icon = icons[index];
+    const color = mainColors[index];
+    // ****** MAIN BOX ******
+    createWorldwideStatBox();
+    // ****** ICON ******
+    createWorldwideStatBoxIcon(icon, color);
+    // ****** BOX TEXT ******
+    createWorldwideStatBoxText(key, value);
+    // ****** BOX bottom border div  ******
+    createWorldwideStatBoxBottomBorder(color);
+  });
+}
+
+// Search history by country and output to chart
+async function searchHistoryChart(country) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/historical/${country}`);
+    if (response.status === 200) {
+      const data = await response.json();
+      const { deaths } = data.timeline;
+      data.open = false;
+      updateUISearchCountryHistory(deaths, data);
+      showChartHistoryByCountry(data);
+    } else {
+      loader(searchCountryStats);
+    }
+  } catch (error) {
+    throw ('Error fetching history data', error);
+  }
+}
+
+// show data for country in the stats boxes
+function updateUISearchCountryHistory(deaths, data) {
+  const dropdownIcon = document.getElementById('dropdown');
+  const historyWrapper = document.querySelector('.history-wrapper');
+  const deathsHistory = Object.entries(deaths);
+
+  deathsHistory.forEach((ent) => {
+    const historyDivDate = document.createElement('div');
+    const historyInfoDiv = document.createElement('div');
+    historyInfoDiv.classList.add('history-date-info-text');
+    historyInfoDiv.textContent = `Date: ${ent[0]} - Deaths: ${ent[1]}`;
+    if (!data.open) {
+      historyWrapper.appendChild(historyDivDate).classList.add('history-date');
+      historyDivDate.appendChild(historyInfoDiv);
+    }
+  });
+
+  // show country history info on dropdown click
+  dropdownIcon.addEventListener('click', () => {
+    const historyDate = document.querySelector('.history-date');
+    const children = [...historyWrapper.children];
+
+    // remove the active class on toggle icon
+    children.forEach((child) =>
+      child.classList.toggle('history-date_expanded')
+    );
+
+    // set the transition with max-height
+    if (historyDate.classList.contains('history-date_expanded')) {
+      historyWrapper.style.maxHeight = '300px';
+      historyWrapper.style.overflowY = 'scroll';
+      dropdownIcon.style.transform = 'rotate(180deg)';
+    } else {
+      dropdownIcon.style.transform = 'rotate(0)';
+      historyWrapper.style.maxHeight = '60px';
+      historyWrapper.style.overflow = 'hidden';
+    }
+  });
 }
 
 const testData = {
@@ -104,174 +222,136 @@ console.log(
       : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
 );
 
-const filterWorldwideStats = (worldwideData) => {
-  return selectObjKeys(worldwideData, WORLDWIDE_STATS);
+const createCountryHeader = () => {
+  const countryInfoHeader = document.createElement('div');
+  countryInfoHeader.classList.add('country-info-header');
+  searchCountryStats.appendChild(countryInfoHeader);
 };
 
-function createWorldwideStatBox() {
-  const worldwideCasesBox = document.createElement('div');
-  worldwideCasesBox.classList.add('worldwide-cases-box');
-  worldwideCases.insertAdjacentElement('afterbegin', worldwideCasesBox);
-}
+const createCountryInfoHeaderText = () => {
+  const countryInfoHeaderText = document.createElement('h1');
+  countryInfoHeaderText.classList.add('country-search-heading');
+  countryInfoHeaderText.innerText = `Coronavirus in ${capitaliseFirstLetter(
+    country
+  )}`;
+  countryInfoHeader.appendChild(countryInfoHeaderText);
+};
 
-function createWorldwideStatBoxIcon(className, color) {
-  const worldwideCasesBox = document.querySelector('.worldwide-cases-box');
-  const iconWrapper = document.createElement('div');
-  iconWrapper.classList.add('icon-wrapper');
-  const icon = document.createElement('i');
-  icon.classList.add('fas', className, 'fa-2x', 'icon');
-  iconWrapper.style.background = color;
-  iconWrapper.appendChild(icon);
-  worldwideCasesBox.appendChild(iconWrapper);
-}
+const createCountryInfoFlag = () => {
+  const countryImage = document.createElement('img');
+  countryImage.classList.add('flag');
+  countryImage.src = data.countryInfo.flag;
+  countryInfoHeader.appendChild(countryImage);
+};
 
-function createWorldwideStatBoxText(caseText, caseNumberValue) {
-  const worldwideCasesBox = document.querySelector('.worldwide-cases-box');
-  const caseHeading = document.createElement('h2');
-  caseHeading.classList.add('worldwide-cases-box-heading');
-  const caseNumber = document.createElement('h1');
-  caseNumber.classList.add('worldwide-cases-box-number');
-  worldwideCasesBox.appendChild(caseHeading).innerText = capitaliseFirstLetter(
-    caseText
+const createMapAndChartButtons = () => {
+  const toggleChart = document.createElement('div');
+  const toggleMap = document.createElement('div');
+  toggleMap.classList.add('toggle');
+  toggleMap.id = 'toggle-map';
+  toggleMap.textContent = 'Map';
+  searchCountryStats.appendChild(toggleMap);
+  searchCountryStats.appendChild(toggleChart);
+};
+
+const createChartContainer = () => {
+  const chartContainer = document.createElement('div');
+  chartContainer.classList.add('chart-container');
+  chartContainer.id = 'chart-container-country';
+};
+
+const createMapDiv = () => {
+  const map = document.createElement('div');
+  map.classList.add('map', 'active', 'active-map');
+  showGraphAndMapWrapper.appendChild(map);
+};
+
+const createCountryHistoryWrapper = () => {
+  const historyWrapper = document.createElement('div');
+  historyWrapper.classList.add('history-wrapper');
+  searchCountryStats.appendChild(historyWrapper);
+};
+
+const createCountryHistoryDropdownText = () => {
+  const historyWrapperDropdown = historyWrapper.cloneNode();
+  historyWrapperDropdown.classList.add('history-wrapper__dropdown-text');
+  historyWrapperDropdown.classList.remove('history-wrapper');
+  historyWrapper.appendChild(historyWrapperDropdown);
+};
+
+const createCountryHistoryDropdownIcon = () => {
+  const dropdownIcon = document.createElement('i');
+  dropdownIcon.classList.add(
+    'fas',
+    'fa-2x',
+    'fa-angle-double-down',
+    'dropdown-icon'
   );
-  worldwideCasesBox.appendChild(caseNumber).innerText = formatter.format(
-    caseNumberValue
-  );
-}
-
-function createWorldwideStatBoxBottomBorder(color) {
-  const worldwideCasesBox = document.querySelector('.worldwide-cases-box');
-  const bottomDiv = document.createElement('div');
-  bottomDiv.classList.add('worldwide-cases-box__bottom-div');
-  bottomDiv.style.background = color;
-  worldwideCasesBox.appendChild(bottomDiv);
-}
-
-function updateUIWorldwideCases(data) {
-  // css afterbegin reverses the array
-  const worldwideStats = filterWorldwideStats(data).reverse();
-  worldwideStats.forEach(([key, value], index) => {
-    const icon = icons[index];
-    const color = mainColors[index];
-    // ****** MAIN BOX ******
-    createWorldwideStatBox();
-    // ****** ICON ******
-    createWorldwideStatBoxIcon(icon, color);
-    // ****** BOX TEXT ******
-    createWorldwideStatBoxText(key, value);
-    // ****** BOX bottom border div  ******
-    createWorldwideStatBoxBottomBorder(color);
-  });
-}
-
-// Search history by country and output to chart
-async function searchHistoryChart(country) {
-  try {
-    const response = await fetch(`${API_BASE_URL}/historical/${country}`);
-    if (response.status === 200) {
-      const data = await response.json();
-      const { deaths } = data.timeline;
-      data.open = false;
-      updateUISearchHistory(deaths, data);
-      showChartHistoryByCountry(data);
-    } else {
-      loader(searchCases);
-    }
-  } catch (error) {
-    throw ('Error fetching history data', error);
-  }
-}
-
-// show data for country in the cases boxes
-function updateUISearchHistory(deaths, data) {
-  const dropdownIcon = document.getElementById('dropdown');
-  const historyWrapper = document.querySelector('.history-wrapper');
-  const deathsArr = Object.entries(deaths);
-
-  deathsArr.map((ent) => {
-    const historyDivDate = document.createElement('div');
-    const historyInfoDiv = document.createElement('div');
-    historyInfoDiv.classList.add('history-date-info-text');
-    historyInfoDiv.textContent = `Date: ${ent[0]} - Deaths: ${ent[1]}`;
-    if (!data.open) {
-      historyWrapper.appendChild(historyDivDate).classList.add('history-date');
-      historyDivDate.appendChild(historyInfoDiv);
-    }
-  });
-
-  // show country history info on dropdown click
-  dropdownIcon.addEventListener('click', () => {
-    const historyDate = document.querySelector('.history-date');
-    const children = [...historyWrapper.children];
-
-    // remove the active class on toggle icon
-    children.forEach((child) =>
-      child.classList.toggle('history-date_expanded')
-    );
-
-    // set the transition with max-height
-    if (historyDate.classList.contains('history-date_expanded')) {
-      historyWrapper.style.maxHeight = '300px';
-      historyWrapper.style.overflowY = 'scroll';
-      dropdownIcon.style.transform = 'rotate(180deg)';
-    } else {
-      dropdownIcon.style.transform = 'rotate(0)';
-      historyWrapper.style.maxHeight = '60px';
-      historyWrapper.style.overflow = 'hidden';
-    }
-  });
-}
-
+  dropdownIcon.id = 'dropdown';
+  historyWrapperDropdown.appendChild(dropdownIcon);
+};
 // update UI with data for specific country
 function updateUISearchCountries(data, country) {
   if (data !== undefined) {
-    searchCases.innerHTML = ``;
-    const countryInfoHeader = document.createElement('div');
-    searchCases.appendChild(countryInfoHeader);
-    countryInfoHeader.classList.add('country-info-header');
+    searchCountryStats.innerHTML = ``;
 
-    const countryInfoSearchHeading = document.createElement('h1');
-    countryInfoSearchHeading.classList.add('country-search-heading');
-    countryInfoSearchHeading.innerText = `Coronavirus in ${capitaliseFirstLetter(
+    // ****** COUNTRY INFO HEADER ******
+    const countryInfoHeader = document.createElement('div');
+    countryInfoHeader.classList.add('country-info-header');
+    searchCountryStats.appendChild(countryInfoHeader);
+
+    // ****** COUNTRY INFO HEADER TEXT ******
+    const countryInfoHeaderText = document.createElement('h1');
+    countryInfoHeaderText.classList.add('country-search-heading');
+    countryInfoHeaderText.innerText = `Coronavirus in ${capitaliseFirstLetter(
       country
     )}`;
-    countryInfoHeader.appendChild(countryInfoSearchHeading);
+    countryInfoHeader.appendChild(countryInfoHeaderText);
 
+    // ****** COUNTRY INFO FLAG ******
     const countryImage = document.createElement('img');
     countryImage.classList.add('flag');
     countryImage.src = data.countryInfo.flag;
     countryInfoHeader.appendChild(countryImage);
 
+    // ****** TOGGLE CHART AND MAP ******
     const toggleChart = document.createElement('div');
-
     const toggleMap = document.createElement('div');
     toggleMap.classList.add('toggle');
     toggleMap.id = 'toggle-map';
     toggleMap.textContent = 'Map';
-    searchCases.appendChild(toggleMap);
-    searchCases.appendChild(toggleChart);
+    searchCountryStats.appendChild(toggleMap);
+    searchCountryStats.appendChild(toggleChart);
 
+    // ******  CHART CONTAINER ******
     const chartContainer = document.createElement('div');
     chartContainer.classList.add('chart-container');
     chartContainer.id = 'chart-container-country';
 
+    // ******  SHOW GRAPH AND MAP WRAPPER ******
     const showGraphAndMapWrapper = document.createElement('div');
     showGraphAndMapWrapper.id = 'show-visual-wrapper';
-    const mapDiv = document.createElement('div');
-    mapDiv.classList.add('map', 'active', 'active-map');
-    showGraphAndMapWrapper.appendChild(mapDiv);
     showGraphAndMapWrapper.appendChild(chartContainer);
-    searchCases.appendChild(showGraphAndMapWrapper);
+    searchCountryStats.appendChild(showGraphAndMapWrapper);
 
+    // ******  MAP DIV ******
+    const map = document.createElement('div');
+    map.classList.add('map', 'active', 'active-map');
+    showGraphAndMapWrapper.appendChild(map);
+
+    // ******  COUNTRY HISTORY WRAPPER ******
     const historyWrapper = document.createElement('div');
     historyWrapper.classList.add('history-wrapper');
-    searchCases.appendChild(historyWrapper);
+    searchCountryStats.appendChild(historyWrapper);
 
+    // ******  COUNTRY HISTORY DROPDOWN TEXT ******
     const historyWrapperDropdown = historyWrapper.cloneNode();
     historyWrapperDropdown.classList.add('history-wrapper__dropdown-text');
     historyWrapperDropdown.classList.remove('history-wrapper');
+    historyWrapperDropdown.textContent = 'View History';
     historyWrapper.appendChild(historyWrapperDropdown);
 
+    // ******  CREATE COUNTRY HISTORY DROPDOWN ICON ******
     const dropdownIcon = document.createElement('i');
     dropdownIcon.classList.add(
       'fas',
@@ -280,12 +360,12 @@ function updateUISearchCountries(data, country) {
       'dropdown-icon'
     );
     dropdownIcon.id = 'dropdown';
-    historyWrapperDropdown.textContent = 'View History';
     historyWrapperDropdown.appendChild(dropdownIcon);
 
-    const countryCaseText = document.createElement('div');
-    countryCaseText.classList.add('country-case-wrapper');
-    searchCases.appendChild(countryCaseText);
+    // ******  CREATE COUNTRY STAT BOX ******
+    const countryStatText = document.createElement('div');
+    countryStatText.classList.add('country-stats-wrapper');
+    searchCountryStats.appendChild(countryStatText);
 
     const filteredArrayCountry = Object.entries(data).filter((data, index) => {
       return (
@@ -303,18 +383,18 @@ function updateUISearchCountries(data, country) {
     filteredArrayCountry.map((info, index) => {
       const iconValues = Object.values(icons);
       const icon = iconValues[index];
-      const countryCaseTextBox = document.createElement('div');
-      countryCaseTextBox.classList.add('country-case-text__box');
-      countryCaseText.appendChild(countryCaseTextBox);
+      const countryStatTextBox = document.createElement('div');
+      countryStatTextBox.classList.add('country-stat-text__box');
+      countryStatText.appendChild(countryStatTextBox);
 
       const countrySpan = document.createElement('span');
       countrySpan.textContent = formatter.format(info[1]);
-      countryCaseTextBox.textContent = `${capitaliseFirstLetter(info[0])} - `;
-      countryCaseTextBox.appendChild(countrySpan);
+      countryStatTextBox.textContent = `${capitaliseFirstLetter(info[0])} - `;
+      countryStatTextBox.appendChild(countrySpan);
 
       const divStyle = document.createElement('div');
-      divStyle.classList.add('country-case-box-text__box-style');
-      countryCaseTextBox.appendChild(divStyle);
+      divStyle.classList.add('country-stat-box-text__box-style');
+      countryStatTextBox.appendChild(divStyle);
       const iconTag = document.createElement('i');
       iconTag.classList.add('fas', icon);
       iconTag.id = 'box-style__tag';
@@ -324,10 +404,10 @@ function updateUISearchCountries(data, country) {
     console.log('error, country not found');
   }
 
-  const countryCasesDivs = document.querySelector('.country-case-wrapper');
-  const countryCasesDivsArr = [...countryCasesDivs.children];
+  const countryStatsDivs = document.querySelector('.country-stats-wrapper');
+  const countryStatsDivsArr = [...countryStatsDivs.children];
 
-  countryCasesDivsArr.map((child, index) => {
+  countryStatsDivsArr.map((child, index) => {
     const colors = Object.values(mainColors);
     const color = colors[index];
     child.style.borderBottom = `5px solid ${color}`;
@@ -358,7 +438,7 @@ select.addEventListener('change', (e) => {
 });
 
 fetchData('historical/all', showChartHistory);
-fetchData('all', updateUIWorldwideCases);
+fetchData('all', updateUIWorldwideStats);
 
 searchCountries();
 
