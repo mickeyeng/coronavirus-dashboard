@@ -45,3 +45,9 @@ export const getObjValues = (obj) => Object.values(obj);
 
 // format numbers to friendly format
 export const formatter = new Intl.NumberFormat('en');
+
+export const appendHTMLElWithClass = (elName, className, parentDiv) => {
+  const el = document.createElement(elName);
+  el.classList.add(className);
+  parentDiv.appendChild(el);
+};

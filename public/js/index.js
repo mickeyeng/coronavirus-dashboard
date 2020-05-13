@@ -7,6 +7,7 @@ import {
   formatter,
   loader,
   selectObjKeys,
+  appendHTMLElWithClass,
 } from './util.js';
 
 const search = document.querySelector('[data-form]');
@@ -222,26 +223,40 @@ console.log(
       : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
 );
 
-const createCountryHeader = () => {
-  const countryInfoHeader = document.createElement('div');
-  countryInfoHeader.classList.add('country-info-header');
-  searchCountryStats.appendChild(countryInfoHeader);
+const createCountryHeaderWrapper = () => {
+  // const countryInfoHeader = document.createElement('div');
+  // countryInfoHeader.classList.add('country-info-header');
+  // searchCountryStats.appendChild(countryInfoHeader);
+  return appendHTMLElWithClass(
+    'div',
+    'country-info-header',
+    searchCountryStats
+  );
 };
 
-const createCountryInfoHeaderText = () => {
-  const countryInfoHeaderText = document.createElement('h1');
-  countryInfoHeaderText.classList.add('country-search-heading');
+const createCountryInfoHeaderText = (country) => {
+  const countryInfoHeader = document.querySelector('.country-info-header');
+  appendHTMLElWithClass('h1', 'country-search-heading', countryInfoHeader);
+  const countryInfoHeaderText = document.querySelector(
+    '.country-search-heading'
+  );
   countryInfoHeaderText.innerText = `Coronavirus in ${capitaliseFirstLetter(
     country
   )}`;
-  countryInfoHeader.appendChild(countryInfoHeaderText);
 };
 
-const createCountryInfoFlag = () => {
-  const countryImage = document.createElement('img');
-  countryImage.classList.add('flag');
-  countryImage.src = data.countryInfo.flag;
-  countryInfoHeader.appendChild(countryImage);
+const createCountryInfoFlag = (countryImg) => {
+  const countryInfoHeader = document.querySelector('.country-info-header');
+  console.log(countryInfoHeader);
+  appendHTMLElWithClass('img', 'flag', countryInfoHeader);
+  const countryImage = document.querySelector('.flag');
+  countryImage.src = countryImg;
+};
+
+const createCountryHeader = (data, country) => {
+  createCountryHeaderWrapper();
+  createCountryInfoHeaderText(country);
+  createCountryInfoFlag(data.countryInfo.flag);
 };
 
 const createMapAndChartButtons = () => {
@@ -277,9 +292,8 @@ const createCountryHistoryDropdownText = () => {
   historyWrapperDropdown.classList.add('history-wrapper__dropdown-text');
   historyWrapperDropdown.classList.remove('history-wrapper');
   historyWrapper.appendChild(historyWrapperDropdown);
-};
+  const createCountryHistoryDropdownIcon = () => {};
 
-const createCountryHistoryDropdownIcon = () => {
   const dropdownIcon = document.createElement('i');
   dropdownIcon.classList.add(
     'fas',
@@ -290,129 +304,142 @@ const createCountryHistoryDropdownIcon = () => {
   dropdownIcon.id = 'dropdown';
   historyWrapperDropdown.appendChild(dropdownIcon);
 };
+
+const createCountryStatWrapper = () => {
+  const countryStatWrapper = document.createElement('div');
+  countryStatWrapper.classList.add('country-stats-wrapper');
+  searchCountryStats.appendChild(countryStatWrapper);
+};
+
 // update UI with data for specific country
 function updateUISearchCountries(data, country) {
   if (data !== undefined) {
     searchCountryStats.innerHTML = ``;
 
     // ****** COUNTRY INFO HEADER ******
-    const countryInfoHeader = document.createElement('div');
-    countryInfoHeader.classList.add('country-info-header');
-    searchCountryStats.appendChild(countryInfoHeader);
+    // const countryInfoHeader = document.createElement('div');
+    // countryInfoHeader.classList.add('country-info-header');
+    // searchCountryStats.appendChild(countryInfoHeader);
+
+    // createCountryHeaderWrapper();
+    createCountryHeader(data, country);
 
     // ****** COUNTRY INFO HEADER TEXT ******
-    const countryInfoHeaderText = document.createElement('h1');
-    countryInfoHeaderText.classList.add('country-search-heading');
-    countryInfoHeaderText.innerText = `Coronavirus in ${capitaliseFirstLetter(
-      country
-    )}`;
-    countryInfoHeader.appendChild(countryInfoHeaderText);
+    // const countryInfoHeaderText = document.createElement('h1');
+    // countryInfoHeaderText.classList.add('country-search-heading');
+    // countryInfoHeaderText.innerText = `Coronavirus in ${capitaliseFirstLetter(
+    //   country
+    // )}`;
+    // countryInfoHeader.appendChild(countryInfoHeaderText);
+    // createCountryInfoHeaderText(country);
 
     // ****** COUNTRY INFO FLAG ******
-    const countryImage = document.createElement('img');
-    countryImage.classList.add('flag');
-    countryImage.src = data.countryInfo.flag;
-    countryInfoHeader.appendChild(countryImage);
+    // const countryImage = document.createElement('img');
+    // countryImage.classList.add('flag');
+    // countryImage.src = data.countryInfo.flag;
+    // countryInfoHeader.appendChild(countryImage);
+    // createCountryInfoFlag(data.countryInfo.flag);
 
     // ****** TOGGLE CHART AND MAP ******
-    const toggleChart = document.createElement('div');
-    const toggleMap = document.createElement('div');
-    toggleMap.classList.add('toggle');
-    toggleMap.id = 'toggle-map';
-    toggleMap.textContent = 'Map';
-    searchCountryStats.appendChild(toggleMap);
-    searchCountryStats.appendChild(toggleChart);
+    // const toggleChart = document.createElement('div');
+    // const toggleMap = document.createElement('div');
+    // toggleMap.classList.add('toggle');
+    // toggleMap.id = 'toggle-map';
+    // toggleMap.textContent = 'Map';
+    // searchCountryStats.appendChild(toggleMap);
+    // searchCountryStats.appendChild(toggleChart);
 
     // ******  CHART CONTAINER ******
-    const chartContainer = document.createElement('div');
-    chartContainer.classList.add('chart-container');
-    chartContainer.id = 'chart-container-country';
+    // const chartContainer = document.createElement('div');
+    // chartContainer.classList.add('chart-container');
+    // chartContainer.id = 'chart-container-country';
 
     // ******  SHOW GRAPH AND MAP WRAPPER ******
-    const showGraphAndMapWrapper = document.createElement('div');
-    showGraphAndMapWrapper.id = 'show-visual-wrapper';
-    showGraphAndMapWrapper.appendChild(chartContainer);
-    searchCountryStats.appendChild(showGraphAndMapWrapper);
+    // const showGraphAndMapWrapper = document.createElement('div');
+    // showGraphAndMapWrapper.id = 'show-visual-wrapper';
+    // showGraphAndMapWrapper.appendChild(chartContainer);
+    // searchCountryStats.appendChild(showGraphAndMapWrapper);
 
     // ******  MAP DIV ******
-    const map = document.createElement('div');
-    map.classList.add('map', 'active', 'active-map');
-    showGraphAndMapWrapper.appendChild(map);
+    // const map = document.createElement('div');
+    // map.classList.add('map', 'active', 'active-map');
+    // showGraphAndMapWrapper.appendChild(map);
 
     // ******  COUNTRY HISTORY WRAPPER ******
-    const historyWrapper = document.createElement('div');
-    historyWrapper.classList.add('history-wrapper');
-    searchCountryStats.appendChild(historyWrapper);
+    // const historyWrapper = document.createElement('div');
+    // historyWrapper.classList.add('history-wrapper');
+    // searchCountryStats.appendChild(historyWrapper);
 
     // ******  COUNTRY HISTORY DROPDOWN TEXT ******
-    const historyWrapperDropdown = historyWrapper.cloneNode();
-    historyWrapperDropdown.classList.add('history-wrapper__dropdown-text');
-    historyWrapperDropdown.classList.remove('history-wrapper');
-    historyWrapperDropdown.textContent = 'View History';
-    historyWrapper.appendChild(historyWrapperDropdown);
+    // const historyWrapperDropdown = historyWrapper.cloneNode();
+    // historyWrapperDropdown.classList.add('history-wrapper__dropdown-text');
+    // historyWrapperDropdown.classList.remove('history-wrapper');
+    // historyWrapperDropdown.textContent = 'View History';
+    // historyWrapper.appendChild(historyWrapperDropdown);
 
     // ******  CREATE COUNTRY HISTORY DROPDOWN ICON ******
-    const dropdownIcon = document.createElement('i');
-    dropdownIcon.classList.add(
-      'fas',
-      'fa-2x',
-      'fa-angle-double-down',
-      'dropdown-icon'
-    );
-    dropdownIcon.id = 'dropdown';
-    historyWrapperDropdown.appendChild(dropdownIcon);
+    // const dropdownIcon = document.createElement('i');
+    // dropdownIcon.classList.add(
+    //   'fas',
+    //   'fa-2x',
+    //   'fa-angle-double-down',
+    //   'dropdown-icon'
+    // );
+    // dropdownIcon.id = 'dropdown';
+    // historyWrapperDropdown.appendChild(dropdownIcon);
 
-    // ******  CREATE COUNTRY STAT BOX ******
-    const countryStatText = document.createElement('div');
-    countryStatText.classList.add('country-stats-wrapper');
-    searchCountryStats.appendChild(countryStatText);
+    // ****** CREATE COUNTRY STAT WRAPPER ******
+    // const countryStatWrapper = document.createElement('div');
+    // countryStatWrapper.classList.add('country-stats-wrapper');
+    // searchCountryStats.appendChild(countryStatWrapper);
 
-    const filteredArrayCountry = Object.entries(data).filter((data, index) => {
-      return (
-        index !== 0 &&
-        index !== 1 &&
-        index !== 2 &&
-        index !== 9 &&
-        index !== 10 &&
-        index !== 11 &&
-        index !== 13 &&
-        index !== 14
-      );
-    });
+    //   const filteredArrayCountry = Object.entries(data).filter((data, index) => {
+    //     return (
+    //       index !== 0 &&
+    //       index !== 1 &&
+    //       index !== 2 &&
+    //       index !== 9 &&
+    //       index !== 10 &&
+    //       index !== 11 &&
+    //       index !== 13 &&
+    //       index !== 14
+    //     );
+    //   });
 
-    filteredArrayCountry.map((info, index) => {
-      const iconValues = Object.values(icons);
-      const icon = iconValues[index];
-      const countryStatTextBox = document.createElement('div');
-      countryStatTextBox.classList.add('country-stat-text__box');
-      countryStatText.appendChild(countryStatTextBox);
+    //   filteredArrayCountry.forEach((info, index) => {
+    //     const iconValues = Object.values(icons);
+    //     const icon = iconValues[index];
+    //     const countryStatTextBox = document.createElement('div');
+    //     countryStatTextBox.classList.add('country-stat-text__box');
+    //     countryStatWrapper.appendChild(countryStatTextBox);
 
-      const countrySpan = document.createElement('span');
-      countrySpan.textContent = formatter.format(info[1]);
-      countryStatTextBox.textContent = `${capitaliseFirstLetter(info[0])} - `;
-      countryStatTextBox.appendChild(countrySpan);
+    //     const countrySpan = document.createElement('span');
+    //     countrySpan.textContent = formatter.format(info[1]);
+    //     countryStatTextBox.textContent = `${capitaliseFirstLetter(info[0])} - `;
+    //     countryStatTextBox.appendChild(countrySpan);
 
-      const divStyle = document.createElement('div');
-      divStyle.classList.add('country-stat-box-text__box-style');
-      countryStatTextBox.appendChild(divStyle);
-      const iconTag = document.createElement('i');
-      iconTag.classList.add('fas', icon);
-      iconTag.id = 'box-style__tag';
-      divStyle.appendChild(iconTag);
-    });
-  } else {
-    console.log('error, country not found');
+    //     const divStyle = document.createElement('div');
+    //     divStyle.classList.add('country-stat-box-text__box-style');
+    //     countryStatTextBox.appendChild(divStyle);
+    //     const iconTag = document.createElement('i');
+    //     iconTag.classList.add('fas', icon);
+    //     iconTag.id = 'box-style__tag';
+    //     divStyle.appendChild(iconTag);
+    //   });
+    // } else {
+    //   console.log('error, country not found');
+    // }
+
+    // const countryStatsDivs = document.querySelector('.country-stats-wrapper');
+    // const countryStatsDivsArr = [...countryStatsDivs.children];
+
+    // countryStatsDivsArr.map((child, index) => {
+    //   const colors = Object.values(mainColors);
+    //   const color = colors[index];
+    //   child.style.borderBottom = `5px solid ${color}`;
+    //   child.lastElementChild.style.background = color;
+    // });
   }
-
-  const countryStatsDivs = document.querySelector('.country-stats-wrapper');
-  const countryStatsDivsArr = [...countryStatsDivs.children];
-
-  countryStatsDivsArr.map((child, index) => {
-    const colors = Object.values(mainColors);
-    const color = colors[index];
-    child.style.borderBottom = `5px solid ${color}`;
-    child.lastElementChild.style.background = color;
-  });
 }
 
 // search countries based on search term
