@@ -10,6 +10,17 @@ import {
   appendNodeWithClass,
 } from './util.js';
 
+const WORLDWIDE_STATS = [
+  'cases',
+  'todayCases',
+  'deaths',
+  'todayDeaths',
+  'recovered',
+  'active',
+  'tests',
+];
+
+
 const search = document.querySelector('[data-form]');
 const worldwideStats = document.querySelector('[data-worldwide-stats]');
 
@@ -187,42 +198,6 @@ function updateUISearchCountryHistory(deaths, data) {
   });
 }
 
-const testData = {
-  updated: 1588729215153,
-  cases: 3726701,
-  todayCases: 2184,
-  deaths: 258295,
-  todayDeaths: 268,
-  recovered: 1241908,
-  active: 2226498,
-  critical: 49248,
-  casesPerOneMillion: 478,
-  deathsPerOneMillion: 33,
-  tests: 40360974,
-  testsPerOneMillion: 5176.8,
-  affectedCountries: 214,
-};
-
-const WORLDWIDE_STATS = [
-  'cases',
-  'todayCases',
-  'deaths',
-  'todayDeaths',
-  'recovered',
-  'active',
-  'tests',
-];
-
-const oldResult = JSON.stringify();
-const newResult = JSON.stringify();
-
-console.log(
-  'test result: ' +
-    (newResult === oldResult
-      ? 'PASSED!'
-      : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
-);
-
 const createCountryHeaderWrapper = () => {
   return appendNodeWithClass('div', 'country-info-header', searchCountryStats);
 };
@@ -301,6 +276,57 @@ const createCountryStatWrapper = () => {
   appendNodeWithClass('div', 'country-stat-wrapper', searchCountryStats);
 };
 
+
+
+
+
+// const testData = {
+//   updated: 1588729215153,
+//   cases: 3726701,
+//   todayCases: 2184,
+//   deaths: 258295,
+//   todayDeaths: 268,
+//   recovered: 1241908,
+//   active: 2226498,
+//   critical: 49248,
+//   casesPerOneMillion: 478,
+//   deathsPerOneMillion: 33,
+//   tests: 40360974,
+//   testsPerOneMillion: 5176.8,
+//   affectedCountries: 214,
+// };
+
+// const filterWorldwideStatsNew = () => {
+//   return filterWorldwideStats(testData, WORLDWIDE_STATS  )
+// }
+
+// const filterWorldwideStatsOld = () => {
+//   const filteredArrayCountry = Object.entries(testData).filter(([stat]) => {
+//   return (
+//     stat !== "updated" &&
+//     stat !== "critical" &&
+//     stat !== "casesPerOneMillion" &&
+//     stat !== "deathsPerOneMillion" &&
+//     stat !== "testsPerOneMillion" &&
+//     stat !== "affectedCountries" 
+//   );
+// });
+// return filteredArrayCountry
+// }
+
+
+const oldResult = JSON.stringify();
+const newResult = JSON.stringify();
+
+console.log(
+  'test result: ' +
+    (newResult === oldResult
+      ? 'PASSED!'
+      : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
+);
+
+
+
 // update UI with data for specific country
 function updateUISearchCountries(data, country) {
   if (data !== undefined) {
@@ -331,26 +357,22 @@ function updateUISearchCountries(data, country) {
     createDropdownIcon();
 
     // ****** CREATE COUNTRY STAT WRAPPER ******
-    // const countryStatWrapper = document.createElement('div');
-    // countryStatWrapper.classList.add('country-stats-wrapper');
-    // searchCountryStats.appendChild(countryStatWrapper);
     createCountryStatWrapper();
+      
+    filterWorldwideStats(data, WORLDWIDE_STATS)
 
-    //   const filteredArrayCountry = Object.entries(data).filter((data, index) => {
-    //     return (
-    //       index !== 0 &&
-    //       index !== 1 &&
-    //       index !== 2 &&
-    //       index !== 9 &&
-    //       index !== 10 &&
-    //       index !== 11 &&
-    //       index !== 13 &&
-    //       index !== 14
-    //     );
-    //   });
+      
+
+      
+
+
+
+
+
 
 
     //   filteredArrayCountry.forEach((info, index) => {
+    //     const countryStatWrapper = document.querySelector('.country-stat-wrapper');
     //     const iconValues = Object.values(icons);
     //     const icon = iconValues[index];
     //     const countryStatTextBox = document.createElement('div');
@@ -385,6 +407,7 @@ function updateUISearchCountries(data, country) {
     // });
   }
 }
+
 
 // search countries based on search term
 search.addEventListener('submit', (e) => {
