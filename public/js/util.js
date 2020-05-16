@@ -46,8 +46,16 @@ export const getObjValues = (obj) => Object.values(obj);
 // format numbers to friendly format
 export const formatter = new Intl.NumberFormat('en');
 
-export const appendHTMLElWithClass = (elName, className, parentDiv) => {
+export const appendNodeWithClass = (
+  elName,
+  className,
+  parentDiv,
+  idName = undefined,
+  text = undefined ,
+) => {
   const el = document.createElement(elName);
   el.classList.add(className);
+  el.id = idName;
+  el.textContent = text;
   parentDiv.appendChild(el);
 };

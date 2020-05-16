@@ -24,7 +24,7 @@ app.get('/map', async (req, res) => {
     const data = await fetchData.json();
     return res.json({
       success: true,
-      data: data
+      data: data,
     });
   } catch (error) {
     res.send(error);
