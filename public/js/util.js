@@ -50,12 +50,13 @@ export const appendNodeWithClass = (
   elName,
   className,
   parentDiv,
-  idName = undefined,
-  text = undefined ,
+  idName = '',
+  text = '' ,
 ) => {
   const el = document.createElement(elName);
   el.classList.add(className);
   el.id = idName;
   el.textContent = text;
   parentDiv.appendChild(el);
+  return el
 };

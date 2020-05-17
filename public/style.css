@@ -441,7 +441,11 @@ main {
   width: 50px;
 }
 
-.country-stat-text__box {
+.country-stat-box {
+  display: flex;
+  align-items: center;
+
+
   font-size: var(--normal-font);
   margin: var(--main-margin) 0;
   padding: var(--main-padding);
@@ -453,7 +457,7 @@ main {
   color: var(--text-color-dark);
 }
 
-.country-stat-box-text__box-style {
+.country-stat-box__style {
   background: #80b796;
   position: absolute;
   top: 0;
@@ -472,7 +476,7 @@ main {
   border-radius: 50%;
 }
 
-.country-stat-text__box span {
+.country-stat-box span {
   font-weight: bold;
   font-weight: 700;
   color: var(--text-color-light);

@@ -276,138 +276,87 @@ const createCountryStatWrapper = () => {
   appendNodeWithClass('div', 'country-stat-wrapper', searchCountryStats);
 };
 
-
-
-
-
-// const testData = {
-//   updated: 1588729215153,
-//   cases: 3726701,
-//   todayCases: 2184,
-//   deaths: 258295,
-//   todayDeaths: 268,
-//   recovered: 1241908,
-//   active: 2226498,
-//   critical: 49248,
-//   casesPerOneMillion: 478,
-//   deathsPerOneMillion: 33,
-//   tests: 40360974,
-//   testsPerOneMillion: 5176.8,
-//   affectedCountries: 214,
-// };
-
-// const filterWorldwideStatsNew = () => {
-//   return filterWorldwideStats(testData, WORLDWIDE_STATS  )
-// }
-
-// const filterWorldwideStatsOld = () => {
-//   const filteredArrayCountry = Object.entries(testData).filter(([stat]) => {
-//   return (
-//     stat !== "updated" &&
-//     stat !== "critical" &&
-//     stat !== "casesPerOneMillion" &&
-//     stat !== "deathsPerOneMillion" &&
-//     stat !== "testsPerOneMillion" &&
-//     stat !== "affectedCountries" 
-//   );
-// });
-// return filteredArrayCountry
-// }
-
-
-const oldResult = JSON.stringify();
-const newResult = JSON.stringify();
-
-console.log(
-  'test result: ' +
-    (newResult === oldResult
-      ? 'PASSED!'
-      : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
-);
-
-
-
-// update UI with data for specific country
-function updateUISearchCountries(data, country) {
-  if (data !== undefined) {
-    searchCountryStats.innerHTML = ``;
-
-    // ****** COUNTRY INFO HEADER ******
-    createCountryHeader(data, country);
-
-    // ****** TOGGLE CHART AND MAP ******
-    createMapAndChartButtons();
-
-    // ******  SHOW GRAPH AND MAP WRAPPER ******
-    createGraphAndMapWrapper();
-
-    // ******  CHART CONTAINER ******
-    createChartContainer();
-
-    // ******  MAP DIV ******
-    createMapDiv();
-
-    // ******  COUNTRY HISTORY WRAPPER ******
-    createCountryHistoryWrapper();
-
-    // ******  COUNTRY HISTORY DROPDOWN TEXT ******
-    createCountryHistoryDropdownText();
-
-    // ******  CREATE COUNTRY HISTORY DROPDOWN ICON ******
-    createDropdownIcon();
-
-    // ****** CREATE COUNTRY STAT WRAPPER ******
-    createCountryStatWrapper();
-      
-    filterWorldwideStats(data, WORLDWIDE_STATS)
-
-      
-
-      
-
-
-
-
-
-
-
-    //   filteredArrayCountry.forEach((info, index) => {
-    //     const countryStatWrapper = document.querySelector('.country-stat-wrapper');
-    //     const iconValues = Object.values(icons);
-    //     const icon = iconValues[index];
-    //     const countryStatTextBox = document.createElement('div');
-    //     countryStatTextBox.classList.add('country-stat-text__box');
-    //     countryStatWrapper.appendChild(countryStatTextBox);
-
-    //     const countrySpan = document.createElement('span');
-    //     countrySpan.textContent = formatter.format(info[1]);
-    //     countryStatTextBox.textContent = `${capitaliseFirstLetter(info[0])} - `;
-    //     countryStatTextBox.appendChild(countrySpan);
-
-    //     const divStyle = document.createElement('div');
-    //     divStyle.classList.add('country-stat-box-text__box-style');
-    //     countryStatTextBox.appendChild(divStyle);
-    //     const iconTag = document.createElement('i');
-    //     iconTag.classList.add('fas', icon);
-    //     iconTag.id = 'box-style__tag';
-    //     divStyle.appendChild(iconTag);
-    //   });
-    // } else {
-    //   console.log('error, country not found');
-    // }
-
-    // const countryStatsDivs = document.querySelector('.country-stats-wrapper');
-    // const countryStatsDivsArr = [...countryStatsDivs.children];
-
-    // countryStatsDivsArr.map((child, index) => {
-    //   const colors = Object.values(mainColors);
-    //   const color = colors[index];
-    //   child.style.borderBottom = `5px solid ${color}`;
-    //   child.lastElementChild.style.background = color;
-    // });
-  }
+const createCountryStatBox = (parent) => {
+  appendNodeWithClass('div', 'country-stat-box', parent);
 }
 
+const createCountryStatText = (stat, parent) => {
+  // const countryStatBox = document.querySelector('.country-stat-box');
+  return appendNodeWithClass('h3', null, parent, undefined, `${capitaliseFirstLetter(stat[0])} -`);
+}
+
+const createCountryStatNumber = (stat, parent) => {
+  return appendNodeWithClass('span', undefined, parent, undefined, formatter.format(stat[1]))
+}
+
+const createCountryStatBoxStyle = (parent) => {
+  appendNodeWithClass('div', 'country-stat-box__style', parent);
+} 
+
+const createCountryStatBoxIcon = (iconClassName, parent) => {
+  const countryStatBoxStyle = document.querySelector('.country-stat-box__style')
+  return appendNodeWithClass('i', 'fas', parent, 'box-style_tag')
+  // const icon = document.getElementById('box-style_tag');
+  // icon.classList.add(iconClassName);
+  // return icon
+}
+
+
+const createStatBoxes = (data, countryStatWrapper) => {
+  filterWorldwideStats(data, WORLDWIDE_STATS).forEach((stat, index) => {
+      const iconValues = icons
+      const icon = iconValues[index];
+
+      const countryStatBox = document.createElement('div');
+      countryStatBox.classList.add('country-stat-box');
+      countryStatWrapper.appendChild(countryStatBox);
+
+      createCountryStatText(stat, countryStatBox);
+      createCountryStatNumber(stat, countryStatBox);
+
+      const countryStatBoxStyle = document.createElement('div')
+      countryStatBoxStyle.classList.add('country-stat-box__style');
+      countryStatBox.appendChild(countryStatBoxStyle);
+
+      const iconTag = document.createElement('i');
+      iconTag.classList.add('fas', icon)
+      iconTag.id = 'box-style__tag';
+      countryStatBoxStyle.appendChild(iconTag);
+
+      const color = mainColors[index];
+      countryStatBox.style.borderBottom = `5px solid ${color}`;
+      countryStatBox.lastElementChild.style.background = color;
+
+  })
+}
+
+// const createCountryStatBox = (stat, iconClassName, parent) => {
+//   createCountryStatTextBox(countryStatWrapper);
+//   createCountryStatText(stat, parent);
+//   createCountryStatNumber(stat);
+//   createCountryStatBoxStyle();
+//   createCountryStatBoxIcon(iconClassName)
+// }
+
+// update UI with data for specific country
+function updateUISearchCountries(data, country) {  
+  if (data !== undefined) {
+    searchCountryStats.innerHTML = ``;
+    createCountryHeader(data, country);
+    createMapAndChartButtons();
+    createGraphAndMapWrapper();
+    createChartContainer();
+    createMapDiv();
+    createCountryHistoryWrapper();
+    createCountryHistoryDropdownText();
+    createDropdownIcon();
+    createCountryStatWrapper();
+    const countryStatWrapper = document.querySelector('.country-stat-wrapper');
+    createStatBoxes(data, countryStatWrapper);
+  } else {
+      console.log('error, country not found');
+  }
+}
 
 // search countries based on search term
 search.addEventListener('submit', (e) => {
@@ -435,5 +384,5 @@ fetchData('historical/all', showChartHistory);
 fetchData('all', updateUIWorldwideStats);
 
 searchCountries();
-
 listCountriesInSelect();
+

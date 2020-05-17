@@ -1,0 +1,48 @@
+
+
+
+
+// const testData = {
+//   updated: 1588729215153,
+//   cases: 3726701,
+//   todayCases: 2184,
+//   deaths: 258295,
+//   todayDeaths: 268,
+//   recovered: 1241908,
+//   active: 2226498,
+//   critical: 49248,
+//   casesPerOneMillion: 478,
+//   deathsPerOneMillion: 33,
+//   tests: 40360974,
+//   testsPerOneMillion: 5176.8,
+//   affectedCountries: 214,
+// };
+
+// const filterWorldwideStatsNew = () => {
+//   return filterWorldwideStats(testData, WORLDWIDE_STATS  )
+// }
+
+// const filterWorldwideStatsOld = () => {
+//   const filteredArrayCountry = Object.entries(testData).filter(([stat]) => {
+//   return (
+//     stat !== "updated" &&
+//     stat !== "critical" &&
+//     stat !== "casesPerOneMillion" &&
+//     stat !== "deathsPerOneMillion" &&
+//     stat !== "testsPerOneMillion" &&
+//     stat !== "affectedCountries" 
+//   );
+// });
+// return filteredArrayCountry
+// }
+
+ 
+const newResult = JSON.stringify();
+const oldResult = JSON.stringify();
+
+console.log(
+  'test result: ' +
+    (newResult === oldResult
+      ? 'PASSED!'
+      : 'FAILED! ' + '\n new: ' + newResult + '\n \n  old: ' + oldResult)
+);
