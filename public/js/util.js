@@ -16,28 +16,6 @@ export function loader(parent) {
   parent.appendChild(childDiv);
 }
 
-export const icons = [
-  'fa-users',
-  'fa-user-friends',
-  'fa-procedures',
-  'fa-ambulance',
-  'fa-heart',
-  'fa-heartbeat',
-  'fa-notes-medical',
-  'fa-vial',
-  'fa-globe-europe',
-];
-
-export const mainColors = [
-  '#80b796',
-  'lightsalmon',
-  '#9bbce3',
-  '#00afaa',
-  '#d72525',
-  '#ea8c8c',
-  'rgba(57, 0, 102, 0.43)',
-];
-
 export const selectObjKeys = (obj, keys) =>
   Object.entries(obj).filter(([key]) => keys.includes(key));
 

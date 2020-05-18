@@ -1,14 +1,6 @@
 import { displayMap } from './map.js';
 import { showChartHistory, showChartHistoryByCountry } from './charts.js';
-import {
-  capitaliseFirstLetter,
-  icons,
-  mainColors,
-  formatter,
-  loader,
-  selectObjKeys,
-  appendNodeWithClass,
-} from './util.js';
+import { capitaliseFirstLetter, formatter, selectObjKeys, appendNodeWithClass, } from './util.js';
 
 const WORLDWIDE_STATS = [
   'cases',
@@ -20,6 +12,28 @@ const WORLDWIDE_STATS = [
   'tests',
 ];
 
+const ICONS = [
+  'fa-users',
+  'fa-user-friends',
+  'fa-procedures',
+  'fa-ambulance',
+  'fa-heart',
+  'fa-heartbeat',
+  'fa-notes-medical',
+  'fa-vial',
+  'fa-globe-europe',
+];
+
+const MAIN_COLOURS = [
+  '#80b796',
+  'lightsalmon',
+  '#9bbce3',
+  '#00afaa',
+  '#d72525',
+  '#ea8c8c',
+  'rgba(57, 0, 102, 0.43)',
+];
+
 
 const search = document.querySelector('[data-form]');
 const worldwideStats = document.querySelector('[data-worldwide-stats]');
@@ -27,8 +41,21 @@ const searchCountryStats = document.querySelector('[data-search-stats]');
 const select = document.querySelector('select');
 const loading = document.querySelector('[data-loader]');
 const main = document.querySelector('#main');
+const darkModeBtn = document.getElementById('dark-mode-btn');
 
 const API_BASE_URL = `https://disease.sh/v2`;
+
+function loader(parent) {
+  const childDiv = document.createElement('div');
+  childDiv.classList.add('loader');
+  parent.appendChild(childDiv);
+}
+
+darkModeBtn.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  darkModeBtn.classList.toggle('fa-moon');
+  darkModeBtn.classList.toggle('fa-sun');
+});
 
 async function fetchData(url_path, callback) {
   try {
@@ -46,20 +73,14 @@ async function fetchData(url_path, callback) {
   }
 }
 
-async function listCountriesInSelect() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/countries`);
-    const data = await response.json();
-
-    for (let value of data) {
-      const option = document.createElement('option');
-      option.text = value.country;
-      select.add(option);
-    }
-  } catch (error) {
-    throw ('Error fetching all country data', error);
+const createOptionsInSelect = (countries) => {
+  for (let value of countries) {
+    const option = document.createElement('option');
+    option.text = value.country;
+    select.add(option);
   }
 }
+
 
 async function searchCountries(country = 'uk') {
   try {
@@ -111,7 +132,7 @@ function createWorldwideStatBoxIcon(className, color) {
   createWorldwideStatIcon(className);
 }
 
-const createWorldwideStatBoxTextt = (parent, statText) => {
+const createWorldwideStatBoxInfo = (parent, statText) => {
   appendNodeWithClass('h2', 'worldwide-stats-box-heading', parent, '', capitaliseFirstLetter(statText));
 }
 
@@ -119,8 +140,8 @@ const createWorldwideStatBoxNumber = (parent, statNumber) => {
 appendNodeWithClass('h1', 'worldwide-stats-box-number', parent, '', formatter.format(statNumber));
 }
 
-function createWorldwideStatBoxText(parent, statText, statNumber) {
-  createWorldwideStatBoxTextt(parent, statText);
+const createWorldwideStatBoxText = (parent, statText, statNumber) => {
+  createWorldwideStatBoxInfo(parent, statText);
   createWorldwideStatBoxNumber(parent, statNumber);
 }
 
@@ -136,8 +157,8 @@ function updateUIWorldwideStats(data) {
   // css afterbegin reverses the array
   const worldwideStats = filterWorldwideStats(data).reverse();
   worldwideStats.forEach(([key, value], index) => {
-    const icon = icons[index];
-    const color = mainColors[index];
+    const icon = ICONS[index];
+    const color = MAIN_COLOURS[index];
     createWorldwideStatBox();
     const worldwideStatsBox = document.querySelector('.worldwide-stats-box');
     createWorldwideStatBoxIcon(icon, color);
@@ -324,7 +345,7 @@ const createCountryStatBoxIcon = (iconClassName, parent) => {
 
 const createStatBoxes = (data, countryStatWrapper) => {
   filterWorldwideStats(data, WORLDWIDE_STATS).forEach((stat, index) => {
-      const iconValues = icons
+      const iconValues = ICONS
       const icon = iconValues[index];
 
       const countryStatBox = document.createElement('div');
@@ -343,7 +364,7 @@ const createStatBoxes = (data, countryStatWrapper) => {
       iconTag.id = 'box-style__tag';
       countryStatBoxStyle.appendChild(iconTag);
 
-      const color = mainColors[index];
+      const color = MAIN_COLOURS[index];
       countryStatBox.style.borderBottom = `5px solid ${color}`;
       countryStatBox.lastElementChild.style.background = color;
 
@@ -398,8 +419,10 @@ select.addEventListener('change', (e) => {
 });
 
 fetchData('historical/all', showChartHistory);
-fetchData('all', updateUIWorldwideStats);
 
+
+fetchData('all', updateUIWorldwideStats);
+// LIST COUNTRIES IN THE SELECT
+fetchData('countries', createOptionsInSelect)
 searchCountries();
-listCountriesInSelect();
 
