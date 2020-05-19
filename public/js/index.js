@@ -35,7 +35,7 @@ const MAIN_COLOURS = [
 ];
 
 
-const search = document.querySelector('[data-form]');
+const searchCountryInput = document.querySelector('[data-form]');
 const worldwideStats = document.querySelector('[data-worldwide-stats]');
 const searchCountryStats = document.querySelector('[data-search-stats]');
 const select = document.querySelector('select');
@@ -57,7 +57,7 @@ darkModeBtn.addEventListener('click', () => {
   darkModeBtn.classList.toggle('fa-sun');
 });
 
-async function fetchData(url_path, callback) {
+ const fetchData = async (url_path, callback) => {
   try {
     const response = await fetch(`${API_BASE_URL}/${url_path}`);
     if (response.status === 200) {
@@ -80,8 +80,7 @@ const createOptionsInSelect = (countries) => {
     select.add(option);
   }
 }
-
-async function searchCountries(country = 'uk') {
+ const searchCountries = async (country = 'uk') => {
   try {
     const response = await fetch(`${API_BASE_URL}/countries/${country}`);
     if (response.status === 200) {
@@ -122,7 +121,7 @@ const createWorldwideStatIcon = (className) => {
   iconWrapper.appendChild(icon).classList.add('fas', className, 'fa-2x');
 }
 
-function createWorldwideStatBoxIcon(className, color) {
+const createWorldwideStatBoxIcon = (className, color) => {
   const worldwideStatsBox = document.querySelector('.worldwide-stats-box');
   createWorldwideStatIconWrapper(worldwideStatsBox, color);
   createWorldwideStatIcon(className);
@@ -141,14 +140,14 @@ const createWorldwideStatBoxText = (parent, statText, statNumber) => {
   createWorldwideStatBoxNumber(parent, statNumber);
 }
 
-function createWorldwideStatBoxBottomBorder(color) {
+const createWorldwideStatBoxBottomBorder = (color) => {
   const worldwideStatsBox = document.querySelector('.worldwide-stats-box');
   const bottomDiv = document.createElement('div');
   bottomDiv.style.background = color;
   worldwideStatsBox.appendChild(bottomDiv).classList.add('worldwide-stats-box__bottom-div');
 }
 
-function updateUIWorldwideStats(data) {
+const updateUIWorldwideStats = (data) =>  {
   // css afterbegin reverses the array
   const worldwideStats = filterWorldwideStats(data).reverse();
   worldwideStats.forEach(([key, value], index) => {
@@ -163,7 +162,7 @@ function updateUIWorldwideStats(data) {
 }
 
 // Search history by country and output to chart
-async function searchHistoryChart(country) {
+const searchHistoryChart = async (country) => {
   try {
     const response = await fetch(`${API_BASE_URL}/historical/${country}`);
     if (response.status === 200) {
@@ -196,12 +195,12 @@ const toggleExpandedClassOnHistoryChildren = (parent, dropDownIcon) => {
 }
 
 // show data for country in the stats boxes
-function updateUISearchCountryHistory(deaths, data) {
+const updateUISearchCountryHistory = (deaths, data) => {
   const historyStatBoxDropdownIcon = document.getElementById('dropdown');
   const historyWrapper = document.querySelector('.history-wrapper');
-  const deathsHistory = Object.entries(deaths);
+  const countryHistoryData = Object.entries(deaths);
 
-  deathsHistory.forEach(([date, death]) => {
+  countryHistoryData.forEach(([date, death]) => {
     if (!data.isOpen) {
       const historyStatBoxWrapper = document.createElement('div')
       const historyStatBoxText = document.createElement('p');
@@ -368,11 +367,10 @@ const createStatBoxes = (data, countryStatWrapper) => {
 // }
 
 // update UI with data for specific country
-function updateUISearchCountries(data, country) {  
+const updateUISearchCountries = (data, country) => {  
   if (data !== undefined) {
     // resets the searchCountryStat
     searchCountryStats.innerHTML = ``;
-
     createCountryHeader(data, country);
     createCountryStatChartAndMap();
     createCountryStatHistoryBox();
@@ -385,11 +383,11 @@ function updateUISearchCountries(data, country) {
 }
 
 // search countries based on search term
-search.addEventListener('submit', (e) => {
+searchCountryInput.addEventListener('submit', (e) => {
   e.preventDefault();
   let term = e.target.children[0].value;
   term === '' ? alert('error') : searchCountries(term);
-  search.reset();
+  searchCountryInput.reset();
   main.scrollIntoView({
     behavior: 'smooth',
     block: 'end',
