@@ -81,7 +81,6 @@ const createOptionsInSelect = (countries) => {
   }
 }
 
-
 async function searchCountries(country = 'uk') {
   try {
     const response = await fetch(`${API_BASE_URL}/countries/${country}`);
@@ -107,10 +106,8 @@ const filterWorldwideStats = (worldwideData) => {
 
 const createWorldwideStatBox = () => {
   const worldwideStatsBox = document.createElement('div');
-  worldwideStatsBox.classList.add('worldwide-stats-box');
-  worldwideStats.insertAdjacentElement('afterbegin', worldwideStatsBox);
+  worldwideStats.insertAdjacentElement('afterbegin', worldwideStatsBox).classList.add('worldwide-stats-box');
 }
-
 
 const createWorldwideStatIconWrapper = (parent, color) => {
   appendNodeWithClass('div', 'icon-wrapper', parent);
@@ -122,8 +119,7 @@ const createWorldwideStatIcon = (className) => {
   const iconWrapper = document.querySelector('.icon-wrapper');
   appendNodeWithClass('i', 'icon', iconWrapper)
   const icon = document.querySelector('.icon');
-  icon.classList.add('fas', className, 'fa-2x');
-  iconWrapper.appendChild(icon);
+  iconWrapper.appendChild(icon).classList.add('fas', className, 'fa-2x');
 }
 
 function createWorldwideStatBoxIcon(className, color) {
@@ -137,7 +133,7 @@ const createWorldwideStatBoxInfo = (parent, statText) => {
 }
 
 const createWorldwideStatBoxNumber = (parent, statNumber) => {
-appendNodeWithClass('h1', 'worldwide-stats-box-number', parent, '', formatter.format(statNumber));
+  appendNodeWithClass('h1', 'worldwide-stats-box-number', parent, '', formatter.format(statNumber));
 }
 
 const createWorldwideStatBoxText = (parent, statText, statNumber) => {
@@ -148,9 +144,8 @@ const createWorldwideStatBoxText = (parent, statText, statNumber) => {
 function createWorldwideStatBoxBottomBorder(color) {
   const worldwideStatsBox = document.querySelector('.worldwide-stats-box');
   const bottomDiv = document.createElement('div');
-  bottomDiv.classList.add('worldwide-stats-box__bottom-div');
   bottomDiv.style.background = color;
-  worldwideStatsBox.appendChild(bottomDiv);
+  worldwideStatsBox.appendChild(bottomDiv).classList.add('worldwide-stats-box__bottom-div');
 }
 
 function updateUIWorldwideStats(data) {
@@ -174,7 +169,7 @@ async function searchHistoryChart(country) {
     if (response.status === 200) {
       const data = await response.json();
       const { deaths } = data.timeline;
-      data.open = false;
+      data.isOpen = false;
       updateUISearchCountryHistory(deaths, data);
       showChartHistoryByCountry(data);
     } else {
@@ -185,43 +180,40 @@ async function searchHistoryChart(country) {
   }
 }
 
+const toggleExpandedClassOnHistoryChildren = (parent, dropDownIcon) => {
+  const historyStatBoxWrapper = document.querySelector('.history-stat-box-wrapper');
+  const historyWrapperChildren = [...parent.children];
+  historyWrapperChildren.forEach((child) => child.classList.toggle('history-stat-box-wrapper_expanded'));
+
+  if (historyStatBoxWrapper.classList.contains('history-stat-box-wrapper_expanded')) {
+    parent.style.maxHeight = '300px';
+    parent.style.overflowY = 'scroll';
+  } else {
+    dropDownIcon.style.transform = 'rotate(0)';
+    parent.style.maxHeight = '60px';
+    parent.style.overflow = 'hidden';
+  }
+}
+
 // show data for country in the stats boxes
 function updateUISearchCountryHistory(deaths, data) {
-  const dropdownIcon = document.getElementById('dropdown');
+  const historyStatBoxDropdownIcon = document.getElementById('dropdown');
   const historyWrapper = document.querySelector('.history-wrapper');
   const deathsHistory = Object.entries(deaths);
 
-  deathsHistory.forEach((ent) => {
-    const historyDivDate = document.createElement('div');
-    const historyInfoDiv = document.createElement('div');
-    historyInfoDiv.classList.add('history-date-info-text');
-    historyInfoDiv.textContent = `Date: ${ent[0]} - Deaths: ${ent[1]}`;
-    if (!data.open) {
-      historyWrapper.appendChild(historyDivDate).classList.add('history-date');
-      historyDivDate.appendChild(historyInfoDiv);
+  deathsHistory.forEach(([date, death]) => {
+    if (!data.isOpen) {
+      const historyStatBoxWrapper = document.createElement('div')
+      const historyStatBoxText = document.createElement('p');
+      historyStatBoxText.textContent = `Date: ${date} - Deaths: ${death}`;
+      historyWrapper.appendChild(historyStatBoxWrapper).classList.add('history-stat-box-wrapper');
+      historyStatBoxWrapper.appendChild(historyStatBoxText).classList.add('history-date-info-text');
     }
   });
 
   // show country history info on dropdown click
-  dropdownIcon.addEventListener('click', () => {
-    const historyDate = document.querySelector('.history-date');
-    const children = [...historyWrapper.children];
-
-    // remove the active class on toggle icon
-    children.forEach((child) =>
-      child.classList.toggle('history-date_expanded')
-    );
-
-    // set the transition with max-height
-    if (historyDate.classList.contains('history-date_expanded')) {
-      historyWrapper.style.maxHeight = '300px';
-      historyWrapper.style.overflowY = 'scroll';
-      dropdownIcon.style.transform = 'rotate(180deg)';
-    } else {
-      dropdownIcon.style.transform = 'rotate(0)';
-      historyWrapper.style.maxHeight = '60px';
-      historyWrapper.style.overflow = 'hidden';
-    }
+  historyStatBoxDropdownIcon.addEventListener('click', () => {
+    toggleExpandedClassOnHistoryChildren(historyWrapper, historyStatBoxDropdownIcon)
   });
 }
 
@@ -276,10 +268,9 @@ const createChartContainer = () => {
 const createMapDiv = () => {
   const showVisualWrapper = document.getElementById('show-visual-wrapper');  
   appendNodeWithClass('div', 'map', showVisualWrapper);
-  const map = document.querySelector('.map');
-  map.classList.add('active', 'active-map');
+  const map = document.querySelector('.map').classList.add('active', 'active-map');
+  return map
 };
-
 
 const createCountryStatChartAndMap = () => {
   createMapAndChartButtons();
@@ -294,15 +285,15 @@ const createCountryHistoryWrapper = () => {
 
 const createCountryHistoryDropdownText = (parent) => {
   appendNodeWithClass('div', 'history-wrapper__dropdown-text', parent, undefined, 'View History');
-  const historyWrapperDropdown = document.querySelector('.history-wrapper__dropdown-text');
-  historyWrapperDropdown.classList.remove('history-wrapper');
+  const historyWrapperDropdown = document.querySelector('.history-wrapper__dropdown-text').classList.remove('history-wrapper');
+  return historyWrapperDropdown
 };
 
 const createDropdownIcon = () => {
   const historyWrapperDropdown = document.querySelector('.history-wrapper__dropdown-text');
   appendNodeWithClass('i', 'dropdown-icon' , historyWrapperDropdown, 'dropdown')
-  const dropdownIcon = document.querySelector('.dropdown-icon');
-  dropdownIcon.classList.add('fas', 'fa-2x', 'fa-angle-double-down', 'dropdown-icon');
+  const dropdownIcon = document.querySelector('.dropdown-icon').classList.add('fas', 'fa-2x', 'fa-angle-double-down', 'dropdown-icon');
+  return dropdownIcon
 }
 
 const createCountryStatHistoryBox = () => {
@@ -315,7 +306,6 @@ const createCountryStatHistoryBox = () => {
 const createCountryStatWrapper = () => {
   appendNodeWithClass('div', 'country-stat-wrapper', searchCountryStats);
 };
-
 
 const createCountryStatBox = (parent) => {
   appendNodeWithClass('div', 'country-stat-box', parent);
@@ -349,20 +339,18 @@ const createStatBoxes = (data, countryStatWrapper) => {
       const icon = iconValues[index];
 
       const countryStatBox = document.createElement('div');
-      countryStatBox.classList.add('country-stat-box');
-      countryStatWrapper.appendChild(countryStatBox);
+      countryStatWrapper.appendChild(countryStatBox).classList.add('country-stat-box');
 
       createCountryStatText(stat, countryStatBox);
       createCountryStatNumber(stat, countryStatBox);
 
       const countryStatBoxStyle = document.createElement('div')
-      countryStatBoxStyle.classList.add('country-stat-box__style');
-      countryStatBox.appendChild(countryStatBoxStyle);
+
+      countryStatBox.appendChild(countryStatBoxStyle).classList.add('country-stat-box__style');
 
       const iconTag = document.createElement('i');
-      iconTag.classList.add('fas', icon)
       iconTag.id = 'box-style__tag';
-      countryStatBoxStyle.appendChild(iconTag);
+      countryStatBoxStyle.appendChild(iconTag).classList.add('fas', icon)
 
       const color = MAIN_COLOURS[index];
       countryStatBox.style.borderBottom = `5px solid ${color}`;
@@ -419,10 +407,7 @@ select.addEventListener('change', (e) => {
 });
 
 fetchData('historical/all', showChartHistory);
-
-
 fetchData('all', updateUIWorldwideStats);
-// LIST COUNTRIES IN THE SELECT
 fetchData('countries', createOptionsInSelect)
 searchCountries();
 

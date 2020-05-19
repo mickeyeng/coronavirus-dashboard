@@ -513,7 +513,7 @@ main {
   z-index: 1;
 }
 
-.history-date {
+.history-stat-box-wrapper {
   margin: var(--main-margin) 0;
   /* background: black; */
   color: var(--text-color-dark);
