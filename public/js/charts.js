@@ -1,31 +1,30 @@
 import 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js';
 const worldwideChart = document.querySelector('.myChart-worldwide');
-let newCountryChart;
-let ctx;
+import { appendNodeWithClass, getObjValues } from './util.js';
 
-export function showChartHistory(history) {
+export const showChartHistory = (history) => {
   const ctx = worldwideChart.getContext('2d');
-  const chart = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'line',
     data: {
       labels: Object.keys(history.cases),
       datasets: [
         {
-          label: 'Cases worldwide',
+          label: 'Cases Worldwide',
           backgroundColor: '#FF4136',
           borderColor: '#FF4136',
           data: Object.values(history.cases),
           fill: false,
         },
         {
-          label: 'Deaths worldwide',
+          label: 'Deaths Worldwide',
           backgroundColor: '#0074D9',
           borderColor: '#0074D9',
           data: Object.values(history.deaths),
           fill: false,
         },
         {
-          label: 'Recoveries worldwide',
+          label: 'Recoveries Worldwide',
           backgroundColor: '#3D9970',
           borderColor: '#3D9970',
           data: Object.values(history.recovered),
@@ -42,21 +41,18 @@ export function showChartHistory(history) {
   });
 }
 
-export function showChartHistoryByCountry(data) {
-  const chartContainerCountry = document.getElementById(
-    'chart-container-country'
-  );
-  console.log(chartContainerCountry);
-  const dates = Object.keys(data.timeline.cases);
-  const cases = Object.values(data.timeline.cases);
+export const showChartHistoryByCountry = (data) => {
+  const chartContainerCountry = document.getElementById('chart-container-country');
+  const dates = Object.keys(data.timeline.cases);  
+  const cases = getObjValues(data.timeline.cases)
   const deaths = Object.values(data.timeline.deaths);
   const recovered = Object.values(data.timeline.recovered);
-  const chartCanvas = document.createElement('canvas');
-  chartCanvas.classList.add('myChart-country');
-  chartContainerCountry.appendChild(chartCanvas);
+
+  appendNodeWithClass('canvas', 'myChart-country', chartContainerCountry );
+  const chartCanvas = document.querySelector('.myChart-country');
 
   const ctx = chartCanvas.getContext('2d');
-  newCountryChart = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'line',
     data: {
       labels: dates,
@@ -66,6 +62,7 @@ export function showChartHistoryByCountry(data) {
           backgroundColor: '#FF4136',
           borderColor: '#FF4136',
           data: cases,
+      
           fill: false,
         },
         {
@@ -95,16 +92,22 @@ export function showChartHistoryByCountry(data) {
   toggleChartAndMap(data);
 }
 
-function toggleChartAndMap() {
-  const toggleDiv = document.getElementById('toggle-map');
+
+const toggleButtonOnClick = () => {
   const map = document.querySelector('.map');
-  const countryChart = document.querySelector('.myChart-country');
-  toggleDiv.addEventListener('click', () => {
+  const toggleButton = document.getElementById('toggle-map');
+  const countryChart = document.getElementById('chart-container-country');
+
+
+  toggleButton.addEventListener('click', () => {
     countryChart.classList.toggle('active-chart');
     map.classList.toggle('active-map');
+    countryChart.classList.contains('active-chart') ? (toggleButton.textContent = 'Chart') : (toggleButton.textContent = 'Map');
+  })
 
-    countryChart.classList.contains('active-chart')
-      ? (toggleDiv.textContent = 'Chart')
-      : (toggleDiv.textContent = 'Map');
-  });
 }
+
+const toggleChartAndMap = () => {
+  toggleButtonOnClick();
+}
+ 33
