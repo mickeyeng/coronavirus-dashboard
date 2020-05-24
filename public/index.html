@@ -26,61 +26,77 @@
     <title>Coronavirus</title>
   </head>
   <body>
-    <!-- <button id="dark-mode-btn">test</button> -->
     <div class="wrapper">
-    <div class="container">
-      <div class="header shadow">
-        <h1 id="heading">Coronavirus (COVID-19)</h1>
-        <i id="dark-mode-btn" class="fas fa-2x fa-moon"></i>
-      </div>
+      <header>
+        <!-- <div class="container"> -->
+        <div class="header shadow">
+          <h1 id="heading">Coronavirus (COVID-19)</h1>
+          <i id="dark-mode-btn" class="fas fa-2x fa-moon"></i>
+        </div>
+      </header>
 
-      <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/">
-        <div class="nhs">
-          <img
-            alt="NHS"
-            height="80"
-            width="80"
-            src="https://www.gstatic.com/youtube/img/discovery/coronavirus_generic.png"
-          />
-          <div class="nhs-text">
-            <h3>Coronavirus (COVID-19)</h3>
-            <p>
-              Get the latest information from the National Health Service about
-              coronavirus.
-            </p>
-            <a
-              id="nhs-link"
-              href="https://www.nhs.uk/conditions/coronavirus-covid-19/"
-              >NHS</a
-            >
+      <section id="nhs-section">
+        <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/">
+          <div class="nhs">
+            <img
+              alt="NHS"
+              height="80"
+              width="80"
+              src="https://www.gstatic.com/youtube/img/discovery/coronavirus_generic.png"
+            />
+            <div class="nhs-text">
+              <h3>Coronavirus (COVID-19)</h3>
+              <p>
+                Get the latest information from the National Health Service
+                about coronavirus.
+              </p>
+              <a
+                id="nhs-link"
+                href="https://www.nhs.uk/conditions/coronavirus-covid-19/"
+                >NHS</a
+              >
+            </div>
+          </div>
+        </a>
+        <!-- </div> -->
+      </section>
+
+      <section id="form">
+        <form class="form" data-form>
+          <input type="text" data-search placeholder="Enter Country here..." />
+          <input type="submit" value="Search" />
+        </form>
+        <div class="country-select">
+          <select class="select"
+            ><option>UK</option></select
+          >
+        </div>
+      </section>
+
+      <section id="chart">
+        <h2 class="main-stat-heading shadow">Worldwide Chart</h2>
+        <div class="chart-wrapper">
+          <div class="chart-container">
+            <canvas class="myChart-worldwide"></canvas>
           </div>
         </div>
-      </a>
+      </section>
 
-      <form class="form" data-form>
-        <input type="text" data-search placeholder="Enter Country here..." />
-        <input type="submit" value="Search" />
-      </form>
+      <section id="worldwide-stats">
+        <h1 class="main-stat-heading shadow">
+          Worldwide Cases
+        </h1>
+        <div class="worldwide-stats-wrapper" data-worldwide-stats>
+          <div data-loader></div>
+        </div>
+      </section>
 
-      <div class="country-select">
-        <select class="select">
-          <option>UK</option>
-        </select>
-      </div>
-      <h2 id="chart-heading">Worldwide Data</h2>
-      <!-- <div data-main-chart></div> -->
-      <div class="chart-container">
-        <canvas class="myChart-worldwide"></canvas>
-      </div>
+      <section id="country-stats">
+        <h1 class="main-stat-heading shadow">
+          By Country
+        </h1>
+        <div class="search-stats-box box" data-search-stats></div>
+      </section>
     </div>
-    <main id="main">
-      <h1 id="worldwide-heading" class="box-heading shadow">Worldwide Cases</h1>
-      <div class="worldwide-stats-wrapper" data-worldwide-stats>
-        <div data-loader></div>
-      </div>
-      <h1 id="country-heading" class="box-heading shadow">By Country</h1>
-      <div class="search-stats-box box" data-search-stats></div>
-    </div>
-    </main>
   </body>
 </html>

@@ -39,16 +39,18 @@ export const showChartHistory = (history) => {
       maintainAspectRatio: false,
     },
   });
-}
+};
 
 export const showChartHistoryByCountry = (data) => {
-  const chartContainerCountry = document.getElementById('chart-container-country');
-  const dates = Object.keys(data.timeline.cases);  
-  const cases = getObjValues(data.timeline.cases)
+  const chartContainerCountry = document.getElementById(
+    'chart-container-country'
+  );
+  const dates = Object.keys(data.timeline.cases);
+  const cases = getObjValues(data.timeline.cases);
   const deaths = Object.values(data.timeline.deaths);
   const recovered = Object.values(data.timeline.recovered);
 
-  appendNodeWithClass('canvas', 'myChart-country', chartContainerCountry );
+  appendNodeWithClass('canvas', 'myChart-country', chartContainerCountry);
   const chartCanvas = document.querySelector('.myChart-country');
 
   const ctx = chartCanvas.getContext('2d');
@@ -62,7 +64,7 @@ export const showChartHistoryByCountry = (data) => {
           backgroundColor: '#FF4136',
           borderColor: '#FF4136',
           data: cases,
-      
+
           fill: false,
         },
         {
@@ -90,24 +92,23 @@ export const showChartHistoryByCountry = (data) => {
   });
 
   toggleChartAndMap(data);
-}
-
+};
 
 const toggleButtonOnClick = () => {
   const map = document.querySelector('.map');
   const toggleButton = document.getElementById('toggle-map');
   const countryChart = document.getElementById('chart-container-country');
 
-
   toggleButton.addEventListener('click', () => {
     countryChart.classList.toggle('active-chart');
     map.classList.toggle('active-map');
-    countryChart.classList.contains('active-chart') ? (toggleButton.textContent = 'Chart') : (toggleButton.textContent = 'Map');
-  })
-
-}
+    countryChart.classList.contains('active-chart')
+      ? (toggleButton.textContent = 'Chart')
+      : (toggleButton.textContent = 'Map');
+  });
+};
 
 const toggleChartAndMap = () => {
   toggleButtonOnClick();
-}
- 33
+};
+33;
