@@ -67,7 +67,7 @@ body {
   display: grid;
   gap: 4rem;
   grid-template-columns: 18vw 1fr;
-  grid-template-rows: auto auto auto 600px;
+  grid-template-rows: auto auto auto 70vh;
 }
 
 header {
@@ -459,7 +459,7 @@ main {
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1rem;
-  margin: 4rem 0;
+  margin: 2rem 0;
 }
 
 .country-info-header img {
@@ -584,13 +584,39 @@ font-weight: BOLD;
   font-weight: normal;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 760px) {
   .wrapper {
     width: 90vw;
     margin: 0 auto;
-  }
-  main {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  #header {
+    grid-column: span 2;
+  }
+
+  #nhs-section {
+    grid-column: span 2;
+  }
+
+  #form {
+    grid-column: span 2;
+  }
+
+  #chart {
+    grid-column: span 2;
+    grid-row: 5;
+  }
+
+  #worldwide-stats {
+    grid-column: span 2;
+    grid-row: 4;
+  }
+
+  #country-stats {
+    grid-column: span 2;
+    grid-row: 6;
   }
 
   .container {
@@ -621,7 +647,6 @@ font-weight: BOLD;
   .search-stats-box {
     grid-column: auto;
     grid-row: 2;
-    background: var(--box-color-light);
   }
 
   #country-heading {
