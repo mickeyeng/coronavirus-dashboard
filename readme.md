@@ -6,7 +6,7 @@
 
 ### **Description**
 
-A Covid-19 Coronavirus dashboard that displays daily data pulled from the [NOVELCovid Public API](https://disease.sh/docs/). Find the daily stats for worldwide data as well as searching by the specific country. The returned data is outputted in text, graphical and a Geolocatiton format.
+A Covid-19 Coronavirus dashboard that displays daily data pulled from the [NOVELCovid Public API](https://disease.sh/docs/). Find the daily stats for worldwide data as well as searching by the specific country. The returned data is outputted in text, graphical and Geolocatiton format.
 
 ### **Technologies**
 
@@ -26,7 +26,7 @@ A Covid-19 Coronavirus dashboard that displays daily data pulled from the [NOVEL
 
 ### **How to use**
 
-### Node
+#### Node
 
 ```
 npm init
