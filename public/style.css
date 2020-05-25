@@ -85,7 +85,7 @@ header {
 
 #heading {
   text-align: center;
-  font-size: var(--extra-large-font);
+  font-size: var(--large-font);
   font-weight: 600;
   margin: var(--main-margin) 0;
   color: white;
@@ -360,7 +360,7 @@ main {
   text-align: center;
   padding: var(--main-padding) 0;
   font-size: var(--large-font);
-  color: var(--text-color-light);
+  color: white;
 }
 
 #worldwide-stats {
@@ -537,14 +537,14 @@ main {
   padding: var(--main-padding);
   position: relative;
   transition: max-height 0.6s ease-in;
-  max-height: 60px;
+  max-height: 70px;
   overflow: hidden;
   font-size: var(--normal-font);
   font-weight: bold;
-  /* box-shadow: var(--box-shadow); */
   z-index: 2;
   border: 1px solid var(--green-color);
   border-radius: var(--border-radius);
+  cursor: pointer;
 }
 
 .history-wrapper__dropdown-text {

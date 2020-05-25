@@ -34,7 +34,20 @@ const COUNTRY_STATS = [
   "tests",
 ];
 
-const ICONS = [
+const WORLDWIDE_ICONS = [
+  "fa-user-times",
+  "fa-globe-europe",
+  "fa-vial",
+  "fa-notes-medical",
+  "fa-heartbeat",
+  "fa-heart",
+  "fa-ambulance",
+  "fa-procedures",
+  "fa-user-friends",
+  "fa-users",
+];
+
+const COUNTRY_ICONS = [
   "fa-users",
   "fa-user-friends",
   "fa-procedures",
@@ -46,7 +59,20 @@ const ICONS = [
   "fa-globe-europe",
 ];
 
-const MAIN_COLOURS = [
+const MAIN_COLOURS_WORLDWIDE = [
+  "#abf0e9",
+  "#5f6caf",
+  "#ff8364",
+  "rgba(57, 0, 102, 0.43)",
+  "#ea8c8c",
+  "#d72525",
+  "#00afaa",
+  "#9bbce3",
+  "lightsalmon",
+  "#80b796",
+];
+
+const MAIN_COLOURS_COUNTRY = [
   "#80b796",
   "lightsalmon",
   "#9bbce3",
@@ -54,9 +80,6 @@ const MAIN_COLOURS = [
   "#d72525",
   "#ea8c8c",
   "rgba(57, 0, 102, 0.43)",
-  "red",
-  "blue",
-  "green",
 ];
 
 const searchCountryInput = document.querySelector("[data-form]");
@@ -196,8 +219,8 @@ const updateUIWorldwideStats = (data) => {
   // css afterbegin reverses the array
   const worldwideStats = filterWorldwideStats(data).reverse();
   worldwideStats.forEach(([key, value], index) => {
-    const icon = ICONS[index];
-    const color = MAIN_COLOURS[index];
+    const icon = WORLDWIDE_ICONS[index];
+    const color = MAIN_COLOURS_WORLDWIDE[index];
     createWorldwideStatBox();
     const worldwideStatsBox = document.querySelector(".worldwide-stats-box");
     createWorldwideStatBoxIcon(icon, color);
@@ -243,7 +266,7 @@ const toggleExpandedClassOnHistoryChildren = (parent, dropDownIcon) => {
     dropDownIcon.style.transform = "rotate(180deg)";
   } else {
     dropDownIcon.style.transform = "rotate(0)";
-    parent.style.maxHeight = "60px";
+    parent.style.maxHeight = "70px";
     parent.style.overflow = "hidden";
   }
 };
@@ -270,8 +293,9 @@ const updateUISearchCountryHistory = (deaths, data) => {
   });
 
   // show country history info on dropdown click
-  historyWrapper &&
-    historyStatBoxDropdownIcon.addEventListener("click", () => {
+
+  historyStatBoxDropdownIcon &&
+    historyWrapper.addEventListener("click", () => {
       toggleExpandedClassOnHistoryChildren(
         historyWrapper,
         historyStatBoxDropdownIcon
@@ -392,24 +416,24 @@ const createCountryStatBox = (parent) => {
   appendNodeWithClass("div", "country-stat-box", parent);
 };
 
-const createCountryStatText = (stat, parent) => {
+const createCountryStatText = ([stat], parent) => {
   // const countryStatBox = document.querySelector('.country-stat-box');
   return appendNodeWithClass(
     "h3",
     null,
     parent,
     undefined,
-    `${capitaliseFirstLetterAndAddSpace(stat[0])} -`
+    `${capitaliseFirstLetterAndAddSpace(stat)} - `
   );
 };
 
-const createCountryStatNumber = (stat, parent) => {
+const createCountryStatNumber = ([, statResult], parent) => {
   return appendNodeWithClass(
     "span",
     undefined,
     parent,
     undefined,
-    formatter.format(stat[1])
+    `${formatter.format(statResult)}`
   );
 };
 
@@ -429,7 +453,7 @@ const createCountryStatBoxIcon = (iconClassName, parent) => {
 
 const createStatBoxes = (data, countryStatWrapper) => {
   filterCountryStats(data, COUNTRY_STATS).forEach((stat, index) => {
-    const iconValues = ICONS;
+    const iconValues = COUNTRY_ICONS;
     const icon = iconValues[index];
 
     const countryStatBox = document.createElement("div");
@@ -450,7 +474,7 @@ const createStatBoxes = (data, countryStatWrapper) => {
     iconTag.id = "box-style__tag";
     countryStatBoxStyle.appendChild(iconTag).classList.add("fas", icon);
 
-    const color = MAIN_COLOURS[index];
+    const color = MAIN_COLOURS_COUNTRY[index];
     countryStatBox.style.borderBottom = `5px solid ${color}`;
     countryStatBox.lastElementChild.style.background = color;
   });
