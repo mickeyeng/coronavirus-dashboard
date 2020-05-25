@@ -1,20 +1,18 @@
 export function displayMap(data) {
-  const map = document.querySelector('.map');
+  const map = document.querySelector(".map");
   const { lat, long } = data.countryInfo;
   const { active, cases, country, deaths, todayDeaths } = data;
 
   map.innerHTML = `<div id="mapid"></div>`;
-
-  console.log(lat, long);
-  const mymap = L.map('mapid').setView([lat, long], 5);
+  const mymap = L.map("mapid").setView([lat, long], 5);
 
   var OpenStreetMap_Mapnik = L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
       maxZoom: 19,
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxBoundsViscosity: 1.0,
+      maxBoundsViscosity: 1.0
     }
   ).addTo(mymap);
 

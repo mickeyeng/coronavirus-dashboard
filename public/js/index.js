@@ -186,7 +186,6 @@ const createWorldwideStatBoxInfo = (parent, statText) => {
     "worldwide-stats-box-heading",
     parent,
     "",
-    // capitaliseFirstLetter(statText)
     capitaliseFirstLetterAndAddSpace(statText)
   );
 };
@@ -293,7 +292,6 @@ const updateUISearchCountryHistory = (deaths, data) => {
   });
 
   // show country history info on dropdown click
-
   historyStatBoxDropdownIcon &&
     historyWrapper.addEventListener("click", () => {
       toggleExpandedClassOnHistoryChildren(
@@ -417,7 +415,6 @@ const createCountryStatBox = (parent) => {
 };
 
 const createCountryStatText = ([stat], parent) => {
-  // const countryStatBox = document.querySelector('.country-stat-box');
   return appendNodeWithClass(
     "h3",
     null,
@@ -446,9 +443,6 @@ const createCountryStatBoxIcon = (iconClassName, parent) => {
     ".country-stat-box__style"
   );
   return appendNodeWithClass("i", "fas", parent, "box-style_tag");
-  // const icon = document.getElementById('box-style_tag');
-  // icon.classList.add(iconClassName);
-  // return icon
 };
 
 const createStatBoxes = (data, countryStatWrapper) => {
@@ -479,14 +473,6 @@ const createStatBoxes = (data, countryStatWrapper) => {
     countryStatBox.lastElementChild.style.background = color;
   });
 };
-
-// const createCountryStatBox = (stat, iconClassName, parent) => {
-//   createCountryStatTextBox(countryStatWrapper);
-//   createCountryStatText(stat, parent);
-//   createCountryStatNumber(stat);
-//   createCountryStatBoxStyle();
-//   createCountryStatBoxIcon(iconClassName)
-// }
 
 // update UI with data for specific country
 const updateUISearchCountries = (data, country) => {
